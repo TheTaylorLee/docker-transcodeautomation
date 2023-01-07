@@ -1,6 +1,8 @@
+.git
 Build.md
 changelog.md
-docker-compose.yml
-.git
+*docker-compose.yml
+examples
 LICENSE
 README.md
+scripts

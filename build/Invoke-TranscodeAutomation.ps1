@@ -50,8 +50,8 @@ if ($host.version.major -eq '7') {
     #Scheduling and execution
     while ($true) {
         $backupfolder = "$PSScriptRoot/data/Backups"
-        [string[]]$plexmoviefolders = $env:plexmoviefolders -split ', '
-        [string[]]$plexshowfolders = $env:plexshowfolders -split ', '
+        [string[]]$plexmoviefolders = $env:PLEXMOVIEFOLDERS -split ', '
+        [string[]]$plexshowfolders = $env:PLEXSHOWFOLDERS -split ', '
 
         $dt = Get-Date
         Write-Output "Transcodeautomation while loop started at $dt"

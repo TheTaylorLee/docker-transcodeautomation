@@ -43,7 +43,10 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     PS_INSTALL_FOLDER=/opt/microsoft/powershell/$PS_INSTALL_VERSION \
     # set a fixed location for the Module analysis cache
     PSModuleAnalysisCachePath=/var/cache/microsoft/powershell/PSModuleAnalysisCache/ModuleAnalysisCache \
-    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-Ubuntu-22.04
+    POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-Ubuntu-22.04 \
+    # Set FFTools variables (Modified entry)
+    FFToolsSource=/docker-transcodeautomation/transcoding/ \
+    FFToolsTarget=/docker-transcodeautomation/transcoding/new/
 
 # Install dependencies and clean up
 RUN --mount=from=installer-env,target=/mnt/pwsh,source=/tmp \
