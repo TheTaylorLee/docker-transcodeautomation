@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  Docker-TranscodeAutomation:
+    image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
+    container_name: Docker-TranscodeAutomation
+    environment:
+      - PUID=1000 # User that has access to the volumes
+      - PGID=1000 # Group that has access to the volumes
+      - TZ=Chicago/Illinois
+      - FFToolsSource=/docker-transcodeautomation/transcoding/ # Used by powershell module. Don't change
+      - FFToolsTarget=/docker-transcodeautomation/transcoding/new/ # Used by powershell module. Don't change
+      - plexmoviefolders=/media/test/movies, /media/test/movies02 #Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
+      - plexshowfolders=/media/test/shows #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
+    volumes:
+      - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data #Where database and logs are stored
+      - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding # Directory where files will be transcoded and where the media database will be stored
+      - /media:/media #Top shared directory for stored media files
+    restart: unless-stopped
