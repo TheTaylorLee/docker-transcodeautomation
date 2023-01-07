@@ -1,7 +1,11 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution.
+An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
-- IT IS RECOMMEND TO FIRST TRANSCODE YOUR EXISTING MEDIA PRIOR TO USING THIS AUTOMATION. OTHERWISE YOU WILL RISK THE WORKFLOW OF THIS AUTOMATION USING MORE DISK SPACE THAN YOU HAVE AVAILABLE. THIS IS BECAUSE THE AUTOMATION CAN RESULT IN UP TO 2 COPIES OF A FILE WHILE BEING PROCESSED, AND 1 COPY OF A TRANSCODED VERSION. ADDITIONALLY TRANSCODED FILES ARE PLACED IN A RECOVER FOLDER FOR 14 DAYS IN CASE YOU NEED TO RECOVER THE ORIGINAL FILE.
+- It is recommended to first transcode your existing media prior to using this container. Otherwise you will risk the workflow of this automation using more disk space than would be desired. that is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14 day period.
+- Media first transcoded will need to contain a metadata comment of transcoded and be in a Matroska container to avoid this process picking up the file for transcoding.
+- For this reason I suggest using a script like this [script](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
+
+## Parameters applied to transcoded media
 
 - All transcoded media will have the following parameters applied. With differences in crf quality based on Shows vs Movies.
 ```
@@ -16,8 +20,26 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 
 ## Deploying the image
 Docker Run command or Docker Compose can be used.
-- [Docker Compose Example](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/examples/docker-compose.yml)
-- Docker Run Command
+- Docker Compose Example
+```
+version: "3.8"
+services:
+  Docker-TranscodeAutomation:
+    image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
+    container_name: Docker-TranscodeAutomation
+    environment:
+      - PUID=1000 # User that has access to the volumes
+      - PGID=1000 # Group that has access to the volumes
+      - TZ=Chicago/Illinois
+      - plexmoviefolders=/media/test/movies, /media/test/movies02 #Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
+      - plexshowfolders=/media/test/shows #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
+    volumes:
+      - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data #Where database and logs are stored
+      - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding # Directory where files will be transcoded and where the media database will be stored
+      - /media:/media #Top shared directory for stored media files
+    restart: unless-stopped
+```
+- Docker Run Example
 ```
 docker run -v /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data -v /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding -v /media:/media --name Docker-TranscodeAutomation -e PUID=1000 -e PGID=1000 -e TZ=Chicago/Illinois -e FFToolsSource=/docker-transcodeautomation/transcoding/ -e FFToolsTarget=/docker-transcodeautomation/transcoding/new/ -e plexmoviefolders=/media/test/movies, /media/test/movies02 -e plexshowfolders=/media/test/shows ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
 ```
