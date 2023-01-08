@@ -1,5 +1,5 @@
 .git
-Build.md
+build/README.md
 changelog.md
 *docker-compose.yml
 examples
