@@ -6,7 +6,7 @@ git clone https://github.com/TheTaylorLee/docker-transcodeautomation
 cd ~/docker-transcodeautomation
 build01=ubuntu22.04
 version=1.0
-DOCKER_BUILDKIT=1 docker build -t ttlee/docker-transcodeautomation:$build-$version .
+DOCKER_BUILDKIT=1 docker build -t ttlee/docker-transcodeautomation:$build01-$version .
 ```
 
 - Pushing the images
