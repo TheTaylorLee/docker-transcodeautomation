@@ -41,7 +41,7 @@ if ($host.version.major -eq '7') {
     #Transcode Function
     . $PSScriptRoot/private/Start-Transcode.ps1
     #Move transcoded files back to MEDIA directories
-    . $PSScriptRoot/private/Move-FileToMEDIAFolder.ps1
+    . $PSScriptRoot/private/Move-FileToMediaFolder.ps1
     #Perform daily backup of sqlite database
     . $PSScriptRoot/private/backup-mediadb.ps1
     #Perform daily update of media statistics
