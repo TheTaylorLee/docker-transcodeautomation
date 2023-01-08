@@ -64,7 +64,7 @@ Docker Volume | Purpose | Example
 ---------|----------|---------
 Data | Logs, Database, and Database backups are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
 Transcoding | Transcoding of files occurs here. | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
-Media | Top volume containing media and show files | /media:/media
+Media | Top volume containing media files | /media:/media
 
 ## Using included media functions
 - This image comes with various PowerShell functions for managing the transcode database.
