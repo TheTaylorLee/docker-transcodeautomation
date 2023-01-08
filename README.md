@@ -2,7 +2,7 @@
 An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
 <p align="Left">
-<a href="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker"><img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker"></a>
+<a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation"><img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker"></a>
 </p>
 
 - It is recommended to first transcode your existing media prior to using this container. Otherwise, you will risk the workflow of this automation using more disk space than would be desired. That is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14-day period.
