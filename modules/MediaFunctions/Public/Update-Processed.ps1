@@ -29,7 +29,7 @@ function Update-Processed {
     foreach ($sqlmovie in $sqlmovies) {
         $fullname = $sqlmovie.fullname
         if (Test-Path $fullname) {
-            $Probe = C:\nssm-transcodeautomation\ffprobe.exe -loglevel 0 -print_format json -show_format $fullname
+            $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
             if ($comment -ne 'transcoded') {
@@ -51,7 +51,7 @@ function Update-Processed {
     foreach ($sqlshow in $sqlshows) {
         $fullname = $sqlshow.fullname
         if (Test-Path $fullname) {
-            $Probe = C:\nssm-transcodeautomation\ffprobe.exe -loglevel 0 -print_format json -show_format $fullname
+            $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
             if ($comment -ne 'transcoded') {
