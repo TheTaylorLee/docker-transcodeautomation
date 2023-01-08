@@ -1,11 +1,11 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
+An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding. \
 
-- It is recommended to first transcode your existing media prior to using this container. Otherwise you will risk the workflow of this automation using more disk space than would be desired. that is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14 day period.
+- It is recommended to first transcode your existing media prior to using this container. Otherwise, you will risk the workflow of this automation using more disk space than would be desired. That is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14-day period.
 - Media first transcoded will need to contain a metadata comment of transcoded and be in a Matroska container to avoid this process picking up the file for transcoding.
-- For this reason I suggest using a script like this [script](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
+- For this reason, I suggest using a script like this [script](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
 - Once all media is transcoded the process sleeps for 2 hours before looking for new media to transcode.
-- Any non-media file that is not in these excluded extensions should not be saved next to media files. ".txt", ".srt", ".md", ".jpg", ".jpeg", ".bat", ".png", ".idx", ".sub", ".SQLite"
+- Any non-media file that is not in these excluded extensions should not be saved in your media directories. ".txt", ".srt", ".md", ".jpg", ".jpeg", ".bat", ".png", ".idx", ".sub", ".SQLite"
 
 ## Parameters applied to transcoded media
 
@@ -14,14 +14,13 @@ An automated media transcoding solution. By using this container you assume all 
 ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <21 or 23> -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
 ```
 - All video, audio, and subtitles are mapped into the transcoded file
-- Title and Description metadata is removed to so that data doesn't effect the media server of choice properly displaying the correct metadata
+- Title and Description metadata is removed so that data doesn't affect the media server of choice properly displaying the correct metadata
 - The comment metadata is set to "transcoded". This ensures even if the mediadb is lost or filename changed, the file will not be transcoded again.
 - Media will be transcoded using the x265 media format to an mkv container
 - 6 channel aac audio is set
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 
 ## Deploying the image
-Docker Run command or Docker Compose can be used.
 - Docker Compose Example
 ```
 version: "3.8"
@@ -30,15 +29,15 @@ services:
     image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
     container_name: Docker-TranscodeAutomation
     environment:
-      - PUID=1000 # User that has access to the volumes
-      - PGID=1000 # Group that has access to the volumes
+      - PUID=1000
+      - PGID=1000
       - TZ=Chicago/Illinois
-      - plexmoviefolders=/media/test/movies, /media/test/movies02 #Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
-      - plexshowfolders=/media/test/shows #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes.
+      - plexmoviefolders=/media/test/movies, /media/test/movies02
+      - plexshowfolders=/media/test/shows
     volumes:
-      - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data #Where database and logs are stored
-      - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding # Directory where files will be transcoded and where the media database will be stored
-      - /media:/media #Top shared directory for stored media files
+      - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+      - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
+      - /media:/media
     restart: unless-stopped
 ```
 - Docker Run Example
@@ -59,12 +58,12 @@ PLEXSHOWFOLDERS | yes | #Top level show directories. Multiple directories must b
 
 Docker Volume | Purpose | Example
 ---------|----------|---------
-Data | Logs, Database, and Database backups are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
-Transcoding | Transcoding of files occurs here. | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
-Media | Top volume containing media and show files | /media:/media
+ Data | Logs, Database, and Database backups are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+ Transcoding | Transcoding of files occurs here. | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
+ Media | Top volume containing media and show files | /media:/media
 
 ## Using included media functions
-- This image comes with various PowerShell functions for managing the images transcode database.
+- This image comes with various PowerShell functions for managing the transcode database.
 - Enter docker exec for the container and use these commands to get more commands.
 ```powershell
 pwsh
@@ -78,7 +77,7 @@ help <function-name> -full
 ```
 
 ## Statistics
-- /docker-transcodeautomation/data/MediaDB.sqlite volume file is a sqlite database containing logs and statistics
+- /docker-transcodeautomation/data/MediaDB.sqlite volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - The following statistics are recorded
 
@@ -102,9 +101,9 @@ growth180daysMB | this shows how much storage usage has increased in the past x 
 growth365daysMB | this shows how much storage usage has increased in the past x days for existing media only
 
 ## Troubleshooting
-- Review the docker logs. You might have find there are issues with your pat variables, volumes, or files left over in transcoding directories due to interuptions.
+- Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
 - If the logs indicate that there are files leftover in the transcoding directory you must remove them so not extra files are in that directory. This will allow processing to resume.
-- If a transcoded file is corrupted, you can recover a an original version of the file for 14 days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
+- If a transcoded file is corrupted, you can recover an original version of the file for 14 days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
 - The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
 - You might run into a scenario where you replace an already transcoded file and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section of the [README](#using-included-media-functions).
-- If your media database becomes corrupted, use the backed up databases to restored a healthy copy. If this fails just delete the database and restart the container. This will build a new database sans historical statistics.
+- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
