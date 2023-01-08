@@ -3,8 +3,8 @@ Function Invoke-MediaManagement {
     [CmdletBinding()]
     [Alias('mediapro')]
     Param (
-        [Parameter(Mandatory = $true)][string[]]$plexshowfolders,
-        [Parameter(Mandatory = $true)][string[]]$plexmoviefolders,
+        [Parameter(Mandatory = $true)][string[]]$MEDIAshowfolders,
+        [Parameter(Mandatory = $true)][string[]]$MEDIAmoviefolders,
         [Parameter(Mandatory = $true)][int]$hours,
         [Parameter(Mandatory = $true)][string]$DataSource
     )
@@ -17,7 +17,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Copy-PlexShowsToProcess -plexshowfolders $plexshowfolders -hours $hours -DataSource $DataSource
+        Copy-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -hours $hours -DataSource $DataSource
 
         ##Process files
         Start-Transcode -crf 23 -mapall
@@ -63,8 +63,8 @@ Function Invoke-MediaManagement {
             }
         }
 
-        # Move transcoded files back into plex folders. This overwrites the original files
-        Move-FileToPlexFolder -plexshowfolders $plexshowfolders -plexmoviefolders $plexmoviefolders -DataSource $DataSource
+        # Move transcoded files back into MEDIA folders. This overwrites the original files
+        Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
     }
 
     else {
@@ -77,7 +77,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Copy-PlexMoviesToProcess -plexmoviefolders $plexmoviefolders  -hours $hours -DataSource $DataSource
+        Copy-MEDIAMoviesToProcess -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
 
         ##Process files
         Start-Transcode -crf 21 -mapall
@@ -123,8 +123,8 @@ Function Invoke-MediaManagement {
             }
         }
 
-        # Move transcoded files back into plex folders. This overwrites the original files
-        Move-FileToPlexFolder -plexshowfolders $plexshowfolders -plexmoviefolders $plexmoviefolders -DataSource $DataSource
+        # Move transcoded files back into MEDIA folders. This overwrites the original files
+        Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
     }
 
     else {

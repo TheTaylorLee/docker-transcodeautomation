@@ -1,22 +1,22 @@
-Function Copy-PlexShowsToProcess {
+Function Copy-MediaMoviesToProcess {
 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory = $true)][string[]]$plexshowfolders,
+        [Parameter(Mandatory = $true)][string[]]$mediamoviefolders,
         [Parameter(Mandatory = $true)][int]$hours,
         [Parameter(Mandatory = $true)][string]$DataSource
     )
 
     # Set static Table parameters
-    $TableName = "Shows"
+    $TableName = "Movies"
 
-    # Iterate Show libraries
-    foreach ($plexshowfolder in $plexshowfolders) {
-        Set-Location $plexshowfolder
+    # Iterate Movie libraries
+    foreach ($mediamoviefolder in $mediamoviefolders) {
+        Set-Location $mediamoviefolder
 
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem -ErrorAction Inquire $plexshowfolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite").fullname
-        $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$plexshowfolder%`""
+        $files = (Get-ChildItem -ErrorAction Inquire $mediamoviefolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite").fullname
+        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$mediamoviefolder%`"" -ErrorAction Inquire
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
             $filesforprocessing = $files
@@ -47,7 +47,7 @@ Function Copy-PlexShowsToProcess {
 
                     # If database entry doesn't exist for file create table entry.
                     $query = "SELECT * FROM $TableName WHERE filename = `"$filename`""
-                    $result = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
+                    $result = Invoke-SqliteQuery -DataSource $DataSource -Query $query -ErrorAction Inquire
                     if ($null -eq $result) {
                         # If comment tag of media file is transcoded, update database only
                         if ($comment -eq 'transcoded') {
@@ -62,7 +62,7 @@ Function Copy-PlexShowsToProcess {
                                 modified   = Get-Date
                                 filesizeMB = $filesizeMB
                                 fileexists = "true"
-                                updatedby  = "Copy-PlexShowsToProcess"
+                                updatedby  = "Copy-mediaMoviesToProcess"
                             }
                         }
                         # else comment tag of media file is not transcoded copy file for processing and update database
@@ -78,7 +78,7 @@ Function Copy-PlexShowsToProcess {
                                 modified   = Get-Date
                                 filesizeMB = $filesizeMB
                                 fileexists = "true"
-                                updatedby  = "Copy-PlexShowsToProcess"
+                                updatedby  = "Copy-mediaMoviesToProcess"
                             }
                         }
                     }
@@ -87,14 +87,14 @@ Function Copy-PlexShowsToProcess {
                         # If ffprobe indicates comment tag of media file is transcoded and file directory has changed, update database only
                         if ($comment -eq 'transcoded') {
                             $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                            $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-PlexShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`" and directory != `"$directory`""
+                            $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-mediaMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`" and directory != `"$directory`""
                             Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                         }
                         # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Will update if file is moved or not moved to new directory. Useful for when file has been replace by another download.
                         else {
                             Copy-Item $fullname $env:FFToolsSource
                             $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                            $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-PlexShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
+                            $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-mediaMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
                             Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                         }
                     }
@@ -104,7 +104,7 @@ Function Copy-PlexShowsToProcess {
             else {
                 $fullname = $file
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                $query = "Update $TableName SET comment = NULL, filesizeMB = NULL,  fileexists = 'false', modified = `"$modified`", updatedby = 'Copy-PlexShowsToProcess' WHERE fullname = `"$fullname`""
+                $query = "Update $TableName SET comment = NULL, filesizeMB = NULL, fileexists = 'false', modified = `"$modified`", updatedby = 'Copy-mediaMoviesToProcess' WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
             }
         }

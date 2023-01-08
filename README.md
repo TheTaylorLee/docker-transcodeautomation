@@ -30,14 +30,14 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
+    image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.1.0
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Chicago/Illinois
-      - plexmoviefolders=/media/test/movies, /media/test/movies02
-      - plexshowfolders=/media/test/shows
+      - MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+      - MEDIASHOWFOLDERS=/media/test/shows
     volumes:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
@@ -46,7 +46,7 @@ services:
 ```
 - Docker Run Example
 ```
-docker run -v /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data -v /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding -v /media:/media --name Docker-TranscodeAutomation -e PUID=1000 -e PGID=1000 -e TZ=Chicago/Illinois -e FFToolsSource=/docker-transcodeautomation/transcoding/ -e FFToolsTarget=/docker-transcodeautomation/transcoding/new/ -e plexmoviefolders=/media/test/movies, /media/test/movies02 -e plexshowfolders=/media/test/shows ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
+docker run -v /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data -v /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding -v /media:/media --name Docker-TranscodeAutomation -e PUID=1000 -e PGID=1000 -e TZ=Chicago/Illinois -e MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02 -e MEDIASHOWFOLDERS=/media/test/shows ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
 ```
 
 ### Environment Variables
@@ -55,8 +55,8 @@ ENV Variable | Required | Description | Example
  PUID | No | User ID that had access to the volumes | PUID=1000
  GUID | No | Group ID that has access to the volumes | PGID=1000
  TZ | Yes | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
-PLEXMOVIEFOLDERS | yes | Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | PLEXMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-PLEXSHOWFOLDERS | yes | #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | PLEXSHOWFOLDERS=/media/test/shows
+MEDIAMOVIEFOLDERS | yes | Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | yes | #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 
 ### Volumes
 

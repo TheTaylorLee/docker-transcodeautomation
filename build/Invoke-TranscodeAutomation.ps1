@@ -34,14 +34,14 @@ if ($test3 -eq $false) {
 if ($host.version.major -eq '7') {
     #In order of processing
     #Copy Transcode files for processing Function
-    . $PSScriptRoot/private/Copy-PlexShowsToProcess.ps1
-    . $PSScriptRoot/private/Copy-PlexMoviesToProcess.ps1
+    . $PSScriptRoot/private/Copy-MEDIAShowsToProcess.ps1
+    . $PSScriptRoot/private/Copy-MEDIAMoviesToProcess.ps1
     #Media Handling Function
     . $PSScriptRoot/private/Invoke-MediaManagement.ps1
     #Transcode Function
     . $PSScriptRoot/private/Start-Transcode.ps1
-    #Move transcoded files back to plex directories
-    . $PSScriptRoot/private/Move-FileToPlexFolder.ps1
+    #Move transcoded files back to MEDIA directories
+    . $PSScriptRoot/private/Move-FileToMEDIAFolder.ps1
     #Perform daily backup of sqlite database
     . $PSScriptRoot/private/backup-mediadb.ps1
     #Perform daily update of media statistics
@@ -50,12 +50,12 @@ if ($host.version.major -eq '7') {
     #Scheduling and execution
     while ($true) {
         $backupfolder = "$PSScriptRoot/data/Backups"
-        [string[]]$plexmoviefolders = $env:PLEXMOVIEFOLDERS -split ', '
-        [string[]]$plexshowfolders = $env:PLEXSHOWFOLDERS -split ', '
+        [string[]]$MEDIAmoviefolders = $env:MOVIEFOLDERS -split ', '
+        [string[]]$MEDIAshowfolders = $env:SHOWFOLDERS -split ', '
 
         $dt = Get-Date
         Write-Output "Transcodeautomation while loop started at $dt"
-        Invoke-MediaManagement -hours 4 -plexshowfolders $plexshowfolders -plexmoviefolders $plexmoviefolders -DataSource $datasource
+        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
         Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
         Write-Output "Update-Statistics Start"

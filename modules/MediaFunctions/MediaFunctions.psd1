@@ -70,7 +70,7 @@ RequiredModules = @(@{ModuleName = 'PSSqlite'; ModuleVersion = '1.1.0'; })
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Get-Mediafunctions', 'invoke-mediamanagement', 'Get-NotProcessed', 
-               'Update-Processed', 'Move-FileToPlexFolder', 'Invoke-DBSetup', 
+               'Update-Processed', 'Move-FileToMediaFolder', 'Invoke-DBSetup', 
                'Update-Statistics', 'Get-MissingYear'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

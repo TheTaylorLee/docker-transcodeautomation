@@ -2,10 +2,10 @@
 .Description
 Transcode new media files and delete the larger size copy.
 
-.PARAMETER plexshowfolders
+.PARAMETER mediashowfolders
 String array of show folders
 
-.PARAMETER plexmoviefolders
+.PARAMETER mediamoviefolders
 String array of movie folders
 
 .PARAMETER hours
@@ -15,7 +15,7 @@ Minimum time since file downloaded to consider for processing
 Location of the sqlite database that is used for change tracking and reporting
 
 .Example
-mediapro -hours 48 -plexshowfolders "/R-User-Media/Kids Shows", "/R-User-Media/Shows", "/R-Others-Media/Shows", "P:/R-User-Media2/Shows" -plexmoviefolders "/R-User-Media/Kids Movies", "/R-User-Media/Movies", "/R-Others-Media/Movies" -datasource /docker-transcodeautomation/data/MediaDB.SQLite
+mediapro -hours 48 -mediashowfolders "/R-User-Media/Kids Shows", "/R-User-Media/Shows", "/R-Others-Media/Shows", "P:/R-User-Media2/Shows" -mediamoviefolders "/R-User-Media/Kids Movies", "/R-User-Media/Movies", "/R-Others-Media/Movies" -datasource /docker-transcodeautomation/data/MediaDB.SQLite
 
 .notes
 fftools environment variables must be set and the admintoolbox module imported
@@ -26,8 +26,8 @@ Function Invoke-MediaManagement {
     [CmdletBinding()]
     [Alias('mediapro')]
     Param (
-        [Parameter(Mandatory = $true)][string[]]$plexshowfolders,
-        [Parameter(Mandatory = $true)][string[]]$plexmoviefolders,
+        [Parameter(Mandatory = $true)][string[]]$mediashowfolders,
+        [Parameter(Mandatory = $true)][string[]]$mediamoviefolders,
         [Parameter(Mandatory = $true)][int]$hours,
         [Parameter(Mandatory = $true)][string]$DataSource
     )
@@ -38,7 +38,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Copy-PlexShowsToProcess -plexshowfolders $plexshowfolders -hours $hours -DataSource $DataSource
+        Copy-mediaShowsToProcess -mediashowfolders $mediashowfolders -hours $hours -DataSource $DataSource
 
         ##Process files
         Start-Transcode -crf 23 -mapall
@@ -84,8 +84,8 @@ Function Invoke-MediaManagement {
             }
         }
 
-        # Move transcoded files back into plex folders. This overwrites the original files
-        Move-FileToPlexFolder -plexshowfolders $plexshowfolders -plexmoviefolders $plexmoviefolders -DataSource $DataSource
+        # Move transcoded files back into media folders. This overwrites the original files
+        Move-FileToMediaFolder -mediashowfolders $mediashowfolders -mediamoviefolders $mediamoviefolders -DataSource $DataSource
     }
 
     else {
@@ -98,7 +98,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Copy-PlexMoviesToProcess -plexmoviefolders $plexmoviefolders  -hours $hours -DataSource $DataSource
+        Copy-mediaMoviesToProcess -mediamoviefolders $mediamoviefolders  -hours $hours -DataSource $DataSource
 
         ##Process files
         Start-Transcode -crf 21 -mapall
@@ -144,8 +144,8 @@ Function Invoke-MediaManagement {
             }
         }
 
-        # Move transcoded files back into plex folders. This overwrites the original files
-        Move-FileToPlexFolder -plexshowfolders $plexshowfolders -plexmoviefolders $plexmoviefolders -DataSource $DataSource
+        # Move transcoded files back into media folders. This overwrites the original files
+        Move-FileTomediaFolder -mediashowfolders $mediashowfolders -mediamoviefolders $mediamoviefolders -DataSource $DataSource
     }
 
     else {
