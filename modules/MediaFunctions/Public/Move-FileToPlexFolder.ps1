@@ -3,7 +3,7 @@
 Moves transcoded files into plex folders
 
 .Example
-Move-FileToPlexFolder -plexshowfolders "\R-cowboy-Media\Kids Shows", "\R-cowboy-Media\Shows", "\R-Others-Media\Shows", "P:\R-cowboy-Media2\Shows" -plexmoviefolders "\R-cowboy-Media\Kids Movies", "\R-cowboy-Media\Movies", "\R-Others-Media\Movies" -Datasource ($env:FFToolsTarget + "processed\MediaDB.SQLite")
+Move-FileToPlexFolder -plexshowfolders "\R-User-Media\Kids Shows", "\R-User-Media\Shows", "\R-Others-Media\Shows", "P:\R-User-Media2\Shows" -plexmoviefolders "\R-User-Media\Kids Movies", "\R-User-Media\Movies", "\R-Others-Media\Movies" -Datasource /docker-transcodeautomation/data/MediaDB.SQLite
 #>
 
 function Move-FileToPlexFolder {

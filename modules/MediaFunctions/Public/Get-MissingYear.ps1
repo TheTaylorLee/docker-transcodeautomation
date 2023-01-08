@@ -3,7 +3,7 @@
 Find Movies and Shows missing the year in their name
 
 .Example
-Get-MissingYear -plexfolders "\R-Taylor-Media\Kids Movies", "\R-Taylor-Media\Movies", "\R-Others-Media\Movies", "P:\R-Taylor-Media2\Shows", "\R-Taylor-Media\Kids Shows", "\R-Taylor-Media\Shows", "\R-Others-Media\Shows"
+Get-MissingYear -plexfolders "\R-User-Media\Kids Movies", "\R-User-Media\Movies", "\R-Others-Media\Movies", "P:\R-User-Media2\Shows", "\R-User-Media\Kids Shows", "\R-User-Media\Shows", "\R-Others-Media\Shows"
 #>
 
 function Get-MissingYear {

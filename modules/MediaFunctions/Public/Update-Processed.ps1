@@ -3,7 +3,7 @@
 Updates SQL database to mark transcoded files as not transcoded if an ffprobe of those files indicates such. Occasionally running this is useful for identifying replaced/upgraded files.
 
 .Example
-Update-Processed -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite")
+Update-Processed -DataSource /docker-transcodeautomation/data/MediaDB.SQLite
 
 .Notes
 - For all db updates mark updated by and modified time

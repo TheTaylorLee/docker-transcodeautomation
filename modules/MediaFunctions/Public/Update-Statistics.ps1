@@ -3,22 +3,22 @@
 Updates and pulls transcoded and media stats
 
 .Example
-Update-Statistics -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite") | Out-Gridview
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite | Out-Gridview
 
 Gets all table entries
 
 .Example
-Update-Statistics -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite") | Select-Object -last 2
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite | Select-Object -last 2
 
 Gets last 2 table entries
 
 .Example
-Update-Statistics -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite") -force | Select-Object -last 2
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite -force | Select-Object -last 2
 
 Gets last 2 table entries and forces an update of statistics table regardless of time last entry ocurred
 
 .Example
-Update-Statistics -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite") -livestats
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite -livestats
 
 Returns calculated results for this time only. Good for testing and returning adjusted changes without updating the database
 

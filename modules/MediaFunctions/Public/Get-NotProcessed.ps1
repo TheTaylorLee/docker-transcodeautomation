@@ -3,7 +3,7 @@
 Get a list of files not yet transcoded.
 
 .Example
-Get-NotProcessed -Plexmoviefolders "\R-cowboy-Media\Kids Movies", "\R-cowboy-Media\Movies", "\R-Others-Media\Movies" -plexshowfolders "P:\R-cowboy-Media2\Shows", "\R-cowboy-Media\Kids Shows", "\R-cowboy-Media\Shows", "\R-Others-Media\Shows" -DataSource ($env:FFToolsTarget + "processed\MediaDB.SQLite")
+Get-NotProcessed -Plexmoviefolders "\R-User-Media\Kids Movies", "\R-User-Media\Movies", "\R-Others-Media\Movies" -plexshowfolders "P:\R-User-Media2\Shows", "\R-User-Media\Kids Shows", "\R-User-Media\Shows", "\R-Others-Media\Shows" -DataSource /docker-transcodeautomation/data/MediaDB.SQLite
 #>
 
 Function Get-NotProcessed {

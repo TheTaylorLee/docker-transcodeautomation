@@ -15,7 +15,7 @@ Minimum time since file downloaded to consider for processing
 Location of the sqlite database that is used for change tracking and reporting
 
 .Example
-mediapro -hours 48 -plexshowfolders "/R-cowboy-Media/Kids Shows", "/R-cowboy-Media/Shows", "/R-Others-Media/Shows", "P:/R-cowboy-Media2/Shows" -plexmoviefolders "/R-cowboy-Media/Kids Movies", "/R-cowboy-Media/Movies", "/R-Others-Media/Movies" -datasource /docker-transcodeautomation/data/MediaDB.SQLite
+mediapro -hours 48 -plexshowfolders "/R-User-Media/Kids Shows", "/R-User-Media/Shows", "/R-Others-Media/Shows", "P:/R-User-Media2/Shows" -plexmoviefolders "/R-User-Media/Kids Movies", "/R-User-Media/Movies", "/R-Others-Media/Movies" -datasource /docker-transcodeautomation/data/MediaDB.SQLite
 
 .notes
 fftools environment variables must be set and the admintoolbox module imported

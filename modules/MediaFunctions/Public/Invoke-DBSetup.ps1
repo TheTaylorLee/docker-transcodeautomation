@@ -3,7 +3,7 @@
 Creates a database that will be used for by media management functions and transcode automation.
 
 .Example
-Invoke-DBSetup -Datasource ($env:FFToolsTarget + "processed\MediaDB.SQLite")
+Invoke-DBSetup -Datasource /docker-transcodeautomation/data/MediaDB.SQLite
 #>
 
 function Invoke-DBSetup {
