@@ -104,20 +104,11 @@ growth90daysMB | this shows how much storage usage has increased in the past x d
 growth180daysMB | this shows how much storage usage has increased in the past x days for existing media only
 growth365daysMB | this shows how much storage usage has increased in the past x days for existing media only
 
-## Troubleshooting
-- Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
-- If the logs indicate that there are files leftover in the transcoding directory you must remove them so not extra files are in that directory. This will allow processing to resume.
-- If a transcoded file is corrupted, you can recover an original version of the file for 14 days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
-- The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
-- You might run into a scenario where you replace an already transcoded file and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section of the [README](#using-included-media-functions).
-- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
-
-## Using Grafana
+### Example Using Grafana
 Grafana can be leveraged to build a statistics dashboard for transcoded media.
 
-
-### Steps Required
-- Add Grafana to your docker-compose file. Look at container readme for an idea on the various environment variable.
+#### Steps Required
+- Add Grafana to your docker-compose file.
 ```yml
 version: "3.8"
 services:
@@ -155,3 +146,11 @@ services:
 - Go to Dashboards > Import, [paste the json from here](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/grafana-dashboard.json), and then click import
 - You know have a dashboard for displaying statistics. If you haven't been running docker-transcodeautomation previously, no statistics will exist yet for the dashboard to display.
 ![Grafana Dashboard](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/dashboard-grafana.png)
+
+## Troubleshooting
+- Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
+- If the logs indicate that there are files leftover in the transcoding directory you must remove them so not extra files are in that directory. This will allow processing to resume.
+- If a transcoded file is corrupted, you can recover an original version of the file for 14 days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
+- The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
+- You might run into a scenario where you replace an already transcoded file and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section of the [README](#using-included-media-functions).
+- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
