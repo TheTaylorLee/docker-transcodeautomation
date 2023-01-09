@@ -4,15 +4,13 @@ docker login -u ttlee
 cd ~
 git clone https://github.com/TheTaylorLee/docker-transcodeautomation
 cd docker-transcodeautomation
-build01=ubuntu22.04
 version=v1.1.1
-DOCKER_BUILDKIT=1 docker build -t ttlee/docker-transcodeautomation:$build01-$version .
+DOCKER_BUILDKIT=1 docker build -f Dockerfile.ubuntu22.04-lts -t ttlee/docker-transcodeautomation:ubuntu22.04-lts-$version .
+DOCKER_BUILDKIT=1 docker build -f Dockerfile.alpine3.14-lts -t ttlee/docker-transcodeautomation:alpine3.14-lts-$version .
 ```
 
 - Pushing the images
 ```sh
-docker login -u ttlee
-build01=ubuntu22.04
-version=v1.1.1
-docker push ttlee/docker-transcodeautomation:$build01-$version
+docker push ttlee/docker-transcodeautomation:ubuntu22.04-lts-$version
+docker push ttlee/docker-transcodeautomation:alpine3.14-lts-$version
 ```

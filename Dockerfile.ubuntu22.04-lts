@@ -107,5 +107,5 @@ COPY build /docker-transcodeautomation
 COPY modules/MediaFunctions /root/.local/share/powershell/Modules/MediaFunctions
 
 # Use PowerShell as the default shell
-# Use array to avoid Docker prepending /bin/sh -c
+# Use array to avoid Docker prepending /bin/sh -c (Modified entry)
 CMD [ "pwsh-preview", "-f", "/docker-transcodeautomation/Invoke-TranscodeAutomation.ps1" ]
