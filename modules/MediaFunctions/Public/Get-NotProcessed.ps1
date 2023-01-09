@@ -38,7 +38,7 @@ Function Get-NotProcessed {
                 $timesincedownload = $now - $createdtime
                 [pscustomobject]@{
                     Name            = $file.name
-                    AgeHoursMinutes = [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
+                    FileAgeDaysHoursMinutes = [string]$timesincedownload.Days + ":" + [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
                     Path            = $file.directory
                 }
             }
@@ -71,7 +71,7 @@ Function Get-NotProcessed {
                 $timesincedownload = $now - $createdtime
                 [pscustomobject]@{
                     Name            = $file.name
-                    AgeHoursMinutes = [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
+                    FileAgeDaysHoursMinutes = [string]$timesincedownload.Days + ":" + [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
                     Path            = $file.directory
                 }
             }
