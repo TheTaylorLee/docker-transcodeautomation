@@ -111,3 +111,45 @@ growth365daysMB | this shows how much storage usage has increased in the past x 
 - The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
 - You might run into a scenario where you replace an already transcoded file and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section of the [README](#using-included-media-functions).
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
+
+## Using Grafana
+Grafana can be leveraged to build a statistics dashboard for transcoded media.
+
+
+### Steps Required
+- Add Grafana to your docker-compose file. Look at container readme for an idea on the various environment variable.
+```yml
+version: "3.8"
+services:
+  Docker-TranscodeAutomation:
+    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v1.1.1
+    container_name: Docker-TranscodeAutomation
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Chicago/Illinois
+      - MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+      - MEDIASHOWFOLDERS=/media/test/shows
+    volumes:
+      - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+      - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
+      - /media:/media
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    privileged: true
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Chicago/Illinois
+    ports:
+      - "3000:3000"
+    volumes:
+      - /home/user/docker/appdata/grafana-data:/var/lib/grafana
+      - /home/user/docker/appdata/docker-transcodeautomation/data/MediaDB.SQLite:/mydb/MediaDB.SQLite
+```
+- Navigate to Grafana http://localhost:3000
+- In Configuration > Data Sources > Plugins, install the SQLite plugin
+- In Datasources add a new sqlite datasource with the path /mydb/MediaDB.SQLite (Leave the other options untouched)
+- Go to Dashboards > Import and paste the json from here
