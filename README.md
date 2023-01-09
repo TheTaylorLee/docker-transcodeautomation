@@ -56,7 +56,7 @@ ENV Variable | Required | Description | Example
  GUID | No | Group ID that has access to the volumes | PGID=1000
  TZ | Yes | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
 MEDIAMOVIEFOLDERS | yes | Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | yes | #Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+MEDIASHOWFOLDERS | yes | Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 
 ### Volumes
 
