@@ -7,7 +7,8 @@ An automated media transcoding solution. By using this container you assume all 
 
 - It is recommended to first transcode your existing media prior to using this container. Otherwise, you will risk the workflow of this automation using more disk space than would be desired. That is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14-day period.
 - Media first transcoded will need to contain a metadata comment of transcoded to avoid this process picking up the file for transcoding.
-- For this reason, I suggest using a script like this [script](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
+- For this reason, I suggest using a [script like this](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
+- When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 2 hours before looking for new media to transcode.
 - Any non-media file that is not in these excluded extensions should not be saved in your media directories. ".txt", ".srt", ".md", ".jpg", ".jpeg", ".bat", ".png", ".idx", ".sub", ".SQLite"
 
