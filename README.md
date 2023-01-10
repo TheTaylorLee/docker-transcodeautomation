@@ -167,7 +167,7 @@ services:
 ## Troubleshooting
 - Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
 - If the logs indicate that there are files leftover in the transcoding directory you must remove them so not extra files are in that directory. This will allow processing to resume.
-- If a transcoded file is corrupted, you can recover an original version of the file for 14 days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
+- If a transcoded file is corrupted, you can recover an original version of the file for x days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
 - The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
-- You might run into a scenario where you replace an already transcoded file and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section of the [README](#using-included-media-functions).
+- You might run into a scenario where you replace an already transcoded file, and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section "Using Included Media functions"
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
