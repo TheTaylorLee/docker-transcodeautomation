@@ -2,15 +2,16 @@
 An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
 <div>
-<p align="Left">
-	<a href="https://www.buymeacoffee.com/TheTaylorLee">
-		<img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
-	</a>
-
-  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
-    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker">
-  </a>
-</p>
+  <p align="Left">
+	  <a href="https://www.buymeacoffee.com/TheTaylorLee">
+	    <img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
+	  </a>
+	  <br />
+	  <br />
+	  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
+	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker">
+	  </a>
+  </p>
 </div>
 
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
