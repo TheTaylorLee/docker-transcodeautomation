@@ -32,30 +32,28 @@ if ($test3 -eq $false) {
 
 # Import transcode automation scripts and continue with transcode automation
 if ($host.version.major -eq '7') {
-    #In order of processing
-    #Copy Transcode files for processing Function
-    . $PSScriptRoot/private/Copy-MEDIAShowsToProcess.ps1
-    . $PSScriptRoot/private/Copy-MEDIAMoviesToProcess.ps1
-    #Media Handling Function
-    . $PSScriptRoot/private/Invoke-MediaManagement.ps1
-    #Transcode Function
-    . $PSScriptRoot/private/Start-Transcode.ps1
-    #Move transcoded files back to MEDIA directories
-    . $PSScriptRoot/private/Move-FileToMediaFolder.ps1
-    #Perform daily backup of sqlite database
-    . $PSScriptRoot/private/backup-mediadb.ps1
-    #Perform daily update of media statistics
-    . $PSScriptRoot/private/Update-Statistics.ps1
+    ##Import Functions
+    $FunctionPathPrivate = $PSScriptRoot + "\private\"
+    $scripts = (Get-ChildItem $FunctionPathPrivate).fullname
+    foreach ($script in $scripts) {
+        . $script
+    }
 
     #Scheduling and execution
     while ($true) {
+        #set variables
         $backupfolder = "$PSScriptRoot/data/Backups"
         [string[]]$MEDIAmoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
         [string[]]$MEDIAshowfolders = $env:MEDIASHOWFOLDERS -split ', '
+        [int]$showscrf = $env:SHOWSCRF
+        [int]$moviescrf = $env:MOVIESCRF
+        [string]$BackupProcessed = $env:BACKUPPROCESSED
+        [int]$BackupRetention = $env:BACKUPRETENTION
 
+        #begin processing
         $dt = Get-Date
         Write-Output "Transcodeautomation while loop started at $dt"
-        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource -showscrf $showscrf -moviescrf $moviescrf -BackupProcessed $BackupProcessed -BackupRetention $BackupRetention
         Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
         Write-Output "Update-Statistics Start"
@@ -65,6 +63,6 @@ if ($host.version.major -eq '7') {
         $timenow = Get-Date
         $timeplus2hours = (Get-Date).AddHours(2)
         Write-Output "Start Sleep at $timenow and resuming at $timeplus2hours"
-        Start-Sleep -Seconds 7200
+        Start-Sleep -Seconds 14400
     }
 }

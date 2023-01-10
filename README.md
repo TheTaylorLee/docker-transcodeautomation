@@ -1,44 +1,53 @@
 # Docker-TranscodeAutomation
 An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
+<div>
 <p align="Left">
-<a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation"><img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker"></a>
-</p>
+	<a href="https://www.buymeacoffee.com/TheTaylorLee">
+		<img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
+	</a>
 
-- It is recommended to first transcode your existing media prior to using this container. Otherwise, you will risk the workflow of this automation using more disk space than would be desired. That is because the automation will result in up to 2 copies of a file and a transcoded copy while processing the media directories. When complete there will be only the transcoded copy of the media and a backup copy of the original file that is removed after a 14-day period.
-- Media first transcoded will need to contain a metadata comment of transcoded to avoid this process picking up the file for transcoding.
-- For this reason, I suggest using a [script like this](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/scripts/invoke-transcoderecursive.ps1)
+  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
+    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker">
+  </a>
+</p>
+</div>
+
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
-- Once all media is transcoded the process sleeps for 2 hours before looking for new media to transcode.
+- Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to limit reduce disk operations.
 - Any non-media file that is not in these excluded extensions should not be saved in your media directories. ".txt", ".srt", ".md", ".jpg", ".jpeg", ".bat", ".png", ".idx", ".sub", ".SQLite"
 
 ## Parameters applied to transcoded media
 
-- All transcoded media will have the following parameters applied. With differences in crf quality based on Shows vs Movies.
+- All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
 ```
-ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <21 or 23> -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
+ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
 ```
 - All video, audio, and subtitles are mapped into the transcoded file
 - Title and Description metadata is removed so that data doesn't affect the media server of choice properly displaying the correct metadata
 - The comment metadata is set to "transcoded". This ensures even if the mediadb is lost or filename changed, the file will not be transcoded again.
-- Media will be transcoded using the x265 media format to an mkv container
+- Media will be transcoded using the x265 codec.
 - 6 channel aac audio is set
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 
 ## Deploying the image
 - Docker Compose Example
-```
+```yml
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:ubuntu22.04-v1.1.0
+    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v2.0.0
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Chicago/Illinois
+      - BACKUPPROCESSED=true
+      - BACKUPRETENTION=14
       - MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
       - MEDIASHOWFOLDERS=/media/test/shows
+      - MOVIESCRF=21
+      - SHOWSCRF=23
     volumes:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
@@ -51,13 +60,19 @@ docker run -v /home/user/docker/appdata/docker-transcodeautomation/data:/docker-
 ```
 
 ### Environment Variables
+- If setting BACKUPPROCESSED to $true be careful. This can easily lead to filling up drive free space dependent on media processed during the BACKUPRETENTION period.
+
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
  PUID | No | User ID that had access to the volumes | PUID=1000
  GUID | No | Group ID that has access to the volumes | PGID=1000
  TZ | Yes | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
+BACKUPPROCESSED | Yes | If set this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
+BACKUPRETENTION | Yes | BACKUPRETENTION=14
 MEDIAMOVIEFOLDERS | yes | Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
 MEDIASHOWFOLDERS | yes | Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+MOVIESCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
+SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
 
 ### Volumes
 
@@ -68,7 +83,7 @@ Transcoding | Transcoding of files occurs here. | /home/user/docker/appdata/dock
 Media | Top volume containing media files | /media:/media
 
 ## Using included media functions
-- This image comes with various PowerShell functions for managing the transcode database.
+- This image comes with various optional PowerShell functions for managing the transcode database.
 - Enter docker exec for the container and use these commands to get more commands.
 ```powershell
 pwsh
@@ -114,14 +129,18 @@ Grafana can be leveraged to build a statistics dashboard for transcoded media.
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v1.1.1
+    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v2.0.0
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Chicago/Illinois
+      - BACKUPPROCESSED=true
+      - BACKUPRETENTION=14
       - MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
       - MEDIASHOWFOLDERS=/media/test/shows
+      - MOVIESCRF=21
+      - SHOWSCRF=23
     volumes:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
