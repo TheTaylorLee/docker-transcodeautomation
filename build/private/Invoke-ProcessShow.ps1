@@ -7,6 +7,9 @@ function invoke-processshow {
         [Parameter(Mandatory = $true)][string]$DataSource
     )
 
+    #Used in debug logs
+    Write-Output "Invoke-ProcessShow Start"
+
     ##Process files
     Start-Transcode -crf $env:SHOWSCRF -mapall
 
@@ -53,4 +56,7 @@ function invoke-processshow {
 
     # Move transcoded files back into MEDIA folders. This overwrites the original files
     Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
+
+    #Used in debug logs
+    Write-Output "Invoke-ProcessShow End"
 }

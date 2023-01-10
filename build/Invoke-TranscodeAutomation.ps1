@@ -52,9 +52,7 @@ if ($host.version.major -eq '7') {
         Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
         Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
-        Write-Output "Update-Statistics Start"
         Update-Statistics -DataSource $datasource | Select-Object -Last 2
-        Write-Output "Update-Statistics End"
 
         $timenow = Get-Date
         $timeplus2hours = (Get-Date).AddHours(2)

@@ -66,7 +66,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                 modified   = Get-Date
                                 filesizeMB = $filesizeMB
                                 fileexists = "true"
-                                updatedby  = "Copy-MEDIAMoviesToProcess"
+                                updatedby  = "Invoke-MEDIAMoviesToProcess"
                             }
                         }
                         # else comment tag of media file is not transcoded copy file for processing and update database
@@ -82,7 +82,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                 modified   = Get-Date
                                 filesizeMB = $filesizeMB
                                 fileexists = "true"
-                                updatedby  = "Copy-MEDIAMoviesToProcess"
+                                updatedby  = "Invoke-MEDIAMoviesToProcess"
                             }
                             invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                         }
@@ -92,14 +92,14 @@ Function Invoke-MEDIAMoviesToProcess {
                         # If ffprobe indicates comment tag of media file is transcoded and file directory has changed, update database only
                         if ($comment -eq 'transcoded') {
                             $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                            $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`" and directory != `"$directory`""
+                            $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`" and directory != `"$directory`""
                             Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                         }
                         # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Will update if file is moved or not moved to new directory. Useful for when file has been replace by another download.
                         else {
                             Copy-Item $fullname $env:FFToolsSource
                             $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                            $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
+                            $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
                             Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                             invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                         }

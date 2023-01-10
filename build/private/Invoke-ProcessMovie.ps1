@@ -7,6 +7,9 @@ function invoke-processmovie {
         [Parameter(Mandatory = $true)][string]$DataSource
     )
 
+    #Used in debug logs
+    Write-Output "Invoke-ProcessMovie Start"
+
     ##Process files
     Start-Transcode -crf $env:MOVIESCRF -mapall
 
@@ -53,4 +56,7 @@ function invoke-processmovie {
 
     # Move transcoded files back into MEDIA folders. This overwrites the original files
     Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
+
+    #Used in debug logs
+    Write-Output "Invoke-ProcessMovie End"
 }
