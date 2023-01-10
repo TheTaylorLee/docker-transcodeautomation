@@ -11,6 +11,9 @@ An automated media transcoding solution. This solution is to be almost completel
 	  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
 	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker">
 	  </a>
+    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
+	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
+	  </a>
   </p>
 </div>
 
