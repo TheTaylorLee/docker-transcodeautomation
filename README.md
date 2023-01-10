@@ -1,5 +1,5 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution. By using this container you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
+An automated media transcoding solution. This solution is to be almost completely automated, retain statistics, and leave zero chance of a media file being transcoded twice. By using this container, you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
 <div>
   <p align="Left">
@@ -55,23 +55,19 @@ services:
       - /media:/media
     restart: unless-stopped
 ```
-- Docker Run Example
-```
-docker run -v /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data -v /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding -v /media:/media --name Docker-TranscodeAutomation -e PUID=1000 -e PGID=1000 -e TZ=Chicago/Illinois -e MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02 -e MEDIASHOWFOLDERS=/media/test/shows ttlee/docker-transcodeautomation:ubuntu22.04-v1.0
-```
 
 ### Environment Variables
-- If setting BACKUPPROCESSED to $true be careful. This can easily lead to filling up drive free space dependent on media processed during the BACKUPRETENTION period.
+- If setting BACKUPPROCESSED to true be careful. This can easily lead to filling up drive free space dependent on media processed during the BACKUPRETENTION period.
 
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
- PUID | No | User ID that had access to the volumes | PUID=1000
+ PUID | No | User ID that has access to the volumes | PUID=1000
  GUID | No | Group ID that has access to the volumes | PGID=1000
  TZ | Yes | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
-BACKUPPROCESSED | Yes | If set this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
-BACKUPRETENTION | Yes | BACKUPRETENTION=14
-MEDIAMOVIEFOLDERS | yes | Top level movie directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | yes | Top level show directories. Multiple directories must be seperate by ", " and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+BACKUPPROCESSED | Yes | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
+BACKUPRETENTION | Yes | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
+MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must be seperate by ", " (colon and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | Yes | Top level show directories. Multiple directories must be seperate by ", "  (colon and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 MOVIESCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
 SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
 
@@ -80,7 +76,7 @@ SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.26
 Docker Volume | Purpose | Example
 ---------|----------|---------
 Data | Logs, Database, and Database backups are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
-Transcoding | Transcoding of files occurs here. | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
+Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
 Media | Top volume containing media files | /media:/media
 
 ## Using included media functions
