@@ -45,15 +45,11 @@ if ($host.version.major -eq '7') {
         $backupfolder = "$PSScriptRoot/data/Backups"
         [string[]]$MEDIAmoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
         [string[]]$MEDIAshowfolders = $env:MEDIASHOWFOLDERS -split ', '
-        [int]$showscrf = $env:SHOWSCRF
-        [int]$moviescrf = $env:MOVIESCRF
-        [string]$BackupProcessed = $env:BACKUPPROCESSED
-        [int]$BackupRetention = $env:BACKUPRETENTION
 
         #begin processing
         $dt = Get-Date
         Write-Output "Transcodeautomation while loop started at $dt"
-        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource -showscrf $showscrf -moviescrf $moviescrf -BackupProcessed $BackupProcessed -BackupRetention $BackupRetention
+        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
         Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
         Write-Output "Update-Statistics Start"

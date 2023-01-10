@@ -6,11 +6,7 @@ Function Invoke-MediaManagement {
         [Parameter(Mandatory = $true)][string[]]$MEDIAshowfolders,
         [Parameter(Mandatory = $true)][string[]]$MEDIAmoviefolders,
         [Parameter(Mandatory = $true)][int]$hours,
-        [Parameter(Mandatory = $true)][string]$DataSource,
-        [Parameter(Mandatory = $true)][int]$showscrf,
-        [Parameter(Mandatory = $true)][int]$moviescrf,
-        [Parameter(Mandatory = $true)][string]$BackupProcessed,
-        [Parameter(Mandatory = $true)][int]$BackupRetention
+        [Parameter(Mandatory = $true)][string]$DataSource
     )
 
     #Used in debug logs
@@ -22,7 +18,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource -showscrf $showscrf -BackupProcessed $BackupProcessed
+        Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource
     }
 
     else {
@@ -35,7 +31,7 @@ Function Invoke-MediaManagement {
     $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
-        Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource -moviescrf $moviescrf -BackupProcessed $BackupProcessed -BackupRetention
+        Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
     }
 
     else {
@@ -44,7 +40,7 @@ Function Invoke-MediaManagement {
 
     #Remove recover files older than 14 days.
     Get-ChildItem -Path $env:FFToolsTarget/recover |
-    Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-$BackupRetention) } |
+    Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-$env:BACKUPRETENTION) } |
     Remove-Item
 
     #Used in debug logs

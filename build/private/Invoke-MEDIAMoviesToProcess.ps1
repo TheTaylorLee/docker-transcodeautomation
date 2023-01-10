@@ -5,9 +5,7 @@ Function Invoke-MEDIAMoviesToProcess {
         [Parameter(Mandatory = $true)][string[]]$MEDIAshowfolders,
         [Parameter(Mandatory = $true)][string[]]$MEDIAmoviefolders,
         [Parameter(Mandatory = $true)][int]$hours,
-        [Parameter(Mandatory = $true)][string]$DataSource,
-        [Parameter(Mandatory = $true)][int]$moviescrf,
-        [Parameter(Mandatory = $true)][string]$BackupProcessed
+        [Parameter(Mandatory = $true)][string]$DataSource
     )
 
     #Used in debug logs
@@ -86,7 +84,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                 fileexists = "true"
                                 updatedby  = "Copy-MEDIAMoviesToProcess"
                             }
-                            invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource -showscrf $moviescrf -BackupProcessed $BackupProcessed
+                            invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                         }
                     }
                     # else database entry exists, update existing entry. This prevents duplicate table entries and supports files moved to new directories
@@ -103,7 +101,7 @@ Function Invoke-MEDIAMoviesToProcess {
                             $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                             $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
                             Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
-                            invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource -showscrf $moviescrf -BackupProcessed $BackupProcessed
+                            invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                         }
                     }
                 }
