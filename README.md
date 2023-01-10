@@ -37,7 +37,7 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v2.0.0
+    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
@@ -126,7 +126,7 @@ Grafana can be leveraged to build a statistics dashboard for transcoded media.
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts-v2.0.0
+    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
