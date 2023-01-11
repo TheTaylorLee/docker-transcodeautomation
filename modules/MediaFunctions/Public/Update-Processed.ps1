@@ -28,7 +28,7 @@ function Update-Processed {
     $sqlmovies = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName"
     foreach ($sqlmovie in $sqlmovies) {
         $fullname = $sqlmovie.fullname
-        if (Test-Path $fullname) {
+        if (Test-Path "$fullname") {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
@@ -50,7 +50,7 @@ function Update-Processed {
     $sqlshows = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName"
     foreach ($sqlshow in $sqlshows) {
         $fullname = $sqlshow.fullname
-        if (Test-Path $fullname) {
+        if (Test-Path "$fullname") {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment

@@ -13,17 +13,17 @@ function Move-FileToMEDIAFolder {
     #Generate list of existing files for moving new files in their place
     ##Delete old comparison file and make a new one
     [psobject]$MEDIAmoviefiles = foreach ($MEDIAmoviefolder in $MEDIAmoviefolders) {
-        Get-ChildItem $MEDIAmoviefolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite" |
+        Get-ChildItem $MEDIAmoviefolder -r -File -Include "*.mkv", "*.mp4" |
         Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
     }
     [psobject]$MEDIAshowfiles = foreach ($MEDIAshowfolder in $MEDIAshowfolders) {
-        Get-ChildItem $MEDIAshowfolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite" |
+        Get-ChildItem $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4" |
         Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
     }
 
     #Get a list of files in process folder
     $processeddir = "$env:FFToolsTarget" + "processed"
-    [psobject]$filestomove = Get-ChildItem $processeddir -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.csv", "*.xlsx", "*.SQLite" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
+    [psobject]$filestomove = Get-ChildItem $processeddir -r -File -Include "*.mkv", "*.mp4" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
 
     #Move processed movie files
     try {

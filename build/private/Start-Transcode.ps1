@@ -20,23 +20,12 @@ function Start-Transcode {
                 ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
 
-            $ext = "*.avi"
-            $array = @(Get-ChildItem -Filter $ext)
-            Foreach ($video in $array.Name) {
-                ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
-            }
-
             $ext = "*.mp4"
             $array = @(Get-ChildItem -Filter $ext)
             Foreach ($video in $array.Name) {
                 ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
 
-            $ext = "*.mpg"
-            $array = @(Get-ChildItem -Filter $ext)
-            Foreach ($video in $array.Name) {
-                ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
-            }
         }
 
         else {
@@ -46,23 +35,12 @@ function Start-Transcode {
                 ffmpeg -i $video -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
 
-            $ext = "*.avi"
-            $array = @(Get-ChildItem -Filter $ext)
-            Foreach ($video in $array.Name) {
-                ffmpeg -i $video -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
-            }
-
             $ext = "*.mp4"
             $array = @(Get-ChildItem -Filter $ext)
             Foreach ($video in $array.Name) {
                 ffmpeg -i $video -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
 
-            $ext = "*.mpg"
-            $array = @(Get-ChildItem -Filter $ext)
-            Foreach ($video in $array.Name) {
-                ffmpeg -i $video -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -ac 6 -c:a aac -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
-            }
         }
     }
 

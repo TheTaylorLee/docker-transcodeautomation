@@ -19,7 +19,7 @@ An automated media transcoding solution. This solution is to be almost completel
 
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to limit reduce disk operations.
-- Any non-media file that is not in these excluded extensions should not be saved in your media directories. ".txt", ".srt", ".md", ".jpg", ".jpeg", ".bat", ".png", ".idx", ".sub", ".SQLite"
+- Will only process and transcode media in *.mp4 & *.mkv containers. All other files will be excluded.
 
 ## Parameters applied to transcoded media
 

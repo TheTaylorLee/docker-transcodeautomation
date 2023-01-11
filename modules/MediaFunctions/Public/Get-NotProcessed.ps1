@@ -20,7 +20,7 @@ Function Get-NotProcessed {
         Set-Location $mediamoviefolder
         $TableName = 'Movies'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem $mediamoviefolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite").fullname
+        $files = (Get-ChildItem $mediamoviefolder -r -File -Include "*.mkv", "*.mp4").fullname
         $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$mediamoviefolder%`""
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
@@ -37,9 +37,9 @@ Function Get-NotProcessed {
                 $now = Get-Date
                 $timesincedownload = $now - $createdtime
                 [pscustomobject]@{
-                    Name            = $file.name
+                    Name                    = $file.name
                     FileAgeDaysHoursMinutes = [string]$timesincedownload.Days + ":" + [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
-                    Path            = $file.directory
+                    Path                    = $file.directory
                 }
             }
             catch {
@@ -53,7 +53,7 @@ Function Get-NotProcessed {
         Set-Location $mediashowfolder
         $TableName = 'Shows'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem $mediashowfolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite").fullname
+        $files = (Get-ChildItem $mediashowfolder -r -File -Include "*.mkv", "*.mp4").fullname
         $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select fullname FROM $TableName WHERE comment = 'transcoded' and directory like `"%$mediashowfolder%`" and fileexists = 'true'"
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
@@ -70,9 +70,9 @@ Function Get-NotProcessed {
                 $now = Get-Date
                 $timesincedownload = $now - $createdtime
                 [pscustomobject]@{
-                    Name            = $file.name
+                    Name                    = $file.name
                     FileAgeDaysHoursMinutes = [string]$timesincedownload.Days + ":" + [string]$timesincedownload.hours + ":" + [string]$timesincedownload.minutes
-                    Path            = $file.directory
+                    Path                    = $file.directory
                 }
             }
             catch {

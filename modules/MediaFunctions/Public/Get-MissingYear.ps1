@@ -14,7 +14,7 @@ function Get-MissingYear {
     )
 
     foreach ($mediafolder in $mediafolders) {
-        Get-ChildItem $mediafolder -r -Exclude *.txt, *.md, !nocollection, !trailers, *.png, "*The Hobbit The Ultimate Edit*" | Select-Object name, fullname | Where-Object { $_.name -notlike "*(*)*" }
+        Get-ChildItem $mediafolder -r -Include "*.mkv", "*.mp4", !nocollection, !trailers, *.png, "*The Hobbit The Ultimate Edit*" | Select-Object name, fullname | Where-Object { $_.name -notlike "*(*)*" }
     }
 
 }

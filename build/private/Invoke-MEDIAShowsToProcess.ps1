@@ -19,7 +19,7 @@ Function Invoke-MEDIAShowsToProcess {
         Set-Location $MEDIAshowfolder
 
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem -ErrorAction Inquire $MEDIAshowfolder -r -File -Exclude "*.txt", "*.srt", "*.md", "*.jpg", "*.jpeg", "*.bat", "*.png", "*.idx", "*.sub", "*.SQLite").fullname
+        $files = (Get-ChildItem -ErrorAction Inquire $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4").fullname
         $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$MEDIAshowfolder%`""
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
