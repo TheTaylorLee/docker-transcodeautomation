@@ -3,11 +3,6 @@ An automated media transcoding solution with biased transcoding options. This so
 
 <div>
   <p align="Left">
-	  <a href="https://www.buymeacoffee.com/TheTaylorLee">
-	    <img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
-	  </a>
-	  <br />
-	  <br />
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation">
       <img src="https://img.shields.io/github/stars/thetaylorlee?label=Github&logo=github">
     </a>
@@ -16,6 +11,11 @@ An automated media transcoding solution with biased transcoding options. This so
 	  </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
 	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
+	  </a>
+  	<br />
+	  <br />
+     <a href="https://www.buymeacoffee.com/TheTaylorLee">
+	    <img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
 	  </a>
   </p>
 </div>
