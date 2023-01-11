@@ -1,5 +1,5 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution with biased transcoding options. This solution is to be almost completely automated, retain statistics, and leave zero chance of a media file being transcoded twice. By using this container, you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
+An automated media transcoding solution. This solution is to be almost completely automated and retains statistics. By using this container, you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
 
 <div>
   <p align="Left">
@@ -20,19 +20,32 @@ An automated media transcoding solution with biased transcoding options. This so
   </p>
 </div>
 
+## Transcoding Process and Options
+- This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
+- The comment metadata is set to "transcoded". This ensures even if the database is lost or filename changed, the file will not be transcoded again.
+- If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
 - This process will only process and transcode media in *.mp4 & *.mkv containers. All other files will be excluded.
+- I highly recommend testing with some test media first.
 
-## Parameters applied to transcoded media
-
+### Option 1
 - All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
 - All video, audio, and subtitles are mapped into the transcoded file.
-- Title and Description metadata is removed so that data doesn't affect and leveraged media server will properly display the correct metadata
-- The comment metadata is set to "transcoded". This ensures even if the database is lost or filename changed, the file will not be transcoded again.
-- If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
+- Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
+- You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
 ```
 ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -ac 8 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
+```
+
+### Option 2
+- Option 2 allows for customizing the majority of the applied ffmpeg parameters.
+- You can apply the custom options by saving the below command to a file in the mapped data volume. /docker-transcodeautomation/data/customoptions.ps1
+- You may replace the {Custom Options Here} text with any custom Options you want to use. Be sure to remove the brackets.
+- All other options must be left alone or the transcode automation process will not work as intended.
+- Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -ac 8 -c:a aac -c:s copy -preset veryfast
+```powershell
+ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
@@ -62,6 +75,7 @@ services:
 
 ### Environment Variables
 - If setting BACKUPPROCESSED to true be careful. This can easily lead to filling up drive free space dependent on media processed during the BACKUPRETENTION period.
+- If you use option 2 you might not leverage the MOVIESCRF and SHOWSCRF variables. Regardless you need to set those environment variables so that sourced functions will run will have certain requirements met. In that scenario the provided integer doesn't matter.
 
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
@@ -189,3 +203,4 @@ services:
 - 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
 - 2.3.0 Update transcode selections to not downmix 7.1 audio
+- 2.4.0 Add the ability to specify custom ffmpeg options

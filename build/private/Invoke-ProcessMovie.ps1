@@ -11,7 +11,7 @@ function invoke-processmovie {
     Write-Output "Invoke-ProcessMovie Start"
 
     ##Process files
-    Start-Transcode -crf $env:MOVIESCRF -mapall
+    Start-Transcode -crf $env:MOVIESCRF
 
     ##Compare processed files to the original files.
     ##Source files will be moved into a recover folder in case transcode failed.
