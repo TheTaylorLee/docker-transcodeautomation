@@ -66,7 +66,7 @@ ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
  PUID | No | User ID that has access to the volumes | PUID=1000
  GUID | No | Group ID that has access to the volumes | PGID=1000
- TZ | Yes | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
+ TZ | No | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
 BACKUPPROCESSED | Yes | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
 BACKUPRETENTION | Yes | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
 MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must be seperate by ", " (colon and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
