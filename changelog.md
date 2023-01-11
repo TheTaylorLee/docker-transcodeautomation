@@ -5,3 +5,4 @@
 - 2.0.0 Updated to handle one media file at a time, make the recover folder optional, and added env variables for various processing options.
 - 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
+- 2.3.0 Update transcode selections to not downmix 7.1 audio

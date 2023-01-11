@@ -25,15 +25,13 @@ An automated media transcoding solution. This solution is to be almost completel
 ## Parameters applied to transcoded media
 
 - All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
-```
-ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -ac 6 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
-```
-- All video, audio, and subtitles are mapped into the transcoded file
+- All video, audio, and subtitles are mapped into the transcoded file.
 - Title and Description metadata is removed so that data doesn't affect the media server of choice properly displaying the correct metadata
-- The comment metadata is set to "transcoded". This ensures even if the mediadb is lost or filename changed, the file will not be transcoded again.
-- Media will be transcoded using the x265 codec.
-- 6 channel aac audio is set
+- The comment metadata is set to "transcoded". This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
+```
+ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -ac 8 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
+```
 
 ## Deploying the image
 - Docker Compose Example
@@ -184,3 +182,4 @@ services:
 - 2.0.0 Updated to handle one media file at a time, make the recover folder optional, and added env variables for various processing options.
 - 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
+- 2.3.0 Update transcode selections to not downmix 7.1 audio
