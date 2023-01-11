@@ -8,8 +8,11 @@ An automated media transcoding solution with biased transcoding options. This so
 	  </a>
 	  <br />
 	  <br />
+    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation">
+      <img src="https://img.shields.io/github/stars/thetaylorlee?label=Github&logo=github">
+    </a>
 	  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
-	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?logo=docker">
+	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?label=Dockerhub&logo=docker">
 	  </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
 	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
@@ -172,3 +175,13 @@ services:
 - The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
 - You might run into a scenario where you replace an already transcoded file, and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section "Using Included Media functions"
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
+
+# Changelog
+- 1.0 Initial images released.
+- 1.1.0 Convert plex name in variables to MEDIA.
+- 1.1.1 Fixed update-processed media function so it properly calls ffprobe.
+- 1.1.2 Fixed get-notprocessed to show days in the file age output.
+- 2.0.0 Updated to handle one media file at a time, make the recover folder optional, and added env variables for various processing options.
+- 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
+- 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
+- 2.3.0 Update transcode selections to not downmix 7.1 audio
