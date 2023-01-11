@@ -85,7 +85,6 @@ Media | Top volume containing media files | /media:/media
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions for managing the transcode database.
-- Enter docker exec for the container and use these commands to get more commands.
 ```powershell
 pwsh #Switch into pwsh from bash or sh first. Then the PowerShell functions can be used.
 #Media Management Functions
