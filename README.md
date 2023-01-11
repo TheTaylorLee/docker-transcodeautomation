@@ -14,7 +14,7 @@ An automated media transcoding solution with biased transcoding options. This so
 	  </a>
   	<br />
 	  <br />
-     <a href="https://www.buymeacoffee.com/TheTaylorLee">
+    <a href="https://www.buymeacoffee.com/TheTaylorLee">
 	    <img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
 	  </a>
   </p>
