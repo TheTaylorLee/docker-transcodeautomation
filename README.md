@@ -21,14 +21,14 @@ An automated media transcoding solution with biased transcoding options. This so
 </div>
 
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
-- Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to limit reduce disk operations.
-- Will only process and transcode media in *.mp4 & *.mkv containers. All other files will be excluded.
+- Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
+- This process will only process and transcode media in *.mp4 & *.mkv containers. All other files will be excluded.
 
 ## Parameters applied to transcoded media
 
 - All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
 - All video, audio, and subtitles are mapped into the transcoded file.
-- Title and Description metadata is removed so that data doesn't affect the media server of choice properly displaying the correct metadata
+- Title and Description metadata is removed so that data doesn't affect and leveraged media server will properly display the correct metadata
 - The comment metadata is set to "transcoded". This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 ```
@@ -65,9 +65,9 @@ services:
 
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
- PUID | No | User ID that has access to the volumes | PUID=1000
- GUID | No | Group ID that has access to the volumes | PGID=1000
- TZ | No | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
+PUID | No | User ID that has access to the volumes | PUID=1000
+GUID | No | Group ID that has access to the volumes | PGID=1000
+TZ | No | Sets the timezone of the container. Used for log and database entry times | TZ=Chicago/Illinois
 BACKUPPROCESSED | Yes | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
 BACKUPRETENTION | Yes | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
 MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must be seperate by ", " (colon and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
@@ -87,11 +87,16 @@ Media | Top volume containing media files | /media:/media
 - This image comes with various optional PowerShell functions for managing the transcode database.
 - Enter docker exec for the container and use these commands to get more commands.
 ```powershell
-pwsh
-get-mediafunctions
+pwsh #Switch into pwsh from bash or sh first. Then the PowerShell functions can be used.
+#Media Management Functions
+Get-MissingYear        #Gets media missing the year of release in the name
+Get-NotProcessed       #Get files not yet transcoded
+Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAutomation will handle this, but this can be useful in some scenarios
+Update-Processed       #Updates transcoded files sql entries for replaced/upgraded files
+Update-Statistics      #Updates and pulls transcoded media stats
 ```
 
-- To get more help for any function
+- To get more help and info on these functions
 ```Powershell
 pwsh
 help <function-name> -full
