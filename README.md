@@ -44,7 +44,7 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
   - showscustomoptions.ps1
   - moviescustomoptions.ps1
 - You may replace the {Custom Options Here} text with any custom Options you want to use. Be sure to remove the brackets.
-- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for a remuxing should the transcode make the file larger.
+- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for remuxing should the transcode make the file larger.
 - Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast
 ```powershell
 ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
