@@ -11,7 +11,7 @@ function invoke-processshow {
     Write-Output "Invoke-ProcessShow Start"
 
     ##Process files
-    Start-Transcode -crf $env:SHOWSCRF
+    Start-TranscodeShows -crf $env:SHOWSCRF
 
     ##Compare processed files to the original files.
     ##Source files will be moved into a recover folder in case transcode failed.

@@ -11,7 +11,7 @@ function invoke-processmovie {
     Write-Output "Invoke-ProcessMovie Start"
 
     ##Process files
-    Start-Transcode -crf $env:MOVIESCRF
+    Start-TranscodeMovies -crf $env:MOVIESCRF
 
     ##Compare processed files to the original files.
     ##Source files will be moved into a recover folder in case transcode failed.
@@ -31,7 +31,7 @@ function invoke-processmovie {
                     ffmpeg -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
                     Remove-Item $sourcefiles[$i].fullname -Force
                 }
-                elseif ($env:BACKUPPROCESSED -eq 'true' -eq 'true') {
+                elseif ($env:BACKUPPROCESSED -eq 'true') {
                     Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force
                 }
             }

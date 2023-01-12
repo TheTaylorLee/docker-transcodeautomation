@@ -35,15 +35,17 @@ An automated media transcoding solution. This solution is to be almost completel
 - Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
 - You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
 ```
-ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -ac 8 -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
+ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
 ```
 
 ### Option 2
 - Option 2 allows for customizing the majority of the applied ffmpeg parameters.
-- You can apply the custom options by saving the below command to a file in the mapped data volume. /docker-transcodeautomation/data/customoptions.ps1
+- You can apply the custom options by saving the below command to files in the mapped data volume "/docker-transcodeautomation/data". Use one file for Shows and another for Movies.
+  - showscustomoptions.ps1
+  - moviescustomoptions.ps1
 - You may replace the {Custom Options Here} text with any custom Options you want to use. Be sure to remove the brackets.
 - All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for a remuxing should the transcode make the file larger.
-- Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -ac 8 -c:a aac -c:s copy -preset veryfast
+- Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast
 ```powershell
 ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
@@ -203,4 +205,4 @@ services:
 - 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
 - 2.3.0 Update transcode selections to not downmix 7.1 audio
-- 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process
+- 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize for seperately for movies and shows. Fixed audio upmixing and downmixing
