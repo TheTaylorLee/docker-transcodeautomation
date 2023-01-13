@@ -1,0 +1,11 @@
+# Changelog
+- 1.0 Initial images released.
+- 1.1.0 Convert plex name in variables to MEDIA.
+- 1.1.1 Fixed update-processed media function so it properly calls ffprobe.
+- 1.1.2 Fixed get-notprocessed to show days in the file age output.
+- 2.0.0 Updated to handle one media file at a time, make the recover folder optional, and added env variables for various processing options.
+- 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
+- 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
+- 2.3.0 Update transcode selections to not downmix 7.1 audio
+- 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize seperately for movies and shows. Fixed audio upmixing and downmixing
+- 2.5.0 Added updatemetadata on first run functionality.
