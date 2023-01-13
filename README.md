@@ -94,13 +94,13 @@ MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must
 MEDIASHOWFOLDERS | Yes | Top level show directories. Multiple directories must be seperate by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 MOVIESCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
 SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
-UPDATEMETADATA | No | If true existing media will have metadata updated only | UPDATEMETADATA=true
+UPDATEMETADATA | No | If true, existing media will have metadata updated only | UPDATEMETADATA=true
 
 ### Volumes
 
 Docker Volume | Purpose | Example
 ---------|----------|---------
-Data | Logs, Database, and Database backups are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+Data | Config Files, Database, Database backups and logs, are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
 Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
 Media | Top volume containing media files | /media:/media
 
@@ -195,8 +195,8 @@ services:
 
 ## Troubleshooting
 - Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
-- If the logs indicate that there are files leftover in the transcoding directory you must remove them so not extra files are in that directory. This will allow processing to resume.
-- If a transcoded file is corrupted, you can recover an original version of the file for x days from this mapped volume. /docker-transcodeautomation/transcoding/new/recover
-- The transcoding process will retain logs in the mapped /docker-transcodeautomation/data volume.
+- If the logs indicate that there are files leftover in the transcoding directory you must remove them so no extra files are in that directory. This will allow processing to resume.
+- If a transcoded file is corrupted, and you have BACKUPPROCESSED enabled, you can recover an original version of the file for x days from this mapped volume. `/docker-transcodeautomation/transcoding/new/recover`
+- The transcoding process will retain persistent logs in the mapped `/docker-transcodeautomation/data` volume.
 - You might run into a scenario where you replace an already transcoded file, and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section "Using Included Media functions"
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.

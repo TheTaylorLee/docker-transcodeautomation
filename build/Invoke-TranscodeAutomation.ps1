@@ -67,9 +67,9 @@ if ($host.version.major -eq '7') {
                 Update-Statistics -DataSource $datasource | Select-Object -Last 2
 
                 $timenow = Get-Date
-                $timeplus2hours = (Get-Date).AddHours(2)
-                Write-Output "Start Sleep at $timenow and resuming at $timeplus2hours"
-                Start-Sleep -Seconds 14400
+                $seconds = 14400
+                Write-Output "Start Sleep at $timenow for $seconds"
+                Start-Sleep -Seconds $seconds
             }
         }
     }
