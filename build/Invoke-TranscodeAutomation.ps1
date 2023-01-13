@@ -39,24 +39,38 @@ if ($host.version.major -eq '7') {
         . $script
     }
 
-    #Scheduling and execution
-    while ($true) {
-        #set variables
-        $backupfolder = "$PSScriptRoot/data/Backups"
-        [string[]]$MEDIAmoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
-        [string[]]$MEDIAshowfolders = $env:MEDIASHOWFOLDERS -split ', '
+    #set variables
+    $backupfolder = "$PSScriptRoot/data/Backups"
+    [string[]]$MEDIAmoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
+    [string[]]$MEDIAshowfolders = $env:MEDIASHOWFOLDERS -split ', '
 
-        #begin processing
-        $dt = Get-Date
-        Write-Output "Transcodeautomation while loop started at $dt"
-        Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
-        Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
+    # Begin Automation
+    # If set update metadata of existing media only
+    if ($env:UPDATEMETADATA -eq 'true') {
+        /docker-transcodeautomation/updatemetadata.ps1
+        while ($true) {
+            Start-Sleep -Seconds 2147483
+        }
+    }
 
-        Update-Statistics -DataSource $datasource | Select-Object -Last 2
+    else {
+        while ($true) {
 
-        $timenow = Get-Date
-        $timeplus2hours = (Get-Date).AddHours(2)
-        Write-Output "Start Sleep at $timenow and resuming at $timeplus2hours"
-        Start-Sleep -Seconds 14400
+            # Transcode Automation Execution
+            else {
+                #begin processing
+                $dt = Get-Date
+                Write-Output "Transcodeautomation while loop started at $dt"
+                Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
+
+                Update-Statistics -DataSource $datasource | Select-Object -Last 2
+
+                $timenow = Get-Date
+                $timeplus2hours = (Get-Date).AddHours(2)
+                Write-Output "Start Sleep at $timenow and resuming at $timeplus2hours"
+                Start-Sleep -Seconds 14400
+            }
+        }
     }
 }

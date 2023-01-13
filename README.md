@@ -22,7 +22,7 @@ An automated media transcoding solution. This solution is to be almost completel
 
 ## Transcoding Process and Options
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
-- The comment metadata is set to "transcoded". This ensures even if the database is lost or filename changed, the file will not be transcoded again.
+- The comment metadata is set to 'transcoded'. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
@@ -40,10 +40,10 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 
 ### Option 2
 - Option 2 allows for customizing the majority of the applied ffmpeg parameters.
-- You can apply the custom options by saving the below command to files in the mapped data volume "/docker-transcodeautomation/data". Use one file for Shows and another for Movies.
-  - showscustomoptions.ps1
-  - moviescustomoptions.ps1
-- You may replace the {Custom Options Here} text with any custom Options you want to use. Be sure to remove the brackets.
+- You can apply the custom options by saving the below command to files in the mapped data volume ***/docker-transcodeautomation/data***. Use one file for Shows and another for Movies.
+  - ***showscustomoptions.ps1***
+  - ***moviescustomoptions.ps1***
+- You may replace the ***{Custom Options Here}*** text with any custom Options you want to use. Be sure to remove the brackets.
 - All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for remuxing should the transcode make the file larger.
 - Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast
 ```powershell
@@ -68,6 +68,7 @@ services:
       - MEDIASHOWFOLDERS=/media/test/shows
       - MOVIESCRF=21
       - SHOWSCRF=23
+      - UPDATEMETADATA=false
     volumes:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
@@ -76,8 +77,11 @@ services:
 ```
 
 ### Environment Variables
-- If setting BACKUPPROCESSED to true be careful. This can easily lead to filling up drive free space dependent on media processed during the BACKUPRETENTION period.
-- If you use option 2 you might not leverage the MOVIESCRF and SHOWSCRF variables. Regardless you need to set those environment variables so that sourced functions will run will have certain requirements met. In that scenario the provided integer doesn't matter.
+- If setting ***BACKUPPROCESSED*** to true be careful. This can easily lead to filling up drive free space dependent on media processed during the ***BACKUPRETENTION*** period.
+- If you use option 2 you might not leverage the ***MOVIESCRF*** and ***SHOWSCRF*** variables. Regardless you need to set those environment variables so that dependent functions will have certain requirements met. In that scenario the provided integer doesn't matter.
+- ***UPDATEMETADATA*** can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
+  - After metadata has been updated remove this variable and restart the container.
+  - Docker logs will shows ***UPDATEMETADATA End*** when this process has completed.
 
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
@@ -90,6 +94,7 @@ MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must
 MEDIASHOWFOLDERS | Yes | Top level show directories. Multiple directories must be seperate by ", "  (colon and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 MOVIESCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
 SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
+UPDATEMETADATA | No | If true existing media will have metadata updated only | UPDATEMETADATA=true
 
 ### Volumes
 
@@ -118,7 +123,7 @@ help <function-name> -full
 ```
 
 ## Statistics
-- /docker-transcodeautomation/data/MediaDB.sqlite volume file is a sqlite database containing media data and statistics
+- ***/docker-transcodeautomation/data/MediaDB.sqlite*** volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - The following statistics are recorded
 
@@ -206,3 +211,4 @@ services:
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
 - 2.3.0 Update transcode selections to not downmix 7.1 audio
 - 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize for seperately for movies and shows. Fixed audio upmixing and downmixing
+- 2.5.0 Added updatemetadata on first run functionality.
