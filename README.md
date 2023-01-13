@@ -210,5 +210,5 @@ services:
 - 2.1.0 Updated log output and updatedby sql entries to reflect new function names. Used for information and debugging output.
 - 2.2.0 Remove MediaFunctions module unused private functions, and update get-childitem to use include instead of exclude on all functions.
 - 2.3.0 Update transcode selections to not downmix 7.1 audio
-- 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize for seperately for movies and shows. Fixed audio upmixing and downmixing
+- 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize seperately for movies and shows. Fixed audio upmixing and downmixing
 - 2.5.0 Added updatemetadata on first run functionality.
