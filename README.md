@@ -22,12 +22,12 @@ An automated media transcoding solution. This solution is to be almost completel
 
 ## Transcoding Process and Options
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
-- The comment metadata is set to 'transcoded'. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
+- The comment metadata is set to `transcoded`. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
-- This process will only process and transcode media in *.mp4 & *.mkv containers. All other files will be excluded.
-- I highly recommend testing with some test media first.
+- This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
+- I highly recommend testing with test media first.
 
 ### Option 1
 - All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
@@ -40,10 +40,10 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 
 ### Option 2
 - Option 2 allows for customizing the majority of the applied ffmpeg parameters.
-- You can apply the custom options by saving the below command to files in the mapped data volume ***/docker-transcodeautomation/data***. Use one file for Shows and another for Movies.
-  - ***showscustomoptions.ps1***
-  - ***moviescustomoptions.ps1***
-- You may replace the ***{Custom Options Here}*** text with any custom Options you want to use. Be sure to remove the brackets.
+- You can apply the custom options by saving the below command to files in the mapped data volume `/docker-transcodeautomation/data`. Use one file for Shows and another for Movies.
+  - `showscustomoptions.ps1`
+  - `moviescustomoptions.ps1`
+- You may replace the `{Custom Options Here}` text with any custom Options you want to use. Be sure to remove the brackets.
 - All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for remuxing should the transcode make the file larger.
 - Example Options: -metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast
 ```powershell
@@ -77,11 +77,11 @@ services:
 ```
 
 ### Environment Variables
-- If setting ***BACKUPPROCESSED*** to true be careful. This can easily lead to filling up drive free space dependent on media processed during the ***BACKUPRETENTION*** period.
-- If you use option 2 you might not leverage the ***MOVIESCRF*** and ***SHOWSCRF*** variables. Regardless you need to set those environment variables so that dependent functions will have certain requirements met. In that scenario the provided integer doesn't matter.
-- ***UPDATEMETADATA*** can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
+- If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
+- If you use option 2 you might not leverage the `MOVIESCRF` and `SHOWSCRF` variables. Regardless you need to set those environment variables so that dependent functions will have certain requirements met. In that scenario the provided integer doesn't matter.
+- `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
   - After metadata has been updated remove this variable and restart the container.
-  - Docker logs will shows ***UPDATEMETADATA End*** when this process has completed.
+  - Docker logs will shows `UPDATEMETADATA End` when this process has completed.
 
 ENV Variable | Required | Description | Example
 ---------|----------|---------|---------
@@ -123,7 +123,7 @@ help <function-name> -full
 ```
 
 ## Statistics
-- ***/docker-transcodeautomation/data/MediaDB.sqlite*** volume file is a sqlite database containing media data and statistics
+- `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - The following statistics are recorded
 
