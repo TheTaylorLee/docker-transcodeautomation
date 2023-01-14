@@ -127,8 +127,8 @@ function Update-Statistics {
         }
 
         #Return results to powershell
-        $query = "SELECT * FROM Statistics"
-        Invoke-SqliteQuery -DataSource $DataSource -Query $query
+        #$query = "SELECT * FROM Statistics"
+        #Invoke-SqliteQuery -DataSource $DataSource -Query $query
     }
 
     #Used in debug logs
