@@ -26,6 +26,7 @@ Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
 $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
 $test3 = Test-Path $datasource
 if ($test3 -eq $false) {
+    Write-Output "Creating sqlite database"
     . $PSScriptRoot/private/Invoke-DBSetup.ps1
     invoke-dbsetup -datasource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }
@@ -57,20 +58,18 @@ if ($host.version.major -eq '7') {
         while ($true) {
 
             # Transcode Automation Execution
-            else {
-                #begin processing
-                $dt = Get-Date
-                Write-Output "Transcodeautomation while loop started at $dt"
-                Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
-                Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
+            #begin processing
+            $dt = Get-Date
+            Write-Output "Transcodeautomation while loop started at $dt"
+            Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+            Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
-                Update-Statistics -DataSource $datasource | Select-Object -Last 2
+            Update-Statistics -DataSource $datasource | Select-Object -Last 2
 
-                $timenow = Get-Date
-                $seconds = 14400
-                Write-Output "Start Sleep at $timenow for $seconds"
-                Start-Sleep -Seconds $seconds
-            }
+            $timenow = Get-Date
+            $seconds = 14400
+            Write-Output "Start Sleep at $timenow for $seconds"
+            Start-Sleep -Seconds $seconds
         }
     }
 }

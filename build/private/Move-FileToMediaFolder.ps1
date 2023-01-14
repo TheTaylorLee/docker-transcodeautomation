@@ -31,7 +31,7 @@ function Move-FileToMEDIAFolder {
             #move the file
             $destination = $MEDIAmoviefiles | Where-Object { $_.name -eq $file.name }
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
 
                 # log stats and changes to database
                 $TableName = 'Movies'
@@ -54,7 +54,7 @@ function Move-FileToMEDIAFolder {
             #move the file
             $destination = $MEDIAshowfiles | Where-Object { $_.name -eq $file.name }
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
 
                 # log stats and changes to database
                 $TableName = 'Shows'

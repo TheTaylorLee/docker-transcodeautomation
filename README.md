@@ -78,6 +78,7 @@ services:
 
 ### Environment Variables
 - If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
+  - If the LastWriteTime of the backed up file is older than the `BACKUPRETENTION` than the backup file will not be retained.
 - If you use option 2 you might not leverage the `MOVIESCRF` and `SHOWSCRF` variables. Regardless you need to set those environment variables so that dependent functions will have certain requirements met. In that scenario the provided integer doesn't matter.
 - `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
   - After metadata has been updated remove this variable and restart the container.

@@ -39,9 +39,10 @@ Function Invoke-MediaManagement {
     }
 
     #Remove recover files older than 14 days.
+    Write-Output "Deleting backup files over $env:BACKUPRETENTION days old"
     Get-ChildItem -Path $env:FFToolsTarget/recover |
     Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-$env:BACKUPRETENTION) } |
-    Remove-Item
+    Remove-Item -Verbose
 
     #Used in debug logs
     Write-Output "Invoke-MediaManagement End"

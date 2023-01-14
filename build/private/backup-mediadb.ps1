@@ -15,12 +15,12 @@ function Backup-Mediadb {
         Write-Output "Skipping backup, database already backed up today."
     }
     else {
-        Copy-Item -Path $database -Destination "$backupfolder/$date.sqlite"
+        Copy-Item -Path $database -Destination "$backupfolder/$date.sqlite" -Verbose
     }
 
     Get-ChildItem -Path $backupfolder |
     Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-30) } |
-    Remove-Item
+    Remove-Item -Verbose
 
     #Used in debug logs
     Write-Output "Backup-Mediadb End"

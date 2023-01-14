@@ -27,12 +27,12 @@ function invoke-processshow {
         for ($i = 0; $i -lt $max; $i++) {
             if ($targetfiles[$i].Length -gt 0) {
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
-                    Remove-Item $targetfiles[$i].FullName -Force
+                    Remove-Item $targetfiles[$i].FullName -Force -Verbose
                     ffmpeg -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
-                    Remove-Item $sourcefiles[$i].fullname -Force
+                    Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
                 elseif ($env:BACKUPPROCESSED -eq 'true') {
-                    Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force
+                    Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
                 }
             }
             else {
@@ -47,7 +47,7 @@ function invoke-processshow {
     [int]$max = $pcount
     for ($i = 0; $i -lt $max; $i++) {
         if ($processedfiles[$i].Length -gt 0) {
-            Move-Item $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed"
+            Move-Item $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed" -Verbose
         }
         else {
             break
