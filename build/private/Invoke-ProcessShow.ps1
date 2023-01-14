@@ -33,6 +33,7 @@ function invoke-processshow {
                 }
                 elseif ($env:BACKUPPROCESSED -eq 'true') {
                     Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
+                    (Get-ChildItem $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
                 }
             }
             else {

@@ -10,3 +10,4 @@
 - 2.4.0 Add the ability to specify custom ffmpeg options within reason of what will work with the current automation process. Option added to customize seperately for movies and shows. Fixed audio upmixing and downmixing
 - 2.5.0 Added updatemetadata on first run functionality.
 - 2.6.0 Update log output for more verbosity. Update certain logs with variables to ensure accuracy
+- 2.7.0 Update lastwritetime on media moved to recover folder. This guarantees files older than BACKUPRETENTION period are't removed early.
