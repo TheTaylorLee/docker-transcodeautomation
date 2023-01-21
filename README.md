@@ -6,8 +6,11 @@ An automated media transcoding solution. This solution is to be almost completel
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation">
       <img src="https://img.shields.io/github/stars/thetaylorlee?label=Github&logo=github">
     </a>
+    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/issues?q=is%3Aopen+is%3Aissue">
+      <img src ="https://img.shields.io/github/issues-raw/thetaylorlee/docker-transcodeautomation">
+    </a>
 	  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
-	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?label=Dockerhub&logo=docker">
+	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?label=Last+Image&logo=docker">
 	  </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
 	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
