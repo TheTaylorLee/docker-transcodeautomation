@@ -27,7 +27,7 @@ An automated media transcoding solution. This solution is to be almost completel
 - When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
-- I highly recommend testing with test media first.
+- I highly recommend testing with copy of a few media files first.
 
 ### Option 1
 - All transcoded media will have the following parameters applied. With crf quality configured by required env variables.
