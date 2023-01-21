@@ -97,13 +97,10 @@
             "pluginVersion": "9.3.2",
             "targets": [
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "select existspercent, added, tablename from Statistics where tablename = 'Shows'",
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT existspercent, added, tablename \r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "select existspercent, added, tablename from Statistics where tablename = 'Shows'",
+                    "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Shows",
                     "timeColumns": [
                         "time",
@@ -111,14 +108,11 @@
                     ]
                 },
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
+                    "datasource": "MediaDB",
                     "hide": false,
-                    "queryText": "select existspercent, added, tablename from Statistics where tablename = 'Movies'",
+                    "queryText": "SELECT existspercent, added, tablename \r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "select existspercent, added, tablename from Statistics where tablename = 'Movies'",
+                    "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Movies",
                     "timeColumns": [
                         "time",
@@ -160,7 +154,7 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 8,
+                "h": 9,
                 "w": 12,
                 "x": 12,
                 "y": 1
@@ -184,13 +178,10 @@
             "pluginVersion": "9.3.2",
             "targets": [
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "Select mediacount from Statistics where tablename = 'Shows'",
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT mediacount, added\r\nFrom Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "Select mediacount from Statistics where tablename = 'Shows'",
+                    "rawQueryText": "SELECT mediacount, added\r\nFrom Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Shows",
                     "timeColumns": [
                         "time",
@@ -198,101 +189,11 @@
                     ]
                 },
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
+                    "datasource": "MediaDB",
                     "hide": false,
-                    "queryText": "Select mediacount from Statistics where tablename = 'Movies'",
+                    "queryText": "SELECT mediacount, added\r\nFrom Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "Select mediacount from Statistics where tablename = 'Movies'",
-                    "refId": "Movies",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "wgkfoth4z"
-            },
-            "description": "",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "decimals": 2,
-                    "displayName": "Media Storage Used",
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "decmbytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 9
-            },
-            "id": 19,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "vertical",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "textMode": "value_and_name"
-            },
-            "pluginVersion": "9.3.2",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "Select existssumsizeMB from Statistics Where tablename = 'Shows'",
-                    "queryType": "table",
-                    "rawQueryText": "Select existssumsizeMB from Statistics Where tablename = 'Shows'",
-                    "refId": "Shows",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "hide": false,
-                    "queryText": "Select existssumsizeMB from Statistics Where tablename = 'Movies'",
-                    "queryType": "table",
-                    "rawQueryText": "Select existssumsizeMB from Statistics Where tablename = 'Movies'",
+                    "rawQueryText": "SELECT mediacount, added\r\nFrom Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Movies",
                     "timeColumns": [
                         "time",
@@ -358,13 +259,10 @@
             "pluginVersion": "9.3.2",
             "targets": [
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "Select existsdifferenceMB from Statistics Where tablename = 'Shows'",
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT existsdifferenceMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "Select existsdifferenceMB from Statistics Where tablename = 'Shows'",
+                    "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Shows",
                     "timeColumns": [
                         "time",
@@ -372,14 +270,92 @@
                     ]
                 },
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
+                    "datasource": "MediaDB",
                     "hide": false,
-                    "queryText": "Select existsdifferenceMB from Statistics Where tablename = 'Movies'",
+                    "queryText": "SELECT existsdifferenceMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "queryType": "table",
-                    "rawQueryText": "Select existsdifferenceMB from Statistics Where tablename = 'Movies'",
+                    "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
+                    "refId": "Movies",
+                    "timeColumns": [
+                        "time",
+                        "ts"
+                    ]
+                }
+            ],
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "wgkfoth4z"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "decimals": 2,
+                    "displayName": "Media Storage Used",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "decmbytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 10
+            },
+            "id": 19,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "vertical",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "pluginVersion": "9.3.2",
+            "targets": [
+                {
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT existssumsizeMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
+                    "queryType": "table",
+                    "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 1",
+                    "refId": "Shows",
+                    "timeColumns": [
+                        "time",
+                        "ts"
+                    ]
+                },
+                {
+                    "datasource": "MediaDB",
+                    "hide": false,
+                    "queryText": "SELECT existssumsizeMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
+                    "queryType": "table",
+                    "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
                     "refId": "Movies",
                     "timeColumns": [
                         "time",
@@ -443,13 +419,10 @@
             "pluginVersion": "9.3.2",
             "targets": [
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added FROM Statistics WHERE tablename = 'Shows'",
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added LIMIT 365",
                     "queryType": "table",
-                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added FROM Statistics WHERE tablename = 'Shows'",
+                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added LIMIT 365",
                     "refId": "A",
                     "timeColumns": [
                         "time",
@@ -514,13 +487,10 @@
             "pluginVersion": "9.3.2",
             "targets": [
                 {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "wgkfoth4z"
-                    },
-                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added FROM Statistics WHERE tablename = 'Movies'",
+                    "datasource": "MediaDB",
+                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added LIMIT 365",
                     "queryType": "table",
-                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added FROM Statistics WHERE tablename = 'Movies'",
+                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added LIMIT 365",
                     "refId": "A",
                     "timeColumns": [
                         "time",
@@ -548,6 +518,6 @@
     "timezone": "America/Chicago",
     "title": "MediaDB",
     "uid": "0u0XAp24k",
-    "version": 45,
+    "version": 60,
     "weekStart": "sunday"
 }
