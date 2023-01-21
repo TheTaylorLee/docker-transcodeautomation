@@ -28,7 +28,7 @@ $test3 = Test-Path $datasource
 if ($test3 -eq $false) {
     Write-Output "Creating sqlite database"
     . $PSScriptRoot/private/Invoke-DBSetup.ps1
-    invoke-dbsetup -datasource "/docker-transcodeautomation/data/MediaDB.SQLite"
+    Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }
 
 # Import transcode automation scripts and continue with transcode automation
@@ -64,7 +64,7 @@ if ($host.version.major -eq '7') {
             Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
             Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
-            Update-Statistics -DataSource $datasource | Select-Object -Last 2
+            Update-Statistics -DataSource $datasource
 
             $timenow = Get-Date
             $seconds = 14400

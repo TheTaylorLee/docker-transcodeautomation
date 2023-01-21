@@ -4,7 +4,7 @@ cd ~
 rm docker-transcodeautomation -d -r
 git clone https://github.com/TheTaylorLee/docker-transcodeautomation
 cd docker-transcodeautomation
-version=v2.7.0
+version=v2.7.1
 DOCKER_BUILDKIT=1 docker build -f Dockerfile.ubuntu22.04-lts -t ttlee/docker-transcodeautomation:ubuntu22.04-lts-develop .
 DOCKER_BUILDKIT=1 docker build -f Dockerfile.alpine3.14-lts -t ttlee/docker-transcodeautomation:alpine3.14-lts-develop .
 
