@@ -23,8 +23,8 @@ An automated media transcoding solution. This solution is to be almost completel
 ## Transcoding Process and Options
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
 - The comment metadata is set to `transcoded`. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
-- If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata.
-- When new media is added this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
+- If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata while keeping all media, video, and audio streams.
+- When new media is added, this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
 - Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
 - I highly recommend testing with copy of a few media files first.
@@ -34,7 +34,7 @@ An automated media transcoding solution. This solution is to be almost completel
 - All video, audio, and subtitles are mapped into the transcoded file.
 - Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
 - You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
-```
+```powershell
 ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -c:a aac -c:s copy -preset veryfast -stats_period 60 <output>
 ```
 
@@ -44,10 +44,10 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
   - `showscustomoptions.ps1`
   - `moviescustomoptions.ps1`
 - You may replace the `{Custom Options Here}` text with any custom Options you want to use. Be sure to remove the brackets.
-- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment, and because the other options are fallback options for remuxing should the transcode make the file larger.
+- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment.
 - Example Options: `-metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast`
 ```powershell
-ffmpeg -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
+ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
