@@ -39,3 +39,7 @@ function Invoke-TimeCompare {
         Write-Output "Outside transcode time window will reprocess later"
     }
 #>
+
+# Need to test in a build
+# Need to ensure the time in the container is utc
+# Should remove the TX env variable if not already done so
