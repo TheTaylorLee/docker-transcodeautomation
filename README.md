@@ -59,7 +59,7 @@ ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_per
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts
+    image: ttlee/docker-transcodeautomation:latest
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
@@ -159,7 +159,7 @@ Grafana can be leveraged to build a statistics dashboard for transcoded media.
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:alpine3.1.4-lts
+    image: ttlee/docker-transcodeautomation:latest
     container_name: Docker-TranscodeAutomation
     environment:
       - PUID=1000
