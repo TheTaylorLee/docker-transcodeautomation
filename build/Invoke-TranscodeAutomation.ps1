@@ -54,9 +54,9 @@ if ($host.version.major -eq '7') {
         }
     }
 
+    # Else begin transcode processing
     else {
         while ($true) {
-
             # Transcode Automation Execution
             #begin processing
             $dt = Get-Date
