@@ -1,9 +1,7 @@
 .git
-build/README.md
-changelog.md
-*docker-compose.yml
-dockerhubREADME.md
+.github
+.dockerignore
 examples
+Dockerfile.alpine3.14-lts
+Dockerfile.ubuntu22.04-lts
 LICENSE
-README.md
-scripts

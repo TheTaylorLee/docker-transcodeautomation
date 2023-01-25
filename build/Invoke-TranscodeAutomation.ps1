@@ -17,7 +17,7 @@ $time = Get-Date -Format "yyyy-MM-dd HHmmss"
 
 #Used in Debug Logs
 Start-Transcript "$PSScriptRoot/data/logs/$time debug.log"
-Write-Output "TranscodeAutomation Service Start"
+Write-Output "TranscodeAutomation Start"
 
 # Import PSSqlite
 Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
@@ -44,6 +44,10 @@ if ($host.version.major -eq '7') {
     $backupfolder = "$PSScriptRoot/data/Backups"
     [string[]]$MEDIAmoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
     [string[]]$MEDIAshowfolders = $env:MEDIASHOWFOLDERS -split ', '
+    if ($null -eq $env:STARTTIMEUTC) {
+        $env:STARTTIMEUTC = "00:00"
+        $env:ENDTIMEUTC = "23:59:59"
+    }
 
     # Begin Automation
     # If set update metadata of existing media only
@@ -59,12 +63,26 @@ if ($host.version.major -eq '7') {
         while ($true) {
             # Transcode Automation Execution
             #begin processing
-            $dt = Get-Date
-            Write-Output "Transcodeautomation while loop started at $dt"
-            Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
-            Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
 
-            Update-Statistics -DataSource $datasource
+            if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
+                $dt = Get-Date
+                Write-Output "Transcodeautomation while loop started at $dt"
+                Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
+                Update-Statistics -DataSource $datasource
+            }
+            else {
+                $dt = Get-Date
+                $startime = Get-Date -Date $env:STARTTIMEUTC
+                $endtime = Get-Date -Date $env:ENDTIMEUTC
+                if ($endtime -lt $startime) {
+                    $endtime = $endtime.AddDays(1)
+                    Write-Output "Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                }
+                else {
+                    Write-Output "Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                }
+            }
 
             $timenow = Get-Date
             $seconds = 14400

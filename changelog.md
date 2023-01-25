@@ -13,3 +13,4 @@
 - 2.7.0 Update lastwritetime on media moved to recover folder. This guarantees files older than BACKUPRETENTION period are't removed early.
 - 2.7.1 Remove update-statistics output from logs
 - 2.7.2 Added latest tag
+- 2.8.0 Add Transcode time option
