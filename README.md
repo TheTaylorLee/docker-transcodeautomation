@@ -3,15 +3,9 @@ An automated media transcoding solution. This solution is to be almost completel
 
 <div>
   <p align="Left">
-    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation">
-      <img src="https://img.shields.io/github/stars/thetaylorlee?label=Github&logo=github">
-    </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/issues?q=is%3Aopen+is%3Aissue">
       <img src ="https://img.shields.io/github/issues-raw/thetaylorlee/docker-transcodeautomation">
     </a>
-	  <a href="https://hub.docker.com/r/ttlee/docker-transcodeautomation">
-	    <img src="https://img.shields.io/docker/v/ttlee/docker-transcodeautomation?label=Last+Image&logo=docker">
-	  </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
 	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
 	  </a>
@@ -54,12 +48,13 @@ ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_per
 ```
 
 ## Deploying the image
+- **[Other Container Versions](https://github.com/users/TheTaylorLee/packages/container/package/docker-transcodeautomation)**
 - Docker Compose Example
 ```yml
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:latest
+    image: ghcr.io/thetaylorlee/docker-transcodeautomation:latest
     container_name: Docker-TranscodeAutomation
     environment:
       - BACKUPPROCESSED=true
@@ -156,7 +151,7 @@ Grafana can be leveraged to build a statistics dashboard for transcoded media.
 version: "3.8"
 services:
   Docker-TranscodeAutomation:
-    image: ttlee/docker-transcodeautomation:latest
+    image: ghcr.io/thetaylorlee/docker-transcodeautomation:latest
     container_name: Docker-TranscodeAutomation
     environment:
       - BACKUPPROCESSED=true
