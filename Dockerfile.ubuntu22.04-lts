@@ -30,6 +30,11 @@ RUN --mount=type=cache,target=/var/lib/apt \
 # Install the deb file in this image and make powershell available
 FROM ubuntu:22.04 AS final-image
 
+# Add Labels (Modified entry)
+LABEL org.opencontainers.image.source=https://github.com/thetaylorlee/docker-transcodeautomation
+LABEL org.opencontainers.image.description="An automated media transcoding solution."
+LABEL org.opencontainers.image.licenses=MIT
+
 # # Define args needed to add the package
 ARG PS_VERSION=7.3.0-preview.8
 ARG PS_PACKAGE=powershell-preview_${PS_VERSION}-1.deb_amd64.deb
