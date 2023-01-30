@@ -40,7 +40,7 @@ jobs:
           context: .
           file: Dockerfile.ubuntu22.04-lts
           registry: ghcr.io
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
 
@@ -50,6 +50,6 @@ jobs:
           context: .
           file: Dockerfile.alpine3.14-lts
           registry: ghcr.io
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-develop
