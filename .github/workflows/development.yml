@@ -42,7 +42,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           dockerfile: Dockerfile.alpine3.14-lts
-          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts$-development
+          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-development
 
       - name: Build and push ubuntu
         uses: docker/build-push-action@v3
