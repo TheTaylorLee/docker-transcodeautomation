@@ -34,15 +34,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.API_TOKEN }}
 
-      - name: Build and push ubuntu
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile.ubuntu22.04-lts
-          registry: ghcr.io
-          platforms: linux/amd64
-          push: true
-          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
+      #      - name: Build and push ubuntu
+      #        uses: docker/build-push-action@v3
+      #        with:
+      #          context: .
+      #          file: Dockerfile.ubuntu22.04-lts
+      #          registry: ghcr.io
+      #          platforms: linux/amd64
+      #          push: true
+      #          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
 
       - name: Build and push alpine
         uses: docker/build-push-action@v3
