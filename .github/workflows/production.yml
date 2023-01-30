@@ -24,7 +24,7 @@ jobs:
 
       - name: Get tag
         id: repository
-        run: echo "tag=$(git describe --tags HEAD)" > $GITHUB_ENV
+        run: echo "tag=$(cat version)" > $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
