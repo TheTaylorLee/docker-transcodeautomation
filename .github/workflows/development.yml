@@ -1,4 +1,4 @@
-name: Build and publish the dev container images
+name: dev images
 
 "on":
   workflow_dispatch:
