@@ -6,6 +6,8 @@ name: production images
       - master
     types:
       - closed
+    tags:
+      - "*"
 
 jobs:
   build-and-push-image:
