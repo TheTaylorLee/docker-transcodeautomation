@@ -42,7 +42,7 @@ jobs:
           registry: ghcr.io
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-development
+          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
 
       - name: Build and push alpine
         uses: docker/build-push-action@v3
@@ -52,4 +52,4 @@ jobs:
           registry: ghcr.io
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-development
+          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-develop
