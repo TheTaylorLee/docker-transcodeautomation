@@ -3,6 +3,12 @@ An automated media transcoding solution. This solution is to be almost completel
 
 <div>
   <p align="Left">
+    <a href="https://img.shields.io/github/workflow/status/thetaylorlee/docker-transcodeautomation/.github/workflows/development.yml?branch=master">
+      <img src="https://img.shields.io/github/actions/workflow/status/TheTaylorLee/docker-transcodeautomation/development.yml?branch=master&label=Dev%20Workflow&logo=Github">
+    </a>
+    <a href="https://img.shields.io/github/workflow/status/thetaylorlee/docker-transcodeautomation/.github/workflows/production.yml?branch=master">
+      <img src="https://img.shields.io/github/actions/workflow/status/TheTaylorLee/docker-transcodeautomation/production.yml?branch=master&label=Prod%20Workflow&logo=Github">
+    </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/issues?q=is%3Aopen+is%3Aissue">
       <img src ="https://img.shields.io/github/issues-raw/thetaylorlee/docker-transcodeautomation">
     </a>
