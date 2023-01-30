@@ -2,16 +2,10 @@ name: production images
 
 "on":
   pull_request:
-    tags:
-      - "*"
     branches:
       - master
     types:
       - closed
-
-  workflow_dispatch:
-    tags:
-      - "*"
 
 jobs:
   build-and-push-image:
@@ -27,7 +21,7 @@ jobs:
 
       - name: Get tag
         id: repository
-        run: echo "tag=$(git describe --tags HEAD)" > $GITHUB_ENV
+        run: echo "tag=$(git rev-parse --abbrev-ref HEAD)" > $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
