@@ -14,3 +14,5 @@
 - 2.7.1 Remove update-statistics output from logs
 - 2.7.2 Added latest tag
 - 2.8.0 Add Transcode time option
+- 2.9.0 publish ghcr image
+- 2.10.0 Add ci/cd actions workflow
