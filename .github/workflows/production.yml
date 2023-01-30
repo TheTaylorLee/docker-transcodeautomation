@@ -51,8 +51,8 @@ jobs:
           push: true
           dockerfile: Dockerfile.ubuntu22.04-lts
           tags: |
-            ghcr.io/${{ github.repository }}:ubuntu22.04-lts${{ env.tag }}
-            ghcr.io/${{ github.repository }}:ubuntu22.04-lts
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts
 
       - name: Build and push alpine
         uses: docker/build-push-action@v3
@@ -63,6 +63,6 @@ jobs:
           push: true
           dockerfile: Dockerfile.alpine3.14-lts
           tags: |
-            ghcr.io/${{ github.repository }}:alpine3.14-lts${{ env.tag }}
-            ghcr.io/${{ github.repository }}:alpine3.14-lts
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts
+            ghcr.io/thetaylorlee/docker-transcodeautomation:latest
