@@ -45,11 +45,10 @@ jobs:
       - name: Build and push ubuntu
         uses: docker/build-push-action@v3
         with:
-          context: .
+          dockerfile: Dockerfile.ubuntu22.04-lts
           registry: ghcr.io
           platforms: linux/amd64,linux/arm64
           push: true
-          dockerfile: Dockerfile.ubuntu22.04-lts
           tags: |
             ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts${{ env.tag }}
             ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts
@@ -57,11 +56,10 @@ jobs:
       - name: Build and push alpine
         uses: docker/build-push-action@v3
         with:
-          context: .
+          dockerfile: Dockerfile.alpine3.14-lts
           registry: ghcr.io
           platforms: linux/amd64,linux/arm64
           push: true
-          dockerfile: Dockerfile.alpine3.14-lts
           tags: |
             ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts${{ env.tag }}
             ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts
