@@ -1,6 +1,13 @@
-name: dev images
+name: prod-amd64
 
 "on":
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+    tags:
+      - "*"
   workflow_dispatch:
 
 jobs:
@@ -32,6 +39,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.API_TOKEN }}
 
+      - name: Build and push ubuntu
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.ubuntu22.04-lts-amd64
+          registry: ghcr.io
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64
+
       - name: Build and push alpine
         uses: docker/build-push-action@v3
         with:
@@ -41,5 +60,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-develop-${{ env.tag }}
-            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-develop
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64
+            ghcr.io/thetaylorlee/docker-transcodeautomation:latest-amd64
+            ghcr.io/thetaylorlee/docker-transcodeautomation:latest

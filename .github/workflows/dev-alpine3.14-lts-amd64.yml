@@ -1,4 +1,4 @@
-name: dev ubuntu images
+name: dev-alpine3.14-lts-amd64
 
 "on":
   workflow_dispatch:
@@ -32,14 +32,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.API_TOKEN }}
 
-      - name: Build and push ubuntu
+      - name: Build and push alpine
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile.ubuntu22.04-lts-amd64
+          file: Dockerfile.alpine3.14-lts-amd64
           registry: ghcr.io
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64-develop-${{ env.tag }}
-            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64-develop
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-develop-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-develop

@@ -17,3 +17,4 @@
 - 2.9.0 publish ghcr image
 - 2.10.0 Add ci/cd actions workflow
 - 2.10.1 Testing ci/cd workflow
+- 2.11.0 Working on adding architectures
