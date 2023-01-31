@@ -15,6 +15,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get tag
+        id: repository
+        run: echo "tag=$(cat version)" > $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -36,7 +40,9 @@ jobs:
       #          registry: ghcr.io
       #          platforms: linux/amd64
       #          push: true
-      #          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
+      #          tags: |
+      #            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop-${{ env.tag }}
+      #            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
 
       - name: Build and push alpine
         uses: docker/build-push-action@v3
@@ -46,4 +52,6 @@ jobs:
           registry: ghcr.io
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-develop
+          tags: |
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-develop-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-develop
