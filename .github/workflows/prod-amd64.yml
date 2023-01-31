@@ -62,5 +62,4 @@ jobs:
           tags: |
             ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64-${{ env.tag }}
             ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-amd64
-            ghcr.io/thetaylorlee/docker-transcodeautomation:latest-amd64
             ghcr.io/thetaylorlee/docker-transcodeautomation:latest

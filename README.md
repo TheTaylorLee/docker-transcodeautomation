@@ -51,8 +51,7 @@ ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_per
 ```
 
 ## Deploying the image
-- **[Other Container Versions](https://github.com/users/TheTaylorLee/packages/container/package/docker-transcodeautomation)**
-- Docker Compose Example
+### Compose Example
 ```yml
 version: "3.8"
 services:
@@ -102,6 +101,20 @@ Docker Volume | Purpose | Example
 Data | Config Files, Database, Database backups and logs, are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
 Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
 Media | Top volume containing media files | /media:/media
+
+### Builds and Tags
+Build | Architectures | Updated
+---------|----------|---------
+Alpine3.14-lts | amd64 | yes
+Ubuntu22.04-lts | amd64 | yes
+
+Tags | Description
+---------|----------
+`build`-`Architecture`-develop | Most recent dev image for for any build & architecture
+`build`-`Architecture`-develop-`version` | Versioned dev image for for any build & architecture
+`build`-`Architecture`-`version` | Versioned image for any build & architecture
+`build`-`Architecture` | Latest image for any build & architecture
+latest | Latest alpine amd64 image
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions for managing the transcode database.
