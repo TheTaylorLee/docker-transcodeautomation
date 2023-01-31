@@ -38,7 +38,7 @@ jobs:
           context: .
           file: Dockerfile.ubuntu22.04-lts
           registry: ghcr.io
-          platforms: linux/amd64
+          platforms: linux/amd64, linux/arm64v8
           push: true
           tags: |
             ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop-${{ env.tag }}
