@@ -36,10 +36,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile.ubuntu22.04-lts
+          file: Dockerfile.ubuntu22.04-lts-amd64
           registry: ghcr.io
-          platforms: linux/amd64, linux/arm64/v8, linux/arm64/v8
+          platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop-${{ env.tag }}
-            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-develop
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64-develop-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-amd64-develop
