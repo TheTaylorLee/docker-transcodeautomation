@@ -142,7 +142,7 @@ help <function-name> -full
 Grafana can be leveraged to build a statistics dashboard for transcoded media.
 
 #### Steps Required
-- Add Grafana to your docker-compose file.
+1. Add Grafana to your docker-compose file.
 ```yml
 version: "3.8"
 services:
@@ -175,12 +175,12 @@ services:
       - /home/user/docker/appdata/grafana-data:/var/lib/grafana
       - /home/user/docker/appdata/docker-transcodeautomation/data/MediaDB.SQLite:/mydb/MediaDB.SQLite
 ```
-- Navigate to Grafana http://localhost:3000
-- In Configuration > Data Sources > Plugins, install the SQLite plugin
-- In Datasources add a new sqlite datasource with the path /mydb/MediaDB.SQLite and a name of MediaDB (Leave the other options untouched)
-- If don't use the name MediaDB for datasource, the dashboard import will fail.
-- Go to Dashboards > Import, [paste the json from here](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/grafana-dashboard.json), and then click import
-- You now have a dashboard for displaying statistics. If you haven't been running docker-transcodeautomation previously, no statistics will exist yet for the dashboard to display.
+2. Navigate to Grafana http://localhost:3000
+3. In Configuration > Data Sources > Plugins, install the SQLite plugin
+4. In Datasources add a new sqlite datasource with the path /mydb/MediaDB.SQLite and a name of MediaDB (Leave the other options untouched)
+5. If you don't use the name MediaDB for datasource, the dashboard import will fail.
+6. Go to Dashboards > Import, [paste the json from here](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/grafana-dashboard.json), and then click import
+7. You now have a dashboard for displaying statistics. If you haven't been running docker-transcodeautomation previously, no statistics will exist yet for the dashboard to display.
 ![Grafana Dashboard](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/dashboard-grafana.png)
 
 ## Troubleshooting
