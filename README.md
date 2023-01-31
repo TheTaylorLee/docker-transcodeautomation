@@ -137,26 +137,6 @@ help <function-name> -full
 ## Statistics
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
-- The following statistics are recorded
-
-Statistic | Description
----------|----------
-mediacount | total number of existing media files
-oldsizeMB | old size of media that had been transcoded. regardless of if file still exists.
-newsizeMB | new size of media that had been transcoded. regardless of if file still exists.
-differenceMB | amount of space saved by transcoding the media. regardless of if file still exists.
-percent | percent of new size as compared to old size of media. regardless of if file still exists.
-existssumsizeMB | total size of existing media files
-existsoldsizeMB | old size of media that had been transcoded. only if it still exists.
-existsnewsizeMB | new size of media that had been transcoded. only if it still exists.
-existsdifferenceMB | amount of space saved by transcoding the media. only if it still exists.
-existspercent | percent of new size as compared to old size of media. only if file still exists.
-added | date the table entry was added
-updatedby | function that last updated the table entry. could prove useful if troubleshooting bad table updates.
-growth30daysMB | this shows how much storage usage has increased in the past x days for existing media only
-growth90daysMB | this shows how much storage usage has increased in the past x days for existing media only
-growth180daysMB | this shows how much storage usage has increased in the past x days for existing media only
-growth365daysMB | this shows how much storage usage has increased in the past x days for existing media only
 
 ### Example Using Grafana
 Grafana can be leveraged to build a statistics dashboard for transcoded media.
