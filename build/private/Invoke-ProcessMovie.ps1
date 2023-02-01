@@ -35,6 +35,9 @@ function invoke-processmovie {
                     Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
                     (Get-ChildItem $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
                 }
+                else {
+                    Remove-Item $sourcefiles[$i].fullname -Force -Verbose
+                }
             }
             else {
                 break

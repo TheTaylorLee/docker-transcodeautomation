@@ -31,6 +31,14 @@ if ($test3 -eq $false) {
     Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }
 
+# Check for required variables
+if ($null -ne $env:BACKUPPROCESSED -and $null -ne $env:BACKUPPROCESSED -and $null -ne $env:MEDIAMOVIEFOLDERS -and $null -ne $env:MEDIASHOWFOLDERS -and $null -ne $env:MOVIESCRF -and $null -ne $env:SHOWSCRF) {
+    Write-Warning "Required environment Variable not set. Review the README documentation for help. Processing will not continue."
+    while ($true) {
+        Start-Sleep -Seconds 2147483
+    }
+}
+
 # Import transcode automation scripts and continue with transcode automation
 if ($host.version.major -eq '7') {
     ##Import Functions
