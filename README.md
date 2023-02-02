@@ -178,9 +178,8 @@ services:
 2. Navigate to Grafana http://localhost:3000
 3. In Configuration > Data Sources > Plugins, install the SQLite plugin
 4. In Datasources add a new sqlite datasource with the path /mydb/MediaDB.SQLite and a name of MediaDB (Leave the other options untouched)
-5. If you don't use the name MediaDB for datasource, the dashboard import will fail.
-6. Go to Dashboards > Import, [paste the json from here](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/grafana-dashboard.json), and then click import
-7. You now have a dashboard for displaying statistics. If you haven't been running docker-transcodeautomation previously, no statistics will exist yet for the dashboard to display.
+5. Go to Dashboards > Import, [paste the json from here](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/grafana-dashboard.json), and then click import
+6. You now have a dashboard for displaying statistics. If you haven't been running docker-transcodeautomation previously, no statistics will exist yet for the dashboard to display.
 ![Grafana Dashboard](https://raw.githubusercontent.com/TheTaylorLee/docker-transcodeautomation/master/examples/dashboard-grafana.png)
 
 ## Troubleshooting
