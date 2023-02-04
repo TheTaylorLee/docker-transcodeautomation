@@ -71,9 +71,6 @@ function Update-Statistics {
             $media = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename"
             $mediaexists = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename Where fileexists = 'true'"
 
-            #forumlas that cause hash literal error if put directly in sqlparameters block
-
-
             $query = "INSERT INTO Statistics (tablename, mediacount, oldsizeMB, newsizeMB, differenceMB, percent, existssumsizeMB, existsoldsizeMB, existsnewsizeMB, existsdifferenceMB, existspercent, added, updatedby, growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB) Values
     (@tablename, @mediacount, @oldsizeMB, @newsizeMB, @differenceMB, @percent, @existssumsizeMB, @existsoldsizeMB, @existsnewsizeMB, @existsdifferenceMB, @existspercent, @added, @updatedby, @growth30daysMB, @growth90daysMB, @growth180daysMB, @growth365daysMB)"
 
@@ -125,10 +122,6 @@ function Update-Statistics {
                 growth365daysMB    = [math]::Round((($mediaexists | Where-Object { $_.added -gt (Get-Date).AddDays(-365) }).newsizemb | Measure-Object -Sum).sum, 2)
             }
         }
-
-        #Return results to powershell
-        #$query = "SELECT * FROM Statistics"
-        #Invoke-SqliteQuery -DataSource $DataSource -Query $query
     }
 
     #Used in debug logs
