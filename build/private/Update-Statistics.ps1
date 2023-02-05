@@ -16,7 +16,7 @@ function Update-Statistics {
     $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename" | Where-Object { $_.added -gt (Get-Date).AddDays(-1) }
 
     if ($null -eq $query -or $force) {
-        Write-Output "Updating Statistics Table"
+        Write-Output "[+] Updating Statistics Table"
         #Movies
         $tablename = "Movies"
         $media = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename"
@@ -75,7 +75,7 @@ function Update-Statistics {
     }
 
     # Drop StatisticsLive table and create new record. This will provide updated statistics each run instead of every 24 hours
-    Write-Output "Updating StatisticsLive Table"
+    Write-Output "[+] Updating StatisticsLive Table"
     Invoke-SqliteQuery -DataSource $DataSource -Query "DELETE FROM StatisticsLive"
 
     #Movies into StatisticsLive

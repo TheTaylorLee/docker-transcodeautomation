@@ -17,7 +17,7 @@ function Start-TranscodeShows {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomShowOptionsApplied -eq $true) {
-                Write-Output "Using Custom Show Parameters"
+                Write-Output "[+] Using Custom Show Parameters"
                 /docker-transcodeautomation/data/showscustomoptions.ps1
             }
             else {
@@ -29,7 +29,7 @@ function Start-TranscodeShows {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomShowOptionsApplied -eq $true) {
-                Write-Output "Using Custom Show Parameters"
+                Write-Output "[+] Using Custom Show Parameters"
                 /docker-transcodeautomation/data/showscustomoptions.ps1
             }
             else {

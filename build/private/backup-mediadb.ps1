@@ -12,7 +12,7 @@ function Backup-Mediadb {
     $database = (Get-ChildItem $datasource).fullname
 
     if (Test-Path "$backupfolder/$date.sqlite" -ErrorAction SilentlyContinue) {
-        Write-Output "Skipping backup, database already backed up today."
+        Write-Output "[+] Skipping backup, database already backed up today."
     }
     else {
         Copy-Item -Path $database -Destination "$backupfolder/$date.sqlite" -Verbose

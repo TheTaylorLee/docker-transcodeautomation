@@ -26,7 +26,7 @@ Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
 $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
 $test3 = Test-Path $datasource
 if ($test3 -eq $false) {
-    Write-Output "Creating sqlite database"
+    Write-Output "[+] Creating sqlite database"
     . $PSScriptRoot/private/Invoke-DBSetup.ps1
     Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }

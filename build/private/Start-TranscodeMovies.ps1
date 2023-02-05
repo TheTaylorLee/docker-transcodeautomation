@@ -17,7 +17,7 @@ function Start-TranscodeMovies {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "Using Custom Movies Parameters"
+                Write-Output "[+] Using Custom Movies Parameters"
                 /docker-transcodeautomation/data/moviescustomoptions.ps1
             }
             else {
@@ -29,7 +29,7 @@ function Start-TranscodeMovies {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "Using Custom Movies Parameters"
+                Write-Output "[+] Using Custom Movies Parameters"
                 /docker-transcodeautomation/data/moviescustomoptions.ps1
             }
             else {

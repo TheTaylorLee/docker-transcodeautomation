@@ -5,6 +5,9 @@ function Invoke-DBSetup {
         [Parameter(Mandatory = $true)][string[]]$DataSource
     )
 
+    #Used in debug logs
+    Write-Output "[+] Invoke-DBSetup Start"
+
     # Create Movies Table
     $Tablename = "Movies"
     $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT)"
@@ -110,4 +113,7 @@ WHERE tablename = 'Shows'
 ORDER BY added DESC;
 "
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+
+    #Used in debug logs
+    Write-Output "[+] Invoke-DBSetup End"
 }
