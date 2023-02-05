@@ -22,3 +22,4 @@
 - 2.11.1 Fix script not imported and missing environment variables
 - 2.11.2 Update log output
 - 2.12.0 Update Update-Statistics Mediafunction
+- 2.13.0 Testing updated ci/cd workflow
