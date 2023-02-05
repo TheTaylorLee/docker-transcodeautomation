@@ -3,19 +3,12 @@
 Updates and pulls transcoded and media stats
 
 .Example
-Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite | Out-Gridview
-
-Gets all table entries
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite
 
 .Example
-Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite | Select-Object -last 2
+Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite -force
 
-Gets last 2 table entries
-
-.Example
-Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite -force | Select-Object -last 2
-
-Gets last 2 table entries and forces an update of statistics table regardless of time last entry ocurred
+Forces an update of statistics table regardless of time last entry ocurred
 
 .Notes
 - tablename           name of the table the stats are for
@@ -114,7 +107,6 @@ function Update-Statistics {
     #
     #
     # Drop StatisticsLive table and create new record. This will provide updated statistics each run instead of every 24 hours
-    Write-Output "Updating StatisticsLive Table"
     Invoke-SqliteQuery -DataSource $DataSource -Query "DELETE FROM StatisticsLive"
 
     #Movies into StatisticsLive
