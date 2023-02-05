@@ -8,7 +8,6 @@ name: prod-amd64
       - closed
     tags:
       - "*"
-  workflow_dispatch:
 
 jobs:
   build-and-push-image:
