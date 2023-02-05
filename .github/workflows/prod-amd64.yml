@@ -55,7 +55,6 @@ jobs:
         with:
           context: .
           file: Dockerfile.alpine3.14-lts-amd64
-          registry: ghcr.io
           platforms: linux/amd64
           push: true
           tags: |
