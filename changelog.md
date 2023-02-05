@@ -18,3 +18,4 @@
 - 2.10.0 Add ci/cd actions workflow
 - 2.10.1 Testing ci/cd workflow
 - 2.10.2 Add handling for when $env:BACKUPPROCESSED is false. Sourcefile wasn't removed causing processing to halt.
+- 2.11.0 Add StatisticsLive table so stats are updated every process loop and not only once a day.

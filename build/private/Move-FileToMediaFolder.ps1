@@ -8,7 +8,7 @@ function Move-FileToMEDIAFolder {
     )
 
     #Used in debug logs
-    Write-Output "Move-FileToMEDIAFolder Start"
+    Write-Output "[+] Move-FileToMEDIAFolder Start"
 
     #Generate list of existing files for moving new files in their place
     ##Delete old comparison file and make a new one
@@ -72,5 +72,5 @@ function Move-FileToMEDIAFolder {
     }
 
     #Used in debug logs
-    Write-Output "Move-FileToMEDIAFolder End"
+    Write-Output "[+] Move-FileToMEDIAFolder End"
 }

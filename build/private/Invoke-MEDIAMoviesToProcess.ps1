@@ -9,7 +9,7 @@ Function Invoke-MEDIAMoviesToProcess {
     )
 
     #Used in debug logs
-    Write-Output "Invoke-MEDIAMoviesToProcess Start"
+    Write-Output "[+] Invoke-MEDIAMoviesToProcess Start"
 
     # Set static Table parameters
     $TableName = "Movies"
@@ -117,5 +117,5 @@ Function Invoke-MEDIAMoviesToProcess {
     }
 
     #Used in debug logs
-    Write-Output "Invoke-MEDIAMoviesToProcess End"
+    Write-Output "[+] Invoke-MEDIAMoviesToProcess End"
 }

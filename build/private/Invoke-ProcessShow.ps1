@@ -8,7 +8,7 @@ function invoke-processshow {
     )
 
     #Used in debug logs
-    Write-Output "Invoke-ProcessShow Start"
+    Write-Output "[+] Invoke-ProcessShow Start"
 
     ##Process files
     Start-TranscodeShows -crf $env:SHOWSCRF
@@ -62,5 +62,5 @@ function invoke-processshow {
     Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
 
     #Used in debug logs
-    Write-Output "Invoke-ProcessShow End"
+    Write-Output "[+] Invoke-ProcessShow End"
 }

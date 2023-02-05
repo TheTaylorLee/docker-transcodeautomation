@@ -10,7 +10,7 @@ Function Invoke-MediaManagement {
     )
 
     #Used in debug logs
-    Write-Output "Invoke-MediaManagement Start"
+    Write-Output "[+] Invoke-MediaManagement Start"
 
     ##Shows
     ##Make sure no previous failures occurred prior to stepping forward with shows
@@ -22,7 +22,7 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Warning "Files in fftools folders preventing this function from running. Clear up this issue first"
+        Write-Warning "[-] Files in fftools folders preventing this function from running. Clear up this issue first"
     }
 
     ##Movies
@@ -35,7 +35,7 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Warning "Files in fftools folders preventing this function from running. Clear up this issue first"
+        Write-Warning "[-] Files in fftools folders preventing this function from running. Clear up this issue first"
     }
 
     #Remove recover files older than 14 days.
@@ -45,5 +45,5 @@ Function Invoke-MediaManagement {
     Remove-Item -Verbose
 
     #Used in debug logs
-    Write-Output "Invoke-MediaManagement End"
+    Write-Output "[+] Invoke-MediaManagement End"
 }

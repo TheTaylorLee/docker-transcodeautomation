@@ -1,23 +1,23 @@
+#Used in Debug Logs
+Start-Transcript "$PSScriptRoot/data/logs/$time debug.log"
+Write-Output "[+] TranscodeAutomation Start"
+
 # Fix for environment variables not being pulled in by the service
 $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
 $env:FFToolsTarget = "/docker-transcodeautomation/transcoding/new/"
 
 # Create directories if missing
-New-Item /docker-transcodeautomation/transcoding/new/ -ItemType Directory -ErrorAction silentlycontinue
-New-Item /docker-transcodeautomation/transcoding/new/recover -ItemType Directory -ErrorAction silentlycontinue
-New-Item /docker-transcodeautomation/transcoding/new/processed -ItemType Directory -ErrorAction silentlycontinue
-New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction silentlycontinue
-New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue
+New-Item /docker-transcodeautomation/transcoding/new/ -ItemType Directory -ErrorAction silentlycontinue -Verbose
+New-Item /docker-transcodeautomation/transcoding/new/recover -ItemType Directory -ErrorAction silentlycontinue -Verbose
+New-Item /docker-transcodeautomation/transcoding/new/processed -ItemType Directory -ErrorAction silentlycontinue -Verbose
+New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction silentlycontinue -Verbose
+New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue -Verbose
 
 #Debug log management
 Get-ChildItem -Path $PSScriptRoot/data/logs/ |
 Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-90) } |
 Remove-Item
 $time = Get-Date -Format "yyyy-MM-dd HHmmss"
-
-#Used in Debug Logs
-Start-Transcript "$PSScriptRoot/data/logs/$time debug.log"
-Write-Output "TranscodeAutomation Start"
 
 # Import PSSqlite
 Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
@@ -31,9 +31,12 @@ if ($test3 -eq $false) {
     Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }
 
+# Update the database for missing tables added in new versions of docker-transcodeautomation
+Update-Database -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
+
 # Check for required variables
 if ($null -ne $env:BACKUPPROCESSED -and $null -ne $env:BACKUPPROCESSED -and $null -ne $env:MEDIAMOVIEFOLDERS -and $null -ne $env:MEDIASHOWFOLDERS -and $null -ne $env:MOVIESCRF -and $null -ne $env:SHOWSCRF) {
-    Write-Warning "Required environment Variable not set. Review the README documentation for help. Processing will not continue."
+    Write-Warning "[-] Required environment Variable not set. Review the README documentation for help. Processing will not continue."
     while ($true) {
         Start-Sleep -Seconds 2147483
     }
@@ -60,7 +63,7 @@ if ($host.version.major -eq '7') {
     # Begin Automation
     # If set update metadata of existing media only
     if ($env:UPDATEMETADATA -eq 'true') {
-        /docker-transcodeautomation/updatemetadata.ps1
+        /docker-transcodeautomation/scripts/Update-Metadata.ps1
         while ($true) {
             Start-Sleep -Seconds 2147483
         }
@@ -74,7 +77,7 @@ if ($host.version.major -eq '7') {
 
             if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
                 $dt = Get-Date
-                Write-Output "Transcodeautomation while loop started at $dt"
+                Write-Output "[+] Transcodeautomation while loop started at $dt"
                 Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
@@ -85,16 +88,16 @@ if ($host.version.major -eq '7') {
                 $endtime = Get-Date -Date $env:ENDTIMEUTC
                 if ($endtime -lt $startime) {
                     $endtime = $endtime.AddDays(1)
-                    Write-Output "Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                    Write-Output "[+] Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
                 }
                 else {
-                    Write-Output "Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                    Write-Output "[+] Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
                 }
             }
 
             $timenow = Get-Date
             $seconds = 14400
-            Write-Output "Start Sleep at $timenow for $seconds seconds"
+            Write-Output "[+] Start Sleep at $timenow for $seconds seconds"
             Start-Sleep -Seconds $seconds
         }
     }

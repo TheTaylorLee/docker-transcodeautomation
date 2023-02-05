@@ -6,7 +6,7 @@ function Backup-Mediadb {
     )
 
     #Used in debug logs
-    Write-Output "Backup-Mediadb Start"
+    Write-Output "[+] Backup-Mediadb Start"
 
     $date = Get-Date -Format "yyyy-MM-dd"
     $database = (Get-ChildItem $datasource).fullname
@@ -23,5 +23,5 @@ function Backup-Mediadb {
     Remove-Item -Verbose
 
     #Used in debug logs
-    Write-Output "Backup-Mediadb End"
+    Write-Output "[+] Backup-Mediadb End"
 }

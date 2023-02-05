@@ -8,7 +8,7 @@ function invoke-processmovie {
     )
 
     #Used in debug logs
-    Write-Output "Invoke-ProcessMovie Start"
+    Write-Output "[+] Invoke-ProcessMovie Start"
 
     ##Process files
     Start-TranscodeMovies -crf $env:MOVIESCRF
@@ -62,5 +62,5 @@ function invoke-processmovie {
     Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
 
     #Used in debug logs
-    Write-Output "Invoke-ProcessMovie End"
+    Write-Output "[+] Invoke-ProcessMovie End"
 }

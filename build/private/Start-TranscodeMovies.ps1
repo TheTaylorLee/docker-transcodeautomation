@@ -6,7 +6,7 @@ function Start-TranscodeMovies {
         [Parameter(Mandatory = $true)]$crf
     )
     #Used in debug logs
-    Write-Output "Start-Transcode Start"
+    Write-Output "[+] Start-Transcode Start"
 
     if ($env:FFToolsSource -and $env:FFToolsTarget) {
         #Change directory to the source folder
@@ -39,8 +39,8 @@ function Start-TranscodeMovies {
     }
 
     else {
-        Write-Warning "You must first run Set-FFToolsVariables! This is only required once."
+        Write-Warning "[-] Required FFtools Variables Missing"
     }
     #Used in debug logs
-    Write-Output "Start-Transcode End"
+    Write-Output "[+] Start-Transcode End"
 }
