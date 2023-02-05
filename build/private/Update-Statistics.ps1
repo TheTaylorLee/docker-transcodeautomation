@@ -134,7 +134,6 @@ function Update-Statistics {
         growth365daysMB    = [math]::Round((($mediaexists | Where-Object { $_.added -gt (Get-Date).AddDays(-365) }).newsizemb | Measure-Object -Sum).sum, 2)
     }
 
-
     #Used in debug logs
     Write-Output "[+] Update-Statistics End"
 }
