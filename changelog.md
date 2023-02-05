@@ -21,3 +21,4 @@
 - 2.11.0 Add StatisticsLive table so stats are updated every process loop and not only once a day.
 - 2.11.1 Fix script not imported and missing environment variables
 - 2.11.2 Update log output
+- 2.12.0 Update Update-Statistics Mediafunction
