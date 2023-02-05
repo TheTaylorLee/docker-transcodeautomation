@@ -32,8 +32,7 @@ if ($test3 -eq $false) {
 }
 
 # Update the database for missing tables added in new versions of docker-transcodeautomation
-. $PSScriptRoot/private/Update-Database.ps1
-Update-Database -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
+/docker-transcodeautomation/scripts/Update-Database.ps1
 
 # Check for required variables
 if ($null -ne $env:BACKUPPROCESSED -and $null -ne $env:BACKUPRETENTION -and $null -ne $env:MEDIAMOVIEFOLDERS -and $null -ne $env:MEDIASHOWFOLDERS -and $null -ne $env:MOVIESCRF -and $null -ne $env:SHOWSCRF) {
