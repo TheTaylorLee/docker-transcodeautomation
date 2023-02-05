@@ -17,4 +17,4 @@ jobs:
 
       - name: Test Bash
         id: repository
-        run: date -r testfile "+%m-%d-%Y %H:%M:%S"
+        run: date -r version "+%m-%d-%Y %H:%M:%S"
