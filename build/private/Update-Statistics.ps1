@@ -78,7 +78,7 @@ function Update-Statistics {
     Write-Output "Updating StatisticsLive Table"
     Invoke-SqliteQuery -DataSource $DataSource -Query "DELETE FROM StatisticsLive"
 
-    $tablename = "Statistics"
+    $tablename = "StatisticsLive"
     $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename" | Where-Object { $_.added -gt (Get-Date).AddDays(-1) }
 
     if ($null -eq $query -or $force) {
