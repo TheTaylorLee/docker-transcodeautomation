@@ -3,8 +3,7 @@ function Update-Statistics {
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory = $true)][string]$DataSource,
-        [Parameter(Mandatory = $false)][switch]$force,
-        [Parameter(Mandatory = $false)][switch]$livestats
+        [Parameter(Mandatory = $false)][switch]$force
     )
 
     #Used in debug logs
