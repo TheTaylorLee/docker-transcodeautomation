@@ -23,3 +23,4 @@
 - 2.11.2 Update log output
 - 2.12.0 Update Update-Statistics Mediafunction
 - 2.13.0 Testing updated ci/cd workflow
+- 2.13.1 Fix for missing variable in debug log filename that should of populated debug log dates.
