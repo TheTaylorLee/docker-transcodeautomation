@@ -1,6 +1,12 @@
 #Used in Debug Logs
+$time = Get-Date -Format "yyyy-MM-dd HHmmss"
 Start-Transcript "$PSScriptRoot/data/logs/$time debug.log"
 Write-Output "[+] TranscodeAutomation Start"
+
+#Debug log management
+Get-ChildItem -Path $PSScriptRoot/data/logs/ |
+Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-90) } |
+Remove-Item
 
 # Fix for environment variables not being pulled in by the service
 $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
@@ -12,12 +18,6 @@ New-Item /docker-transcodeautomation/transcoding/new/recover -ItemType Directory
 New-Item /docker-transcodeautomation/transcoding/new/processed -ItemType Directory -ErrorAction silentlycontinue -Verbose
 New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction silentlycontinue -Verbose
 New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue -Verbose
-
-#Debug log management
-Get-ChildItem -Path $PSScriptRoot/data/logs/ |
-Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-90) } |
-Remove-Item
-$time = Get-Date -Format "yyyy-MM-dd HHmmss"
 
 # Import PSSqlite
 Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
