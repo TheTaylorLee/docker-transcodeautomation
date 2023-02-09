@@ -101,7 +101,7 @@ RUN apk add --no-cache \
 
 # Copy in modules (Modified entry)
 COPY build /docker-transcodeautomation
-COPY modules/PSSQLITE /root/.local/share/powershell/Modules/PSSQLite
+COPY modules/PSSQLite /root/.local/share/powershell/Modules/PSSQLite
 COPY modules/MediaFunctions /root/.local/share/powershell/Modules/MediaFunctions
 
 # Use PowerShell as the default shell
