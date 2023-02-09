@@ -2,6 +2,6 @@
 .github
 .dockerignore
 examples
-Dockerfile.alpine3.14-lts
-Dockerfile.ubuntu22.04-lts
+Dockerfile.alpine3.14-lts-amd64
+Dockerfile.ubuntu22.04-lts-amd64
 LICENSE

@@ -97,18 +97,11 @@ RUN --mount=from=installer-env,target=/mnt/pwsh,source=/tmp \
     while(!(Test-Path -Path \$env:PSModuleAnalysisCachePath)) {  \
     Write-Host "'Waiting for $env:PSModuleAnalysisCachePath'" ; \
     Start-Sleep -Seconds 6 ; \
-    }" \
-    # Install pssqlite module for use by manual functions. (Modified entry)
-    && pwsh \
-    -NoLogo \
-    -NoProfile \
-    -Command " \
-    \$ErrorActionPreference = 'Stop' ; \
-    \$ProgressPreference = 'SilentlyContinue' ; \
-    Install-Module pssqlite -force -allowclobber"
+    }"
 
 # Copy in modules (Modified entry)
 COPY build /docker-transcodeautomation
+COPY modules/PSSQLite /root/.local/share/powershell/Modules/PSSQLite
 COPY modules/MediaFunctions /root/.local/share/powershell/Modules/MediaFunctions
 
 # Use PowerShell as the default shell

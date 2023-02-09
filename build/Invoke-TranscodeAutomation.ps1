@@ -20,14 +20,14 @@ New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction 
 New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue -Verbose
 
 # Import PSSqlite
-Import-Module $PSScriptRoot/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
+Import-Module /root/.local/share/powershell/Modules/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
 
 # Test for existence of media database
 $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
 $test3 = Test-Path $datasource
 if ($test3 -eq $false) {
     Write-Output "[+] Creating sqlite database"
-    . $PSScriptRoot/private/Invoke-DBSetup.ps1
+    . $PSScriptRoot/functions/Invoke-DBSetup.ps1
     Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
 }
 
@@ -45,8 +45,8 @@ if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null 
 # Import transcode automation scripts and continue with transcode automation
 if ($host.version.major -eq '7') {
     ##Import Functions
-    $FunctionPathPrivate = $PSScriptRoot + "\private\"
-    $scripts = (Get-ChildItem $FunctionPathPrivate).fullname
+    $FunctionPath = $PSScriptRoot + "\functions\"
+    $scripts = (Get-ChildItem $FunctionPath).fullname
     foreach ($script in $scripts) {
         . $script
     }
