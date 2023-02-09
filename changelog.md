@@ -25,3 +25,4 @@
 - 2.13.0 Testing updated ci/cd workflow
 - 2.13.1 Fix for missing variable in debug log filename that should of populated debug log dates.
 - 2.13.1-2 rerun workflow
+- 2.14.0 Copy pssqlite module directly into the global modules directory and don't include in build folder. This will reduce the image size and remove PSGallery as a failure point from ci/cd build processes.
