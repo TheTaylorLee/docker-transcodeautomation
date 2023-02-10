@@ -134,6 +134,10 @@ pwsh
 help <function-name> -full
 ```
 
+## Using Windows Docker Desktop
+- It's possible to run this image on a Windows 10+ desktop using Windows Subsystem for Linux and Docker Desktop
+- [Check out the example provided here for guidance](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/wsl)
+
 ## Statistics
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
