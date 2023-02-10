@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  Docker-TranscodeAutomation:
+    image: ghcr.io/thetaylorlee/docker-transcodeautomation:latest
+    container_name: Docker-TranscodeAutomation
+    environment:
+      - BACKUPPROCESSED=true
+      - BACKUPRETENTION=14
+      - MEDIAMOVIEFOLDERS=/media/movies01, /media/movies02
+      - MEDIASHOWFOLDERS=/media/shows01
+      - MOVIESCRF=21
+      - SHOWSCRF=23
+    volumes:
+      - /mnt/g/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+      - /mnt/g/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
+      - /mnt/g/docker/media:/media
+    restart: unless-stopped
