@@ -1,4 +1,4 @@
-###### This is a guide for running docker-transcodeautomation on windows. It assumes some prior knowledge is had by the person reading this guide. It will provide a high level set of instructions, but shouldn't be assumed to be a full step by step guideline.
+###### This is a guide for running docker-transcodeautomation on windows. It assumes some prior knowledge is had by the person reading this guide. It will provide a high level set of instructions, but shouldn't be assumed to be full step by step instructions.
 
 - Install Ubuntu LTS from windows the store
 - Run these commands from PowerShell and be sure to pick the version of Ubuntu LTS that was installed.
