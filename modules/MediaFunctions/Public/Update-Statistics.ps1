@@ -48,9 +48,6 @@ function Update-Statistics {
         $media = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename"
         $mediaexists = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $tablename Where fileexists = 'true'"
 
-        #forumlas that cause hash literal error if put directly in sqlparameters block
-
-
         $query = "INSERT INTO Statistics (tablename, mediacount, oldsizeMB, newsizeMB, differenceMB, percent, existssumsizeMB, existsoldsizeMB, existsnewsizeMB, existsdifferenceMB, existspercent, added, updatedby, growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB) Values
     (@tablename, @mediacount, @oldsizeMB, @newsizeMB, @differenceMB, @percent, @existssumsizeMB, @existsoldsizeMB, @existsnewsizeMB, @existsdifferenceMB, @existspercent, @added, @updatedby, @growth30daysMB, @growth90daysMB, @growth180daysMB, @growth365daysMB)"
 
