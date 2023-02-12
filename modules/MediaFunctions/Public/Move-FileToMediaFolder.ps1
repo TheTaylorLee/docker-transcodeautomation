@@ -3,28 +3,23 @@
 Moves transcoded files into media folders
 
 .Example
-Move-FileTomediaFolder -mediashowfolders "\R-User-Media\Kids Shows", "\R-User-Media\Shows", "\R-Others-Media\Shows", "P:\R-User-Media2\Shows" -mediamoviefolders "\R-User-Media\Kids Movies", "\R-User-Media\Movies", "\R-Others-Media\Movies" -Datasource /docker-transcodeautomation/data/MediaDB.SQLite
+Move-FileTomediaFolder
 #>
 
 function Move-FileToMediaFolder {
 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory = $true)][string[]]$mediashowfolders,
-        [Parameter(Mandatory = $true)][string[]]$mediamoviefolders,
-        [Parameter(Mandatory = $true)][string]$DataSource
     )
 
-    #Generate list of existing files for moving new files in their place
-    ##Delete old comparison file and make a new one
-    [psobject]$mediamoviefiles = foreach ($mediamoviefolder in $mediamoviefolders) {
-        Get-ChildItem $mediamoviefolder -r -File -Include "*.mkv", "*.mp4" |
-        Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
-    }
-    [psobject]$mediashowfiles = foreach ($mediashowfolder in $mediashowfolders) {
-        Get-ChildItem $mediashowfolder -r -File -Include "*.mkv", "*.mp4" |
-        Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
-    }
+    [string[]]$mediashowfolders = $env:MEDIASHOWFOLDERS -split ', '
+    [string[]]$mediamoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
+    [string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
+
+    $query = "Select * from Shows"
+    $showsdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
+    $query = "Select * from Movies"
+    $moviesdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
     #Get a list of files in process folder
     $processeddir = "$env:FFToolsTarget" + "processed"
@@ -34,7 +29,8 @@ function Move-FileToMediaFolder {
     try {
         foreach ($file in $filestomove) {
             #move the file
-            $destination = $mediamoviefiles | Where-Object { $_.name -eq $file.name }
+            $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+            $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
                 Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
@@ -42,7 +38,7 @@ function Move-FileToMediaFolder {
                 $TableName = 'Movies'
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 $newsizeMB = $file.newsizeMB
-                $oldsizeMB = $destination.OldsizeMB
+                $oldsizeMB = $oldsizemb
                 $fullname = $destination.fullname
                 $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
@@ -57,7 +53,8 @@ function Move-FileToMediaFolder {
     try {
         foreach ($file in $filestomove) {
             #move the file
-            $destination = $mediashowfiles | Where-Object { $_.name -eq $file.name }
+            $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+            $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
                 Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
@@ -65,7 +62,7 @@ function Move-FileToMediaFolder {
                 $TableName = 'Shows'
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 $newsizeMB = $file.newsizeMB
-                $oldsizeMB = $destination.OldsizeMB
+                $oldsizeMB = $oldsizemb
                 $fullname = $destination.fullname
                 $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query

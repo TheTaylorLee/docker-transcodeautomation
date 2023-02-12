@@ -3,10 +3,10 @@
 Updates and pulls transcoded and media stats
 
 .Example
-Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite
+Update-Statistics
 
 .Example
-Update-Statistics -DataSource /docker-transcodeautomation/data/MediaDB.SQLite -force
+Update-Statistics -force
 
 Forces an update of statistics table regardless of time last entry ocurred
 
@@ -34,9 +34,10 @@ function Update-Statistics {
 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory = $true)][string]$DataSource,
         [Parameter(Mandatory = $false)][switch]$force
     )
+
+    [string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
 
     # Update statistics only if not updated in over 24 hours
     $tablename = "Statistics"

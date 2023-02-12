@@ -5,7 +5,7 @@ Write-Output "[+] TranscodeAutomation Start"
 
 #Debug log management
 Get-ChildItem -Path $PSScriptRoot/data/logs/ |
-Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-90) } |
+Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
 Remove-Item
 
 # Fix for environment variables not being pulled in by the service
