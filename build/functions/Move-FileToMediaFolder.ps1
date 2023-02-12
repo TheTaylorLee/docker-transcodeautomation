@@ -11,9 +11,9 @@ function Move-FileToMEDIAFolder {
     Write-Output "[+] Move-FileToMEDIAFolder Start"
 
     #Pull list of existing media
-    $query = Select-Object * from Shows
+    $query = "Select * from Shows"
     $showsdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
-    $query = Select-Object * from Movies
+    $query = "Select * from Movies"
     $moviesdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
     #Get a list of files in process folder
