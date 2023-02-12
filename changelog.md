@@ -27,3 +27,5 @@
 - 2.13.1-2 rerun workflow
 - 2.14.0 Copy pssqlite module directly into the global modules directory and don't include in build folder. This will reduce the image size and remove PSGallery as a failure point from ci/cd build processes.
 - 2.14.1 Updating media functions to use environment variables for parameters. This will reduce the length of typing commands.
+    - Reduced log retention to 14 days from 90
+    - Improved performance of certain functions that are slowed by wsl volume performance.

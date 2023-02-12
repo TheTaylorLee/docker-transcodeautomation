@@ -10,16 +10,11 @@ function Move-FileToMEDIAFolder {
     #Used in debug logs
     Write-Output "[+] Move-FileToMEDIAFolder Start"
 
-    #Generate list of existing files for moving new files in their place
-    ##Delete old comparison file and make a new one
-    [psobject]$MEDIAmoviefiles = foreach ($MEDIAmoviefolder in $MEDIAmoviefolders) {
-        Get-ChildItem $MEDIAmoviefolder -r -File -Include "*.mkv", "*.mp4" |
-        Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
-    }
-    [psobject]$MEDIAshowfiles = foreach ($MEDIAshowfolder in $MEDIAshowfolders) {
-        Get-ChildItem $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4" |
-        Select-Object name, fullname, directory, @{ Name = "OldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
-    }
+    #Pull list of existing media
+    $query = Select-Object * from Shows
+    $showsdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
+    $query = Select-Object * from Movies
+    $moviesdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
     #Get a list of files in process folder
     $processeddir = "$env:FFToolsTarget" + "processed"
@@ -29,17 +24,18 @@ function Move-FileToMEDIAFolder {
     try {
         foreach ($file in $filestomove) {
             #move the file
-            $destination = $MEDIAmoviefiles | Where-Object { $_.name -eq $file.name }
+            $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+            $oldsizemb = Get-ChildItem $destination.fullname | Select-Object @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
                 # log stats and changes to database
                 $TableName = 'Movies'
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 $newsizeMB = $file.newsizeMB
-                $oldsizeMB = $destination.OldsizeMB
+                $oldsizeMB = $oldsizemb
                 $fullname = $destination.fullname
-                $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileToMEDIAFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
             }
         }
@@ -52,17 +48,18 @@ function Move-FileToMEDIAFolder {
     try {
         foreach ($file in $filestomove) {
             #move the file
-            $destination = $MEDIAshowfiles | Where-Object { $_.name -eq $file.name }
+            $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+            $oldsizemb = Get-ChildItem $destination.fullname | Select-Object @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
                 # log stats and changes to database
                 $TableName = 'Shows'
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 $newsizeMB = $file.newsizeMB
-                $oldsizeMB = $destination.OldsizeMB
+                $oldsizeMB = $oldsizemb
                 $fullname = $destination.fullname
-                $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileToMEDIAFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
             }
         }

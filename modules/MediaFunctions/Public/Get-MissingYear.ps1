@@ -3,18 +3,22 @@
 Find Movies and Shows missing the year in their name
 
 .Example
-Get-MissingYear -mediafolders "\R-User-Media\Kids Movies", "\R-User-Media\Movies", "\R-Others-Media\Movies", "P:\R-User-Media2\Shows", "\R-User-Media\Kids Shows", "\R-User-Media\Shows", "\R-Others-Media\Shows"
+remove-item /docker-transcodeautomation/data/logs/missingyear.log -force
+Get-MissingYear | out-file /docker-transcodeautomation/data/logs/missingyear.log -append
 #>
 
 function Get-MissingYear {
 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory = $true)][string[]]$mediafolders
     )
 
+    [string[]]$mediashowfolders = $env:MEDIASHOWFOLDERS -split ', '
+    [string[]]$mediamoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
+    [string[]]$mediafolders = $mediashowfolders + $mediamoviefolders
+
     foreach ($mediafolder in $mediafolders) {
-        Get-ChildItem $mediafolder -r -Include "*.mkv", "*.mp4", !nocollection, !trailers, *.png, "*The Hobbit The Ultimate Edit*" | Select-Object name, fullname | Where-Object { $_.name -notlike "*(*)*" }
+        Get-ChildItem $mediafolder -r | Select-Object name, fullname | Where-Object { $_.name -notlike "*(*)*" }
     }
 
 }

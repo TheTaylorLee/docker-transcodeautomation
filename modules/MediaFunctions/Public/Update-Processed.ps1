@@ -3,7 +3,7 @@
 Updates SQL database to mark transcoded files as not transcoded if an ffprobe of those files indicates such. Occasionally running this is useful for identifying replaced/upgraded files.
 
 .Example
-Update-Processed -DataSource /docker-transcodeautomation/data/MediaDB.SQLite
+Update-Processed
 
 .Notes
 - For all db updates mark updated by and modified time
@@ -20,8 +20,9 @@ function Update-Processed {
 
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory = $true)][string]$DataSource
     )
+
+    [string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
 
     # Movies
     $tablename = "Movies"
