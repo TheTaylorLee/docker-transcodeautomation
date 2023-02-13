@@ -10,6 +10,10 @@ function invoke-processshow {
     #Used in debug logs
     Write-Output "[+] Invoke-ProcessShow Start"
 
+    if ($null -eq $env:SHOWSCRF) {
+        $env:SHOWSCRF = "23"
+    }
+
     ##Process files
     Start-TranscodeShows -crf $env:SHOWSCRF
 

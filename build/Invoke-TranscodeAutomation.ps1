@@ -35,7 +35,7 @@ if ($test3 -eq $false) {
 /docker-transcodeautomation/scripts/Update-Database.ps1
 
 # Check for required variables
-if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null -eq $env:MEDIAMOVIEFOLDERS -or $null -eq $env:MEDIASHOWFOLDERS -or $null -eq $env:MOVIESCRF -or $null -eq $env:SHOWSCRF) {
+if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null -eq $env:MEDIAMOVIEFOLDERS -or $null -eq $env:MEDIASHOWFOLDERS) {
     Write-Warning "[-] Required environment Variable not set. Review the README documentation for help. Processing will not continue."
     while ($true) {
         Start-Sleep -Seconds 2147483
