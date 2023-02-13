@@ -73,26 +73,33 @@ services:
 ```
 
 ### Environment Variables
-ENV Variable | Required | Description | Example
----------|----------|---------|---------
-PUID | No | User ID that has access to the volumes | PUID=1000
-GUID | No | Group ID that has access to the volumes | PGID=1000
-BACKUPPROCESSED | Yes | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
-BACKUPRETENTION | Yes | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
-ENDTIMEUTC | No | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
-MEDIAMOVIEFOLDERS | Yes | Top level movie directories. Multiple directories must be seperate by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | Yes | Top level show directories. Multiple directories must be seperate by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
-MOVIESCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
-SHOWSCRF | Yes | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
-STARTTIMEUTC | No | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
-UPDATEMETADATA | No | If true, existing media will have metadata updated only | UPDATEMETADATA=true
+#### Required Variables
+ENV Variable |  Description | Example
+---------|---------|---------
+BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
+BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
+MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperate by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperate by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
+SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
 
+#### Optional Variables
+ENV Variable | Description | Example
+---------|---------|---------
+PUID | User ID that has access to the volumes | PUID=1000
+GUID | Group ID that has access to the volumes | PGID=1000
+ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
+STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
+UPDATEMETADATA | If true, existing media will have metadata updated only | UPDATEMETADATA=true
+
+#### Variable Notes
 - If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
 - If you use option 2 you might not leverage the `MOVIESCRF` and `SHOWSCRF` variables. Regardless you need to set those environment variables so that dependent functions will have certain requirements met. In that scenario the provided integer doesn't matter.
 - `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
-  - After metadata has been updated remove this variable and restart the container.
-  - Docker logs will shows `UPDATEMETADATA End` when this process has completed.
+- After metadata has been updated remove this variable and restart the container.
+- Docker logs will shows `UPDATEMETADATA End` when this process has completed.
 - If `ENDTIMEUTC` is an earlier time than `STARTTIMEUTC`, then it will be treated as next day. For example 18:30 UTC start time with an end time of 03:00 UTC, the end time will stop processing new transcodes the next day for the given UTC Datetime.
+
 
 ### Volumes
 
@@ -118,9 +125,8 @@ latest | Latest alpine amd64 image
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions for managing the transcode database.
-- There is no requirement to use these functions, but they can be useful in certain scenarios.
+- Use `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
 ```powershell
-pwsh #Switch into pwsh from bash or sh first. Then the PowerShell functions can be used.
 #Media Management Functions
 Get-MissingYear        #Gets media missing the year of release in the name
 Get-NotProcessed       #Get files not yet transcoded
