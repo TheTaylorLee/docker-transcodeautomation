@@ -118,6 +118,7 @@ latest | Latest alpine amd64 image
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions for managing the transcode database.
+- There is no requirement to use these functions, but they can be useful in certain scenarios.
 ```powershell
 pwsh #Switch into pwsh from bash or sh first. Then the PowerShell functions can be used.
 #Media Management Functions
@@ -126,12 +127,6 @@ Get-NotProcessed       #Get files not yet transcoded
 Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAutomation will handle this, but this can be useful in some scenarios
 Update-Processed       #Updates transcoded files sql entries for replaced/upgraded files
 Update-Statistics      #Updates and pulls transcoded media stats
-```
-
-- To get more help and info on these functions
-```Powershell
-pwsh
-help <function-name> -full
 ```
 
 ## Using Windows Docker Desktop
