@@ -59,12 +59,6 @@ if ($host.version.major -eq '7') {
         $env:STARTTIMEUTC = "00:00"
         $env:ENDTIMEUTC = "23:59:59"
     }
-    if ($null -eq $env:MOVIESCRF) {
-        $env:MOVIESCRF = "21"
-    }
-    if ($null -eq $env:SHOWSCRF) {
-        $env:SHOWSCRF = "23"
-    }
 
     # Begin Automation
     # If set update metadata of existing media only

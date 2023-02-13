@@ -10,6 +10,10 @@ function invoke-processmovie {
     #Used in debug logs
     Write-Output "[+] Invoke-ProcessMovie Start"
 
+    if ($null -eq $env:MOVIESCRF) {
+        $env:MOVIESCRF = "21"
+    }
+
     ##Process files
     Start-TranscodeMovies -crf $env:MOVIESCRF
 
