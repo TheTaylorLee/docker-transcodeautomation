@@ -29,3 +29,4 @@
 - 2.14.1 Updating media functions to use environment variables for parameters. This will reduce the length of typing commands.
     - Reduced log retention to 14 days from 90
     - Improved performance of certain functions that are slowed by wsl volume performance.
+- 2.15.0 Make CRF Variables optional
