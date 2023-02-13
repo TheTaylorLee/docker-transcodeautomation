@@ -144,10 +144,4 @@ help <function-name> -full
 - [Here is an example using Grafana](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/grafana)
 
 ## Troubleshooting
-- Review the docker logs. You might have found there are issues with your path variables, volumes, or files left over in transcoding directories due to interruptions.
-- If the logs indicate that there are files leftover in the transcoding directory you must remove them so no extra files are in that directory. This will allow processing to resume.
-- If the log throws an error for Move-Item for file Move-FileToMediaFolder.ps1 you probably have duplicate filenames. This process expects all media files to have unique filenames.
-- If a transcoded file is corrupted, and you have BACKUPPROCESSED enabled, you can recover an original version of the file for x days from this mapped volume. `/docker-transcodeautomation/transcoding/new/recover`
-- The transcoding process will retain persistent logs in the mapped `/docker-transcodeautomation/data` volume.
-- You might run into a scenario where you replace an already transcoded file, and the new file doesn't transcode. This can be resolved with the update-processed media function. See the related section "Using Included Media functions"
-- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy. If this fails, just delete the database and restart the container. This will build a new database sans historical statistics.
+- [Check out the Troubleshooting Discussion Topics](https://github.com/TheTaylorLee/docker-transcodeautomation/discussions/categories/troubleshooting-help)
