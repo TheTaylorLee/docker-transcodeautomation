@@ -136,7 +136,7 @@ Update-Statistics      #Updates and pulls transcoded media stats
 
 ## Using Windows Docker Desktop
 - It's possible to run this image on a Windows 10+ desktop using Windows Subsystem for Linux and Docker Desktop
-- Transcode performance is about 40% worse in my testing with wsl. I would only recommend this container using a linux host, but it can be done.
+- Transcode performance is about 40% worse in my testing with wsl. I would only recommend this container using a linux host. I observe near native transcode performance using docker-transcodeautomation on a native linux host.
 - [Check out the example provided here for guidance](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/wsl)
 
 ## Statistics
