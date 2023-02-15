@@ -16,3 +16,5 @@ wsl -s Ubuntu-<version>
 cd ~
 docker-compose up
 ```
+
+# Transcode performance is about 40% worse in my testing with wsl. I would only recommend this container using a linux host, but it will work with wsl. 
