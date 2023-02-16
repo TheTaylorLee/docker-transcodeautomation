@@ -31,7 +31,7 @@ An automated media transcoding solution. This solution is to be almost completel
 
 ### Option 1
 - All transcoded media will have the below parameters applied.
-- All video, audio, and subtitles are mapped into the transcoded file.
+- All video, audio, and subtitle streams are mapped into transcoded files.
 - Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
 - CRF quality defaults to 21 for movies and 23 for shows.
 - You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
