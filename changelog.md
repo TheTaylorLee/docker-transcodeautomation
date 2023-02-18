@@ -31,3 +31,4 @@
     - Improved performance of certain functions that are slowed by wsl volume performance.
 - 2.15.0 Make CRF Variables optional
 - 2.15.1 fix Get-Mediafunctions duplicated foreground color parameter for write-host.
+- 2.16.0 Added handling to only transcode a file if enough free space is expected exist prior to processing

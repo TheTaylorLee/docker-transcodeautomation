@@ -29,21 +29,26 @@ function invoke-processshow {
     if ($scount -eq $tcount) {
         [int]$max = $scount
         for ($i = 0; $i -lt $max; $i++) {
+            # This is error handling in case free space on a drive runs out.
             if ($targetfiles[$i].Length -gt 0) {
+                # If the source file is larger than the transcoded file
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Remove-Item $targetfiles[$i].FullName -Force -Verbose
                     ffmpeg -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
                     Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
+                # If the source file is smaller and backups are kept
                 elseif ($env:BACKUPPROCESSED -eq 'true') {
                     Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
                     (Get-ChildItem $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
                 }
+                # If the source file is smaller and backups are not kept
                 else {
                     Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
             }
             else {
+                Write-Warning "[-] Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
                 break
             }
         }

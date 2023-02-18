@@ -34,6 +34,9 @@ if ($test3 -eq $false) {
 # Update the database for missing tables added in new versions of docker-transcodeautomation
 /docker-transcodeautomation/scripts/Update-Database.ps1
 
+# Create PS Drive for available free space checking
+New-PSDrive -Name transcoding -Root /docker-transcodeautomation/transcoding -PSProvider FileSystem
+
 # Check for required variables
 if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null -eq $env:MEDIAMOVIEFOLDERS -or $null -eq $env:MEDIASHOWFOLDERS) {
     Write-Warning "[-] Required environment Variable not set. Review the README documentation for help. Processing will not continue."
