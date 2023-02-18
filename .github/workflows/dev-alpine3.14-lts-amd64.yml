@@ -1,6 +1,9 @@
 name: dev-alpine3.14-lts-amd64
 
 "on":
+  pull_request:
+    types:
+      - opened
   workflow_dispatch:
 
 jobs:
