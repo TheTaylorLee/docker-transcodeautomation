@@ -22,9 +22,6 @@ New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorActi
 # Import PSSqlite
 Import-Module /root/.local/share/powershell/Modules/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
 
-# Set psreadlineoptions for better history and intellisense handling.
-/docker-transcodeautomation/scripts/Set-PSReadLineOptions.ps1
-
 # Test for existence of media database
 $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
 $test3 = Test-Path $datasource
