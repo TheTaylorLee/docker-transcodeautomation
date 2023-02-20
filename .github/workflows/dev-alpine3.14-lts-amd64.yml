@@ -4,6 +4,9 @@ name: dev-alpine3.14-lts-amd64
   pull_request:
     types:
       - opened
+  push:
+    branches-ignore:
+      - master
   workflow_dispatch:
 
 jobs:

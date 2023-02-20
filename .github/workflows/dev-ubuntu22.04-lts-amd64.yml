@@ -4,6 +4,9 @@ name: dev-ubuntu22.04-lts-amd64
   pull_request:
     types:
       - opened
+  push:
+    branches-ignore:
+      - master
   workflow_dispatch:
 
 jobs:
