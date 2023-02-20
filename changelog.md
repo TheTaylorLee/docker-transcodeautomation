@@ -33,3 +33,4 @@
 - 2.15.1 fix Get-Mediafunctions duplicated foreground color parameter for write-host.
 - 2.16.0 Added handling to only transcode a file if enough free space is expected exist prior to processing
 - 2.17.0 Add psreadline options for better intellisense and History handling. Useful for included functions
+- 2.17.1 Update get-missingyear so it doesn't truncate long paths
