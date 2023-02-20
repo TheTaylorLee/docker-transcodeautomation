@@ -1,9 +1,9 @@
 name: dev-ubuntu22.04-lts-amd64
 
 "on":
-  pull_request:
-    types:
-      - opened
+  #  pull_request:
+  #    types:
+  #      - opened
   push:
     branches-ignore:
       - master
