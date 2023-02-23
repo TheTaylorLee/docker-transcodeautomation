@@ -105,7 +105,7 @@ UPDATEMETADATA | If true, existing media will have metadata updated only | UPDAT
 
 Docker Volume | Purpose | Example
 ---------|----------|---------
-Data | Config Files, Database, Database backups and logs, are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+Data | Config Files, Database, Database backups, and logs, are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
 Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
 Media | Top volume containing media files | /media:/media
 
