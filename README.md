@@ -105,7 +105,7 @@ UPDATEMETADATA | If true, existing media will have metadata updated only | UPDAT
 
 Docker Volume | Purpose | Example
 ---------|----------|---------
-Data | Config Files, Database, Database backups, and logs are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
+Data | Config Files, Database, Database backups and logs, are stored here | /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
 Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
 Media | Top volume containing media files | /media:/media
 
@@ -128,6 +128,7 @@ latest | Latest alpine amd64 image
 - Use `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
 ```powershell
 #Media Management Functions
+Get-EmptyFolder        #Gets empty directories that can be cleaned up.
 Get-MissingYear        #Gets media missing the year of release in the name
 Get-NotProcessed       #Get files not yet transcoded
 Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAutomation will handle this, but this can be useful in some scenarios
