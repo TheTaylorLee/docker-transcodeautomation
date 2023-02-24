@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport    = 'Get-Mediafunctions', 'Get-MissingFolder', 'Get-NotProcessed',
+    FunctionsToExport    = 'Get-Mediafunctions', 'Get-EmptyFolder', 'Get-NotProcessed',
     'Update-Processed', 'Move-FileToMediaFolder', 'Update-Statistics',
     'Get-MissingYear'
 
