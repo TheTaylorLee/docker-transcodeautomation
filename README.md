@@ -70,6 +70,7 @@ services:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
       - /media:/media
+    network_mode: none
     restart: unless-stopped
 ```
 

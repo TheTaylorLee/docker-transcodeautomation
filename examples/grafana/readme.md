@@ -20,7 +20,8 @@ services:
       - /home/user/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
       - /media:/media
-    restart: unless-stopped
+   network_mode: none
+   restart: unless-stopped
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana

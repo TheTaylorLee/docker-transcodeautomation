@@ -14,4 +14,5 @@ services:
       - /mnt/g/docker/appdata/docker-transcodeautomation/data:/docker-transcodeautomation/data
       - /mnt/g/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
       - /mnt/g/docker/media:/media
+    network_mode: none
     restart: unless-stopped
