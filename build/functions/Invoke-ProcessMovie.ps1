@@ -44,11 +44,11 @@ function invoke-processmovie {
                 }
                 # If the source file is smaller and backups are not kept
                 else {
-                    Write-Warning "[-] Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
                     Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
             }
             else {
+                Write-Warning "[-] Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
                 break
             }
         }
