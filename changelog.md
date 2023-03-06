@@ -35,3 +35,4 @@
 - 2.17.0 Add psreadline options for better intellisense and History handling. Useful for included functions
 - 2.17.1 Update get-missingyear so it doesn't truncate long paths
 - 2.18.0 Add Get-EmptyFolder
+- 2.18.1 Move write-output nested in the wrong script block
