@@ -108,7 +108,7 @@ if ($host.version.major -eq '7') {
             }
 
             $timenow = Get-Date
-            Write-Output "[+] Start Sleep at $timenow for $seconds seconds"
+            Write-Output "[+] Start Sleep at $timenow for $minseconds seconds"
             Start-Sleep -Seconds $minseconds
         }
     }
