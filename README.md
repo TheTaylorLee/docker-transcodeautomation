@@ -24,8 +24,6 @@ An automated media transcoding solution. This solution is to be almost completel
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
 - The comment metadata is set to `transcoded`. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata while keeping all media, video, and audio streams.
-- When new media is added, this process will only effect files 4 hours or older. This is so any other unrelated file handling processes have time to complete first.
-- Once all media is transcoded the process sleeps for 4 hours before looking for new media to transcode. This is to reduce disk operations.
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
 - I highly recommend testing with copy of a few media files first.
 
@@ -90,7 +88,9 @@ ENV Variable | Description | Example
 PUID | User ID that has access to the volumes | PUID=1000
 GUID | Group ID that has access to the volumes | PGID=1000
 ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
+MINAGE | Minimum age in hours of a file before it's processed | MINAGE=1.5
 MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
+PROCDELAY | Time delay in hours between processing files | PROCDELAY=4
 SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
 STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
 UPDATEMETADATA | If true, existing media will have metadata updated only | UPDATEMETADATA=true
@@ -100,6 +100,7 @@ UPDATEMETADATA | If true, existing media will have metadata updated only | UPDAT
 - `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
   - After metadata has been updated remove this variable and restart the container.
 - If `ENDTIMEUTC` is an earlier time than `STARTTIMEUTC`, then it will be treated as next day. For example 18:30 UTC start time with an end time of 03:00 UTC, the end time will stop processing new transcodes the next day for the given UTC Datetime.
+- `PROCDELAY` and `MINAGE` defaults are 4 hours. `PROCDELAY` will respect UTC time windows. It is recommended to maintain a larger processing delay to limit excessive disk reads.
 
 
 ### Volumes
