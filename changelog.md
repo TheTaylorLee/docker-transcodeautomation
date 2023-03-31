@@ -36,3 +36,4 @@
 - 2.17.1 Update get-missingyear so it doesn't truncate long paths
 - 2.18.0 Add Get-EmptyFolder
 - 2.18.1 Move write-output nested in the wrong script block
+- 2.19.0 Add option to configure transcode delay

@@ -5,8 +5,8 @@ Write-Output "[+] TranscodeAutomation Start"
 
 #Debug log management
 Get-ChildItem -Path $PSScriptRoot/data/logs/ |
-Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
-Remove-Item
+    Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
+    Remove-Item
 
 # Fix for environment variables not being pulled in by the service
 $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
@@ -62,6 +62,15 @@ if ($host.version.major -eq '7') {
         $env:STARTTIMEUTC = "00:00"
         $env:ENDTIMEUTC = "23:59:59"
     }
+    if ($null -eq $env:PROCDELAY) {
+        $env:PROCDELAY = "4"
+    }
+    if ($null -eq $env:MINAGE) {
+        [int]$minseconds = "14400"
+    }
+    else {
+        [int]$minseconds = 3600 * $env:MINAGE
+    }
 
     # Begin Automation
     # If set update metadata of existing media only
@@ -81,7 +90,7 @@ if ($host.version.major -eq '7') {
             if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
                 $dt = Get-Date
                 Write-Output "[+] Transcodeautomation while loop started at $dt"
-                Invoke-MediaManagement -hours 4 -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Invoke-MediaManagement -hours $env:PROCDELAY -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
             }
@@ -99,9 +108,8 @@ if ($host.version.major -eq '7') {
             }
 
             $timenow = Get-Date
-            $seconds = 14400
             Write-Output "[+] Start Sleep at $timenow for $seconds seconds"
-            Start-Sleep -Seconds $seconds
+            Start-Sleep -Seconds $minseconds
         }
     }
 }
