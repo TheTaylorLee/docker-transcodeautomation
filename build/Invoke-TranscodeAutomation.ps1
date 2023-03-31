@@ -69,7 +69,7 @@ if ($host.version.major -eq '7') {
         [int]$minseconds = "14400"
     }
     else {
-        [int]$minseconds = 3600 * $env:MINAGE
+        [int]$minseconds = 3600 * $env:PROCDELAY
     }
 
     # Begin Automation
