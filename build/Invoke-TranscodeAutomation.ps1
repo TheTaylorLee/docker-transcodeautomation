@@ -62,10 +62,10 @@ if ($host.version.major -eq '7') {
         $env:STARTTIMEUTC = "00:00"
         $env:ENDTIMEUTC = "23:59:59"
     }
-    if ($null -eq $env:PROCDELAY) {
-        $env:PROCDELAY = "4"
-    }
     if ($null -eq $env:MINAGE) {
+        $env:MINAGE = "4"
+    }
+    if ($null -eq $env:PROCDELAY) {
         [int]$minseconds = "14400"
     }
     else {
@@ -90,7 +90,7 @@ if ($host.version.major -eq '7') {
             if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
                 $dt = Get-Date
                 Write-Output "[+] Transcodeautomation while loop started at $dt"
-                Invoke-MediaManagement -hours $env:PROCDELAY -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
             }
