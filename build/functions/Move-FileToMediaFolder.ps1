@@ -16,7 +16,7 @@ function Move-FileToMEDIAFolder {
     $query = "Select * from Movies"
     $moviesdb = Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-    #Get a list of files in process folder
+    #Get a list of files in processed folder
     $processeddir = "$env:FFToolsTarget" + "processed"
     [psobject]$filestomove = Get-ChildItem $processeddir -r -File -Include "*.mkv", "*.mp4" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
 
