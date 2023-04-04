@@ -37,3 +37,4 @@
 - 2.18.0 Add Get-EmptyFolder
 - 2.18.1 Move write-output nested in the wrong script block
 - 2.19.0 Add option to configure transcode delay
+- 2.19.1 fix for issue #25 https://github.com/TheTaylorLee/docker-transcodeautomation/issues/25
