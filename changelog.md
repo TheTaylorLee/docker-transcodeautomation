@@ -38,3 +38,4 @@
 - 2.18.1 Move write-output nested in the wrong script block
 - 2.19.0 Add option to configure transcode delay
 - 2.19.1 fix for issue #25 https://github.com/TheTaylorLee/docker-transcodeautomation/issues/25
+- 2.20.0 Stop downgrading higher quality audio to aac. Use -c:a copy as the new default option
