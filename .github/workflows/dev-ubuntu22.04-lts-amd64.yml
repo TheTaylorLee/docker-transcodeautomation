@@ -7,6 +7,7 @@ name: dev-ubuntu22.04-lts-amd64
   push:
     branches-ignore:
       - master
+      - tests
   workflow_dispatch:
 
 jobs:
