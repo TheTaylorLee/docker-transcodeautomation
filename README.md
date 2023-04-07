@@ -84,9 +84,7 @@ MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be sepe
 
 #### Optional Variables
 ENV Variable | Description | Example
----------|---------|---------
-PUID | User ID that has access to the volumes | PUID=1000
-GUID | Group ID that has access to the volumes | PGID=1000
+---------|---------|--------
 ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
 MINAGE | Minimum age in hours of a file before it's processed | MINAGE=1.5
 MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
