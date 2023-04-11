@@ -46,7 +46,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.14-lts-v2.10.1
 
       - name: Build and push ubuntu
         uses: docker/build-push-action@v3
@@ -56,4 +56,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts
+            ghcr.io/thetaylorlee/docker-transcodeautomation:ubuntu22.04-lts-v2.10.1
