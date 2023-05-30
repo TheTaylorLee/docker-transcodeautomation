@@ -10,7 +10,7 @@ if ($null -eq $getcount) {
 else {
     [int]$i = $getcount.count - 1
     $queryrun = (Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog")[$i] |
-        Where-Object { $_.daterun -lt (Get-Date).AddDays(-7) }
+        Where-Object { $_.daterun -gt (Get-Date).AddDays(-7) }
 }
 
 # If not then run in the last 7 days, then update-processed
