@@ -45,10 +45,12 @@ function Move-FileToMEDIAFolder {
         }
         catch {
             try {
-                $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+                Write-Output "[+] Attempting Movies Catch Block for file $file.fullname"
+                $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
                 Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
             }
             catch {
+                Write-Output "[-] Failed Movies Catch Block for file $file.fullname"
                 $_
             }
         }
@@ -80,10 +82,12 @@ function Move-FileToMEDIAFolder {
         }
         catch {
             try {
+                Write-Output "[+] Attempting Shows Catch Block for file $file.fullname"
                 $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
                 Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
             }
             catch {
+                Write-Output "[-] Failed Shows Catch Block for file $file.fullname"
                 $_
             }
         }
