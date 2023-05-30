@@ -21,8 +21,12 @@ function Move-FileToMEDIAFolder {
     [psobject]$filestomove = Get-ChildItem $processeddir -r -File -Include "*.mkv", "*.mp4" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
 
     #Move processed movie files
-    try {
-        foreach ($file in $filestomove) {
+    foreach ($file in $filestomove) {
+        # Fix for Issue 29. This will move the file and update the database.
+        # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
+        # The fix was to move the try block into the foreachloop and handle the move.
+        # A second try/catch runs inside the catch to move the file and if it errors again it will present an error.
+        try {
             #move the file
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
             $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
@@ -39,14 +43,25 @@ function Move-FileToMEDIAFolder {
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
             }
         }
-    }
-    catch {
-        $_
+        catch {
+            try {
+                $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+            }
+            catch {
+                $_
+            }
+        }
     }
 
+
     #Move processed show files
-    try {
-        foreach ($file in $filestomove) {
+    foreach ($file in $filestomove) {
+        # Fix for Issue 29. This will move the file and update the database.
+        # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
+        # The fix was to move the try block into the foreachloop and handle the move.
+        # A second try/catch runs inside the catch to move the file and if it errors again it will present an error.
+        try {
             #move the file
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
             $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
@@ -63,9 +78,15 @@ function Move-FileToMEDIAFolder {
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
             }
         }
-    }
-    catch {
-        $_
+        catch {
+            try {
+                $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+            }
+            catch {
+                $_
+            }
+        }
     }
 
     #Used in debug logs
