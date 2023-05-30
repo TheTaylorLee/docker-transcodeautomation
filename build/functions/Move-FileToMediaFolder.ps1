@@ -24,7 +24,7 @@ function Move-FileToMEDIAFolder {
     foreach ($file in $filestomove) {
         # Fix for Issue 29. This will move the file and update the database.
         # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
-        # The if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
+        # The second if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
         try {
             #move the file
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
@@ -46,9 +46,19 @@ function Move-FileToMEDIAFolder {
             $_
         }
         if (Test-Path $file.fullname) {
-            $fullname
-            Write-Output "[-] Previous File move failed for $fullname. Attempting the file move now for movie files."
+            $fname = $file.fullname
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+            Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for movie files."
+
+            # Handle database updates
+            $TableName = 'Movies'
+            $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            $filesizeMB = $file.newsizeMB
+            $fullname = $destination.fullname
+            $query = "Update $TableName SET comment = 'transcoded', fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
+            # Move File
             Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
         }
     }
@@ -58,7 +68,7 @@ function Move-FileToMEDIAFolder {
     foreach ($file in $filestomove) {
         # Fix for Issue 29. This will move the file and update the database.
         # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
-        # The if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
+        # The second if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
         try {
             #move the file
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
@@ -80,9 +90,19 @@ function Move-FileToMEDIAFolder {
             $_
         }
         if (Test-Path $file.fullname) {
-            $fullname
-            Write-Output "[-] Previous File move failed for $fullname. Attempting the file move now for show files."
+            $fname = $file.fullname
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+            Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for show files."
+
+            # Handle database updates
+            $TableName = 'Shows'
+            $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            $filesizeMB = $file.newsizeMB
+            $fullname = $destination.fullname
+            $query = "Update $TableName SET comment = 'transcoded', fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
+            # Move file
             Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
         }
     }
