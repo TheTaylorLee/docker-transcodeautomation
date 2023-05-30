@@ -24,8 +24,7 @@ function Move-FileToMEDIAFolder {
     foreach ($file in $filestomove) {
         # Fix for Issue 29. This will move the file and update the database.
         # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
-        # The fix was to move the try block into the foreachloop and handle the move.
-        # A second try/catch runs inside the catch to move the file and if it errors again it will present an error.
+        # The if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
         try {
             #move the file
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
@@ -44,15 +43,13 @@ function Move-FileToMEDIAFolder {
             }
         }
         catch {
-            try {
-                Write-Output "[+] Attempting Movies Catch Block for file $file.fullname"
-                $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
-            }
-            catch {
-                Write-Output "[-] Failed Movies Catch Block for file $file.fullname"
-                $_
-            }
+            $_
+        }
+        if (Test-Path $file.fullname) {
+            $fullname
+            Write-Output "[-] Previous File move failed for $fullname. Attempting the file move now for movie files."
+            $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+            Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
         }
     }
 
@@ -61,8 +58,7 @@ function Move-FileToMEDIAFolder {
     foreach ($file in $filestomove) {
         # Fix for Issue 29. This will move the file and update the database.
         # If for any reason an interuption occurs, the original file might be deleted. This results in a second run of this foreach loop failing.
-        # The fix was to move the try block into the foreachloop and handle the move.
-        # A second try/catch runs inside the catch to move the file and if it errors again it will present an error.
+        # The if block adds handling for this specific scenario. This file will not be moved until a new file a been queued for processing.
         try {
             #move the file
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
@@ -81,15 +77,13 @@ function Move-FileToMEDIAFolder {
             }
         }
         catch {
-            try {
-                Write-Output "[+] Attempting Shows Catch Block for file $file.fullname"
-                $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
-            }
-            catch {
-                Write-Output "[-] Failed Shows Catch Block for file $file.fullname"
-                $_
-            }
+            $_
+        }
+        if (Test-Path $file.fullname) {
+            $fullname
+            Write-Output "[-] Previous File move failed for $fullname. Attempting the file move now for show files."
+            $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+            Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
         }
     }
 
