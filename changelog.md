@@ -40,3 +40,4 @@
 - 2.19.1 fix for issue [#25](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/25)
 - 2.20.0 Stop downgrading higher quality audio to aac. Use -c:a copy as the new default option
 - 2.20.1 Fix for Issue [#29](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/29)
+- 2.20.2 Add handling so that move-mediafiletofolder doesn't process the else blocks unless a database entry exists. This should of been added during version 2.20.1
