@@ -4,9 +4,14 @@ Write-Output "[+] Update-Processed Script Check Started"
 
 # Test to see if update-processed has run in the last 7 days
 $getcount = Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog"
-[int]$i = $getcount.count - 1
-$queryrun = (Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog")[$i] |
-    Where-Object { $_.daterun -lt (Get-Date).AddDays(-7) }
+if ($null -eq $getcount) {
+    $queryrun = $null
+}
+else {
+    [int]$i = $getcount.count - 1
+    $queryrun = (Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog")[$i] |
+        Where-Object { $_.daterun -lt (Get-Date).AddDays(-7) }
+}
 
 # If not then run in the last 7 days, then update-processed
 if ($null -eq $queryrun) {
