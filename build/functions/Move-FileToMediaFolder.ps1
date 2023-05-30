@@ -44,7 +44,7 @@ function Move-FileToMEDIAFolder {
             else {
                 $fname = $file.fullname
                 $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
-                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled."
+                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
 
                 # Handle database updates
                 $TableName = 'Movies'
@@ -88,7 +88,7 @@ function Move-FileToMEDIAFolder {
             else {
                 $fname = $file.fullname
                 $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
-                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled."
+                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
 
                 # Handle database updates
                 $TableName = 'Shows'
