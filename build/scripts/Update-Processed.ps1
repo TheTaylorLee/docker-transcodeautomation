@@ -61,6 +61,13 @@ if ($null -eq $queryrun) {
             }
         }
     }
+
+    # Update Database Log Table
+    $TableName = 'UpdateProcessedLog'
+    $daterun = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $query = "Update $TableName SET daterun = `"$daterun`""
+    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
     $enddt = Get-Date
     Write-Output "[+] Update-Processed media check ended at $enddt"
 }
