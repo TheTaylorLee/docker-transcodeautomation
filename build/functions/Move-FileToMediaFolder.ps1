@@ -42,11 +42,10 @@ function Move-FileToMEDIAFolder {
             # If for any reason an interuption occurs, the original file might be deleted. This results consecutive runs of this foreach loop failing to move the file.
             # The else block adds handling for this specific scenario.
             else {
+                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
                 $fname = $file.fullname
                 $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
                 if ($null -ne $destination) {
-                    Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
-
                     # Handle database updates
                     $TableName = 'Movies'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -88,11 +87,10 @@ function Move-FileToMEDIAFolder {
             # If for any reason an interuption occurs, the original file might be deleted. This results consecutive runs of this foreach loop failing to move the file.
             # The else block adds handling for this specific scenario.
             else {
+                Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
                 $fname = $file.fullname
                 $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
                 if ($null -ne $destination) {
-                    Write-Output "[-] Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
-
                     # Handle database updates
                     $TableName = 'Shows'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
