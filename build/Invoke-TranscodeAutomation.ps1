@@ -90,6 +90,8 @@ if ($host.version.major -eq '7') {
             if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
                 $dt = Get-Date
                 Write-Output "[+] Transcodeautomation while loop started at $dt"
+                # The Move-FiletoMediaFolder function is run here as a part of the fix for issue #29 Having it run here ensures even if there are no files to transcode, the failed file move is processed during the next window.
+                Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource #Issue 29
                 Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
