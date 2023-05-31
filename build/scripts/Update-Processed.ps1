@@ -33,7 +33,7 @@ if ($null -eq $queryrun) {
             }
         }
         else {
-            if ($null -ne $sqlshow.comment -or $null -ne $sqlshow.filesizeMB -or $sqlshow.fileexists -ne 'false') {
+            if ($null -ne $sqlmovie.comment -or $null -ne $sqlmovie.filesizeMB -or $sqlmovie.fileexists -ne 'false') {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", filesizeMB = NULL, fileexists = 'false' WHERE fullname = `"$fullname`""
             }

@@ -42,3 +42,4 @@
 - 2.20.1 Fix for Issue [#29](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/29)
 - 2.20.2 Add handling so that move-mediafiletofolder doesn't process the else blocks unless a database entry exists. This should of been added during version 2.20.1
 - 2.21.0 Feature Issue [#31](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/31). Add integrity checks and run scheduled update-processed function.
+- 2.21.1 Fix update-processed movie else loop conditions improperly configured.
