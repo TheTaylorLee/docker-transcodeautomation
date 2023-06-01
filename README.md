@@ -12,11 +12,6 @@ An automated media transcoding solution. This solution is to be almost completel
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
 	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
 	  </a>
-  	<br />
-	  <br />
-    <a href="https://www.buymeacoffee.com/TheTaylorLee">
-	    <img alt="Buy Me A Coffee" src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" style="height: auto !important; width: auto !important;" />
-    </a>
   </p>
 </div>
 
