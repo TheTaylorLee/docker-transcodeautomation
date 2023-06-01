@@ -75,6 +75,11 @@ function Invoke-DBSetup {
     $Query = "CREATE TABLE $Tablename (tablename TEXT, mediacount NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, differenceMB NUMERIC, percent NUMERIC, existssumsizeMB NUMERIC, existsoldsizeMB NUMERIC, existsnewsizeMB NUMERIC, existsdifferenceMB NUMERIC, existspercent NUMERIC, added DATETIME, updatedby TEXT, growth30daysMB NUMERIC, growth90daysMB NUMERIC, growth180daysMB NUMERIC, growth365daysMB NUMERIC)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
+    # Check for and Create UpdateProcessedLog
+    $Tablename = "UpdateProcessedLog"
+    $Query = "CREATE TABLE $Tablename (daterun DATETIME)"
+    Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+
     # Create Views
     $query = "CREATE VIEW View_Movies_ExistsTrue AS
 SELECT *
