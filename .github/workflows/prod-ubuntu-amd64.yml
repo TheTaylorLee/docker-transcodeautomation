@@ -8,7 +8,7 @@ name: prod-ubuntu-amd64
       - closed
 
 jobs:
-  build-and-push-alpine-image:
+  build-and-push-ubuntu-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
