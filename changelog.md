@@ -44,3 +44,4 @@
 - 2.21.0 Feature Issue [#31](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/31). Add integrity checks and run scheduled update-processed function.
 - 2.21.1 Fix update-processed movie else loop conditions improperly configured.
 - 2.22.0 Add UpdateProcessedLog Table Setup to Invoke-DBSetup function
+- 2.23.0 Change log information charactors to a format that doesn't require escaping when using regex. The new strings will also provide color coding if using dozzle.

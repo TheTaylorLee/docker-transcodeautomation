@@ -3,7 +3,7 @@ if ($host.version.major -eq '7') {
     ##Used in Debug Logs
     $time = Get-Date -Format "yyyy-MM-dd HHmmss"
     Start-Transcript "$PSScriptRoot/data/logs/$time debug.log"
-    Write-Output "[+] TranscodeAutomation Start"
+    Write-Output "info: TranscodeAutomation Start"
 
     ##Debug log management
     Get-ChildItem -Path $PSScriptRoot/data/logs/ |
@@ -28,7 +28,7 @@ if ($host.version.major -eq '7') {
     $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
     $test3 = Test-Path $datasource
     if ($test3 -eq $false) {
-        Write-Output "[+] Creating sqlite database"
+        Write-Output "info: Creating sqlite database"
         . $PSScriptRoot/functions/Invoke-DBSetup.ps1
         Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
     }
@@ -41,7 +41,7 @@ if ($host.version.major -eq '7') {
 
     ##Check for required variables
     if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null -eq $env:MEDIAMOVIEFOLDERS -or $null -eq $env:MEDIASHOWFOLDERS) {
-        Write-Warning "[-] Required environment Variable not set. Review the README documentation for help. Processing will not continue."
+        Write-Warning "error: Required environment Variable not set. Review the Github README for help. Processing will not continue."
         while ($true) {
             Start-Sleep -Seconds 2147483
         }
@@ -90,7 +90,7 @@ if ($host.version.major -eq '7') {
 
             if (Invoke-Timecompare -STARTTIMEUTC $env:STARTTIMEUTC -ENDTIMEUTC $env:ENDTIMEUTC) {
                 $dt = Get-Date
-                Write-Output "[+] Transcodeautomation while loop started at $dt"
+                Write-Output "info: Transcodeautomation while loop started at $dt"
                 ###The Move-FiletoMediaFolder function is run here as a part of the fix for issue #29 Having it run here ensures even if there are no files to transcode, the failed file move is processed during the next window.
                 /docker-transcodeautomation/scripts/Update-Processed.ps1
                 Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource #Issue 29
@@ -104,15 +104,15 @@ if ($host.version.major -eq '7') {
                 $endtime = Get-Date -Date $env:ENDTIMEUTC
                 if ($endtime -lt $startime) {
                     $endtime = $endtime.AddDays(1)
-                    Write-Output "[+] Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                    Write-Output "info: Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
                 }
                 else {
-                    Write-Output "[+] Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
+                    Write-Output "info: Transcode Processing skipped. $dt is not within the processing window of $startime to $endtime"
                 }
             }
 
             $timenow = Get-Date
-            Write-Output "[+] Start Sleep at $timenow for $minseconds seconds"
+            Write-Output "info: Start Sleep at $timenow for $minseconds seconds"
             Start-Sleep -Seconds $minseconds
         }
     }

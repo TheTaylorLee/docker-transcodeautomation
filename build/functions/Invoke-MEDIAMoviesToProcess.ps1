@@ -9,7 +9,7 @@ Function Invoke-MEDIAMoviesToProcess {
     )
 
     #Used in debug logs
-    Write-Output "[+] Invoke-MEDIAMoviesToProcess Start"
+    Write-Output "info: Invoke-MEDIAMoviesToProcess Start"
 
     if ((Invoke-SqliteQuery -DataSource $datasource -Query "PRAGMA integrity_check").integrity_check -eq 'ok') {
         # Set static Table parameters
@@ -118,7 +118,7 @@ Function Invoke-MEDIAMoviesToProcess {
                             }
                         }
                         else {
-                            Write-Warning " [-]The Transcoding volume is too low on free space. $file is being skipped for processing"
+                            Write-Warning " error:The Transcoding volume is too low on free space. $file is being skipped for processing"
                         }
                     }
                     # else File Doesn't Exist update existing table entry
@@ -130,15 +130,15 @@ Function Invoke-MEDIAMoviesToProcess {
                     }
                 }
                 else {
-                    Write-Warning "[-] Files in fftools folders preventing this function from running. Clear up this issue first"
+                    Write-Warning "error: Files in fftools folders preventing this function from running. Clear up this issue first"
                 }
             }
         }
     }
     else {
-        Write-Output "[-] Database Integrity Check failed. Aborting process"
+        Write-Output "error: Database Integrity Check failed. Aborting process"
     }
 
     #Used in debug logs
-    Write-Output "[+] Invoke-MEDIAMoviesToProcess End"
+    Write-Output "info: Invoke-MEDIAMoviesToProcess End"
 }

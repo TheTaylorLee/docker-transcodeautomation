@@ -10,7 +10,7 @@ Function Invoke-MediaManagement {
     )
 
     #Used in debug logs
-    Write-Output "[+] Invoke-MediaManagement Start"
+    Write-Output "info: Invoke-MediaManagement Start"
 
     ##Shows
     ##Make sure no previous failures occurred prior to stepping forward with shows
@@ -22,7 +22,7 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Warning "[-] Files in fftools folders preventing this function from running. Clear up this issue first"
+        Write-Warning "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }
 
     ##Movies
@@ -35,15 +35,15 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Warning "[-] Files in fftools folders preventing this function from running. Clear up this issue first"
+        Write-Warning "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }
 
     #Remove recover files older than 14 days.
-    Write-Output "[+] Deleting backup files over $env:BACKUPRETENTION days old"
+    Write-Output "info: Deleting backup files over $env:BACKUPRETENTION days old"
     Get-ChildItem -Path $env:FFToolsTarget/recover |
-    Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$env:BACKUPRETENTION) } |
-    Remove-Item -Verbose
+        Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$env:BACKUPRETENTION) } |
+        Remove-Item -Verbose
 
     #Used in debug logs
-    Write-Output "[+] Invoke-MediaManagement End"
+    Write-Output "info: Invoke-MediaManagement End"
 }

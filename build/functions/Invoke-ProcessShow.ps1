@@ -8,7 +8,7 @@ function invoke-processshow {
     )
 
     #Used in debug logs
-    Write-Output "[+] Invoke-ProcessShow Start"
+    Write-Output "info: Invoke-ProcessShow Start"
 
     if ($null -eq $env:SHOWSCRF) {
         $env:SHOWSCRF = "23"
@@ -48,7 +48,7 @@ function invoke-processshow {
                 }
             }
             else {
-                Write-Warning "[-] Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
+                Write-Warning "error: Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
                 break
             }
         }
@@ -71,5 +71,5 @@ function invoke-processshow {
     Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
 
     #Used in debug logs
-    Write-Output "[+] Invoke-ProcessShow End"
+    Write-Output "info: Invoke-ProcessShow End"
 }

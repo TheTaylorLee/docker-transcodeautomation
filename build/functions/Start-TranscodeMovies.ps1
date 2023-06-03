@@ -6,7 +6,7 @@ function Start-TranscodeMovies {
         [Parameter(Mandatory = $true)]$crf
     )
     #Used in debug logs
-    Write-Output "[+] Start-Transcode Start"
+    Write-Output "info: Start-Transcode Start"
 
     if ($env:FFToolsSource -and $env:FFToolsTarget) {
         #Change directory to the source folder
@@ -17,7 +17,7 @@ function Start-TranscodeMovies {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "[+] Using Custom Movies Parameters"
+                Write-Output "info: Using Custom Movies Parameters"
                 /docker-transcodeautomation/data/moviescustomoptions.ps1
             }
             else {
@@ -29,7 +29,7 @@ function Start-TranscodeMovies {
         $array = @(Get-ChildItem -Filter $ext)
         Foreach ($video in $array.Name) {
             if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "[+] Using Custom Movies Parameters"
+                Write-Output "info: Using Custom Movies Parameters"
                 /docker-transcodeautomation/data/moviescustomoptions.ps1
             }
             else {
@@ -39,8 +39,8 @@ function Start-TranscodeMovies {
     }
 
     else {
-        Write-Warning "[-] Required FFtools Variables Missing"
+        Write-Warning "error: Required FFtools Variables Missing"
     }
     #Used in debug logs
-    Write-Output "[+] Start-Transcode End"
+    Write-Output "info: Start-Transcode End"
 }

@@ -2,7 +2,7 @@
 $DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
 
 
-Write-Output "[+] Update-Database Start"
+Write-Output "info: Update-Database Start"
 
 # Check for and Create StatisticsLive Table IF NOT EXISTS
 $Tablename = "StatisticsLive"
@@ -14,4 +14,4 @@ $Tablename = "UpdateProcessedLog"
 $Query = "CREATE TABLE IF NOT EXISTS $Tablename (daterun DATETIME)"
 Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
-Write-Output "[+] Update-Database End"
+Write-Output "info: Update-Database End"

@@ -1,4 +1,4 @@
-Write-Output "[+] UPDATEMETADATA Start"
+Write-Output "info: UPDATEMETADATA Start"
 #Movies
 foreach ($path in $MEDIAmoviefolders) {
     [string[]]$extensions = "*.mkv", "*.mp4"
@@ -29,5 +29,5 @@ foreach ($path in $MEDIAshowfolders) {
     }
 }
 
-Write-Warning "[-] Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable"
-Write-Output "[+] UPDATEMETADATA End"
+Write-Warning "warning: Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable"
+Write-Output "info: UPDATEMETADATA End"

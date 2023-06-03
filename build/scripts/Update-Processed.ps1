@@ -1,4 +1,4 @@
-Write-Output "[+] Update-Processed Start"
+Write-Output "info: Update-Processed Start"
 
 [string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
 
@@ -16,7 +16,7 @@ else {
 # If not then run in the last 7 days, then update-processed
 if ($null -eq $queryrun) {
     $startdt = Get-Date
-    Write-Output "[+] Update-Processed media check started at $startdt"
+    Write-Output "info: Update-Processed media check started at $startdt"
 
     # Movies
     $tablename = "Movies"
@@ -69,7 +69,7 @@ if ($null -eq $queryrun) {
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
     $enddt = Get-Date
-    Write-Output "[+] Update-Processed media check ended at $enddt"
+    Write-Output "info: Update-Processed media check ended at $enddt"
 }
 
-Write-Output "[+] Update-Processed End"
+Write-Output "info: Update-Processed End"

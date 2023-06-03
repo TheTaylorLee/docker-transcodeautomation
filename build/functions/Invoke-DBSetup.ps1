@@ -6,7 +6,7 @@ function Invoke-DBSetup {
     )
 
     #Used in debug logs
-    Write-Output "[+] Invoke-DBSetup Start"
+    Write-Output "info: Invoke-DBSetup Start"
 
     # Create Movies Table
     $Tablename = "Movies"
@@ -120,5 +120,5 @@ ORDER BY added DESC;
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     #Used in debug logs
-    Write-Output "[+] Invoke-DBSetup End"
+    Write-Output "info: Invoke-DBSetup End"
 }
