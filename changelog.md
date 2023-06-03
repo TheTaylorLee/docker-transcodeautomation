@@ -45,3 +45,4 @@
 - 2.21.1 Fix update-processed movie else loop conditions improperly configured.
 - 2.22.0 Add UpdateProcessedLog Table Setup to Invoke-DBSetup function
 - 2.23.0 Change log information charactors to a format that doesn't require escaping when using regex. The new strings will also provide color coding if using dozzle.
+- 2.23.1 Skipped branch workflow in previous release. This version is simply to trigger the workflows.
