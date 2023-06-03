@@ -29,5 +29,5 @@ foreach ($path in $MEDIAshowfolders) {
     }
 }
 
-Write-Output "warning: Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable"
 Write-Output "info: UPDATEMETADATA End"
+Write-Output "warning: Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable"
