@@ -45,7 +45,7 @@ function Move-FileToMEDIAFolder {
                 $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
 
                 if ($null -ne $destination) {
-                    Write-Output "error: Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
+                    Write-Error "error: Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database." -ErrorAction Continue
 
                     # Handle database updates
                     $TableName = 'Movies'
@@ -87,7 +87,7 @@ function Move-FileToMEDIAFolder {
                 $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
 
                 if ($null -ne $destination) {
-                    Write-Output "error: Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
+                    Write-Error "error: Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database." -ErrorAction Continue
 
                     # Handle database updates
                     $TableName = 'Shows'
@@ -104,7 +104,7 @@ function Move-FileToMEDIAFolder {
         }
     }
     else {
-        Write-Output "error: Database Integrity Check failed. Aborting process"
+        Write-Error "error: Database Integrity Check failed. Aborting process" -ErrorAction Continue
     }
 
     #Used in debug logs

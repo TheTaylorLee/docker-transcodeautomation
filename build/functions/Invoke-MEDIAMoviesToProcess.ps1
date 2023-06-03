@@ -118,7 +118,7 @@ Function Invoke-MEDIAMoviesToProcess {
                             }
                         }
                         else {
-                            Write-Warning " error:The Transcoding volume is too low on free space. $file is being skipped for processing"
+                            Write-Error " error:The Transcoding volume is too low on free space. $file is being skipped for processing" -ErrorAction Continue
                         }
                     }
                     # else File Doesn't Exist update existing table entry
@@ -130,13 +130,13 @@ Function Invoke-MEDIAMoviesToProcess {
                     }
                 }
                 else {
-                    Write-Warning "error: Files in fftools folders preventing this function from running. Clear up this issue first"
+                    Write-Error "error: Files in fftools folders preventing this function from running. Clear up this issue first" -ErrorAction Continue
                 }
             }
         }
     }
     else {
-        Write-Output "error: Database Integrity Check failed. Aborting process"
+        Write-Error "error: Database Integrity Check failed. Aborting process" -ErrorAction Continue
     }
 
     #Used in debug logs

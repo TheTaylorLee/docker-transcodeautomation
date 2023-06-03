@@ -41,7 +41,7 @@ if ($host.version.major -eq '7') {
 
     ##Check for required variables
     if ($null -eq $env:BACKUPPROCESSED -or $null -eq $env:BACKUPRETENTION -or $null -eq $env:MEDIAMOVIEFOLDERS -or $null -eq $env:MEDIASHOWFOLDERS) {
-        Write-Warning "error: Required environment Variable not set. Review the Github README for help. Processing will not continue."
+        Write-Error "error: Required environment Variable not set. Review the Github README for help. Processing will not continue." -ErrorAction Continue
         while ($true) {
             Start-Sleep -Seconds 2147483
         }
