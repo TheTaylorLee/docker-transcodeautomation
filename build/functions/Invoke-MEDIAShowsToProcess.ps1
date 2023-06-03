@@ -118,7 +118,7 @@ Function Invoke-MEDIAShowsToProcess {
                             }
                         }
                         else {
-                            Write-Warning " error:The Transcoding volume is too low on free space. $file is being skipped for processing"
+                            Write-Output " error:The Transcoding volume is too low on free space. $file is being skipped for processing"
                         }
                     }
                     # else File Doesn't Exist update existing table entry
@@ -130,7 +130,7 @@ Function Invoke-MEDIAShowsToProcess {
                     }
                 }
                 else {
-                    Write-Warning "error: Files in fftools folders preventing this function from running. Clear up this issue first"
+                    Write-Output "error: Files in fftools folders preventing this function from running. Clear up this issue first"
                 }
             }
         }
