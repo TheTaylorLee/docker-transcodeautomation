@@ -22,7 +22,7 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Error "error: Files in transcoding folders preventing this function from running. Clear up this issue first" -ErrorAction Continue
+        Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }
 
     ##Movies
@@ -35,7 +35,7 @@ Function Invoke-MediaManagement {
     }
 
     else {
-        Write-Error "error: Files in transcoding folders preventing this function from running. Clear up this issue first" -ErrorAction Continue
+        Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }
 
     #Remove recover files older than 14 days.

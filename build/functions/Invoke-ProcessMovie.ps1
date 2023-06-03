@@ -48,7 +48,7 @@ function invoke-processmovie {
                 }
             }
             else {
-                Write-Error "error: Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed." -ErrorAction Continue
+                Write-Output "error: Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
                 break
             }
         }

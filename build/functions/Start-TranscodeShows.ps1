@@ -39,7 +39,7 @@ function Start-TranscodeShows {
     }
 
     else {
-        Write-Error "error: Required FFTools Variables Missing" -ErrorAction Continue
+        Write-Output "error: Required FFTools Variables Missing"
     }
     #Used in debug logs
     Write-Output "info: Start-Transcode End"
