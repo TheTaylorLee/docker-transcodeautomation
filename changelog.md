@@ -49,3 +49,4 @@
 - 2.23.2 Skipped branch workflow in previous release. This version is simply to trigger the workflows.
 - 2.23.3 Update write-warnings and write-errors to use write-output
 - 2.23.4 Split prod workflow up so that errored job reruns can be completed faster.
+- 2.23.5 Fix workflow
