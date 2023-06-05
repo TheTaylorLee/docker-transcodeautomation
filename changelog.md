@@ -51,3 +51,4 @@
 - 2.23.4 Split prod workflow up so that errored job reruns can be completed faster.
 - 2.23.5 Fix workflow
 - 2.23.6 Fix workflow
+- 2.24.0 Change backup database frequency to only one week.
