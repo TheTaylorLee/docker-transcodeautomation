@@ -1,5 +1,5 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution. This solution is to be almost completely automated and retains statistics. By using this container, you assume all risks. Be careful and begin by testing with a copy of only a few files for transcoding.
+An automated media transcoding solution. This solution is completely automated and retains statistics. **By using this container, you assume all risks.** Be careful and begin by testing with a copy of only a few files for transcoding.
 
 <div>
   <p align="Left">
