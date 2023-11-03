@@ -53,3 +53,4 @@
 - 2.23.6 Fix workflow
 - 2.24.0 Change backup database frequency to only one week.
 - 2.24.1 Update readme and remove legacy module functions
+- 2.24.2 Failed to use a dev branch for 2.24.1 and workflows didn't run. Using 2.24.2 to trigger workflows and test for bugs.
