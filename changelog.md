@@ -52,3 +52,4 @@
 - 2.23.5 Fix workflow
 - 2.23.6 Fix workflow
 - 2.24.0 Change backup database frequency to only one week.
+- 2.24.1 Update readme and remove legacy module functions
