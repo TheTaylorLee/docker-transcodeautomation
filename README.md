@@ -23,7 +23,6 @@ An automated media transcoding solution. This solution is completely automated a
 - The comment metadata is set to `transcoded`. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata while keeping all media, video, and audio streams.
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
-- I highly recommend testing with copy of a few media files first.
 
 ### Option 1
 - All transcoded media will have the below parameters applied.
