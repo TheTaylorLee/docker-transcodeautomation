@@ -132,11 +132,6 @@ Get-NotProcessed       #Get files not yet transcoded
 Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAutomation will handle this, but this can be useful to handle failed moves sooner.
 ```
 
-## Using Windows Docker Desktop
-- It's possible to run this image on a Windows 10+ desktop using Windows Subsystem for Linux and Docker Desktop
-- Transcode performance is about 40% worse in my testing with wsl. I would only recommend this container using a linux host. I observe near native transcode performance using docker-transcodeautomation on a native linux host.
-- [Check out the example provided here for guidance](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/wsl)
-
 ## Statistics
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
