@@ -141,6 +141,3 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - [Here is an example using Grafana](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/grafana)
-
-## Troubleshooting
-- [Check out the Troubleshooting Discussion Topics](https://github.com/TheTaylorLee/docker-transcodeautomation/discussions/categories/troubleshooting-help)
