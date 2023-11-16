@@ -1,9 +1,11 @@
 #TODO
 # THIS NEEDS MODIFYING TO REPLACE PROBEDATA WITH SPECIFIC PROBEDATA.
 # NEED TO INTEGRATE WITH EXISTING PROCESS FLOW, UPDATE EXISTING DATABASE TO ADD A TABLE, AND UPDATE DESCRIPTION TABLE.
+# Need Columns defining shows vs movies or seperate tables for both
 # ADD GRAFANA STATS FOR PROBE DATA
 
 ## While recording streams I'll need to number them or concat them in some way to properly match each with their index. Such as audio codec, language, channels
+### I can use a for loop with an integer condition to group the various audio or subtitle indexes properly. Then how do I intend to store them in the database?
 ## It then becomes a question of how do I display this data in grafana in a useful manner.
 
 # METADATA TO LOG
