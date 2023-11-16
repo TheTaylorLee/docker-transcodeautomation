@@ -1,16 +1,3 @@
-#TODO
-# THIS NEEDS MODIFYING TO REPLACE PROBEDATA WITH SPECIFIC PROBEDATA.
-# NEED TO INTEGRATE WITH EXISTING PROCESS FLOW, UPDATE EXISTING DATABASE TO ADD A TABLE, AND UPDATE DESCRIPTION TABLE.
-# ADD GRAFANA STATS FOR PROBE DATA
-# METADATA TO LOG
-# subtitles and their languages
-# video codec + codec long name
-# video aspect
-# video picture quality 480,720, 1080, etc
-# audio codecs + codec long name
-# audio language
-# audio channels
-
 function get-metadata {
     [CmdletBinding()]
     param (
