@@ -1,10 +1,15 @@
-# build a powershell function that runs ffprobe against all files in a directory.
-# extract all metadata from the files as json and convert it to powershell objects
-# use the pssqlite module to write the results to a sqlite database
-# mandatory parameters should exist for the directory to scan and the database to write to
-# if the database does not exist, create it
-# if ffprobe data is already in the database, skip the file, unless the size of the file is different. If the file size is different overwrite the data in the database.
-# if the database already exists, add the ffprobe data to the existing database
+#TODO
+# THIS NEEDS MODIFYING TO REPLACE PROBEDATA WITH SPECIFIC PROBEDATA.
+# NEED TO INTEGRATE WITH EXISTING PROCESS FLOW, UPDATE EXISTING DATABASE TO ADD A TABLE, AND UPDATE DESCRIPTION TABLE.
+# ADD GRAFANA STATS FOR PROBE DATA
+# METADATA TO LOG
+# subtitles and their languages
+# video codec + codec long name
+# video aspect
+# video picture quality 480,720, 1080, etc
+# audio codecs + codec long name
+# audio language
+# audio channels
 
 function get-metadata {
     [CmdletBinding()]
@@ -77,7 +82,6 @@ function get-metadata {
         }
     }
     end {
+        update-metadata -Database $Database
     }
 }
-
-# If file doesn't exists, but is in the database, mark fileexists as false in the database.
