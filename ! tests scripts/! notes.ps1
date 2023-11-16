@@ -2,16 +2,19 @@
 # THIS NEEDS MODIFYING TO REPLACE PROBEDATA WITH SPECIFIC PROBEDATA.
 # NEED TO INTEGRATE WITH EXISTING PROCESS FLOW, UPDATE EXISTING DATABASE TO ADD A TABLE, AND UPDATE DESCRIPTION TABLE.
 # ADD GRAFANA STATS FOR PROBE DATA
+
+## While recording streams I'll need to number them or concat them in some way to properly match each with their index. Such as audio codec, language, channels
+## It then becomes a question of how do I display this data in grafana in a useful manner.
+
 # METADATA TO LOG
-## While recording streams I'll need to number them or concat them in some way to properly match similar. Such as audio codec, language, channels
-### video codec + codec long name
-### video aspect
-### video size quality 480,720, 1080, etc
-## audio codecs + codec long name
-## audio language
-## audio channels
-## subtitles and their languages
-## subtitles if forced exists
+## video codec + codec long name
+## video aspect
+## video size quality 480,720, 1080, etc
+# audio codecs + codec long name
+# audio language
+# audio channels
+# subtitles and their languages
+# subtitles if forced exists
 
 
 $files = Get-ChildItem ".\New folder" -r -File -Include "*.mkv", "*.mp4"
