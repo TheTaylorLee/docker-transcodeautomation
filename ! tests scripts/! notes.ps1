@@ -12,14 +12,15 @@
 ## video codec + codec long name
 ## video aspect
 ## video size quality 480,720, 1080, etc
-# audio codecs + codec long name
-# audio language
+## audio codecs + codec long name
+## audio language
 # audio channels
 # subtitles and their languages
 # subtitles if forced exists
 
 
 $files = Get-ChildItem ".\New folder" -r -File -Include "*.mkv", "*.mp4"
+#video
 ForEach ($file in $files) {
     # Get video stream codec
     ffprobe -v quiet -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $file.fullname
@@ -38,8 +39,29 @@ ForEach ($file in $files) {
 }
 
 
-#test block
+#audio
 ForEach ($file in $files) {
     Write-Output $file.fullname
-    ffprobe -v quiet -select_streams a -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    #audio codec
+    $codec = ffprobe -v quiet -select_streams a -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    #codec long name
+    $codeclongname = ffprobe -v quiet -select_streams a -show_entries stream=codec_long_name -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    # audio language
+    $language = ffprobe -v quiet -select_streams a -show_entries stream=:stream_tags=language -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    # audio channels
+    $channels = ffprobe -v quiet -select_streams a -show_entries stream=channels -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    # Channel Layout
+    $channellayout = ffprobe -v quiet -select_streams a -show_entries stream=channel_layout -of default=noprint_wrappers=1:nokey=1 $file.fullname
+
+    $count = $codec.count
+    if ($count -gt 1) {
+        for ( $i = 0; $i -lt $count; $i++) {
+            $codec[$i] + " ... " + $codeclongname[$i] + " ... " + $language[$i] + " ... " + $channels[$i] + " ... " + $channellayout[$i]
+        }
+    }
+    else {
+        $codec + " ... " + $codeclongname + " ... " + $language + " ... " + $channels + " ... " + $channellayout
+    }
 }
+
+#subtitles
