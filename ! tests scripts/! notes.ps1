@@ -14,14 +14,16 @@
 ## video size quality 480,720, 1080, etc
 ## audio codecs + codec long name
 ## audio language
-# audio channels
-# subtitles and their languages
-# subtitles if forced exists
+## audio channels
+## Audio Channel Layout
+## subtitles and their languages
+## subtitles if forced exists
 
 
-$files = Get-ChildItem ".\New folder" -r -File -Include "*.mkv", "*.mp4"
+$files = Get-ChildItem ".\" -r -File -Include "*.mkv", "*.mp4"
 #video
 ForEach ($file in $files) {
+    Write-Output $file.fullname
     # Get video stream codec
     ffprobe -v quiet -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $file.fullname
 
@@ -54,14 +56,23 @@ ForEach ($file in $files) {
     $channellayout = ffprobe -v quiet -select_streams a -show_entries stream=channel_layout -of default=noprint_wrappers=1:nokey=1 $file.fullname
 
     $count = $codec.count
-    if ($count -gt 1) {
-        for ( $i = 0; $i -lt $count; $i++) {
-            $codec[$i] + " ... " + $codeclongname[$i] + " ... " + $language[$i] + " ... " + $channels[$i] + " ... " + $channellayout[$i]
-        }
-    }
-    else {
-        $codec + " ... " + $codeclongname + " ... " + $language + " ... " + $channels + " ... " + $channellayout
+    for ( $i = 0; $i -lt $count; $i++) {
+        $codec[$i] + "  -  " + $codeclongname[$i] + "  -  " + $language[$i] + "  -  " + $channels[$i] + "  -  " + $channellayout[$i]
     }
 }
 
 #subtitles
+ForEach ($file in $files) {
+    Write-Output $file.fullname
+    #Subtitle Language
+    $subtitle = ffprobe -v quiet -select_streams s -show_entries stream=:stream_tags=language -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    # Subtitle Forced
+    $forced = ffprobe -v quiet -select_streams s -show_entries stream=:stream_disposition=forced -of default=noprint_wrappers=1:nokey=1 $file.fullname
+    # Hearing impaired
+    $hi = ffprobe -v quiet -select_streams s -show_entries stream=:stream_disposition=hearing_impaired -of default=noprint_wrappers=1:nokey=1 $file.fullname
+
+    $count = $subtitle.count
+    for ( $i = 0; $i -lt $count; $i++) {
+        $subtitle[$i] + " - " + $forced[$i] + " - " + $hi[$i]
+    }
+}

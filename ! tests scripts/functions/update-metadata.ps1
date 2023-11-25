@@ -12,7 +12,7 @@ function update-metadata {
     ForEach ($file in $files) {
         $fullname = $file.fullname
         if ((Test-Path $fullname) -eq $false) {
-            $query = "UPDATE mediainfo SET fileexists = 'false' WHERE fullname = `"$fullname`""
+            $query = "DELETE FROM mediainfo WHERE fullname = `"$fullname`""
             Invoke-SqliteQuery -Query $query -DataSource $Database
         }
     }

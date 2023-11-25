@@ -13,12 +13,12 @@ function get-metadata {
             #continue
         }
         else {
-            $query = "CREATE TABLE mediainfo (fullname TEXT, filesizeMB INT, ffprobedata TEXT, fileexists boolean)"
+            $query = "CREATE TABLE mediainfo (fullname TEXT, filesizeMB INT, ffprobedata TEXT)"
             Invoke-SqliteQuery -Query $query -DataSource $Database
         }
 
         # Check that mediainfo table exists and create it if it doesn't
-        $query = "CREATE TABLE IF NOT EXISTS mediainfo (fullname TEXT, filesizeMB INT, ffprobedata blob fileexists boolean)"
+        $query = "CREATE TABLE IF NOT EXISTS mediainfo (fullname TEXT, filesizeMB INT, ffprobedata blob)"
         Invoke-SqliteQuery -Query $query -DataSource $Database
     }
 
@@ -49,7 +49,7 @@ function get-metadata {
                 else {
                     $ffprobe = ffprobe -v quiet -print_format json -show_format -show_streams $fullname
                     # write the data to the database
-                    $query = "UPDATE mediainfo SET filesizeMB = `"$filelength`", ffprobedata = `"$ffprobe`", fileexists = 'true' WHERE fullname = `"$fullname`""
+                    $query = "UPDATE mediainfo SET filesizeMB = `"$filelength`", ffprobedata = `"$ffprobe`" WHERE fullname = `"$fullname`""
 
                 }
 
@@ -58,12 +58,11 @@ function get-metadata {
             else {
                 # if the file is not in the database insert it
                 $ffprobe = ffprobe -v quiet -print_format json -show_format -show_streams $fullname
-                $query = "INSERT INTO mediainfo (fullname, filesizeMB, ffprobedata, fileexists) VALUES (@fullname, @filesizeMB, @ffprobedata, @fileexists)"
+                $query = "INSERT INTO mediainfo (fullname, filesizeMB, ffprobedata) VALUES (@fullname, @filesizeMB, @ffprobedata)"
                 Invoke-SqliteQuery -ErrorAction Inquire -DataSource $Database -Query $query -SqlParameters @{
                     fullname    = "$fullname"
                     filesizeMB  = "$filelength"
                     ffprobedata = "$ffprobe"
-                    fileexists  = "true"
                 }
             }
         }
