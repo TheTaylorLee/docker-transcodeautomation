@@ -31,18 +31,19 @@ function invoke-processmovie {
         for ($i = 0; $i -lt $max; $i++) {
             # This is error handling in case free space on a drive runs out.
             if ($targetfiles[$i].Length -gt 0) {
-                # If the source file is larger than the transcoded file
+                # If the source file is smaller than the transcoded file
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
+                    Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
                     Remove-Item $targetfiles[$i].FullName -Force -Verbose
-                    ffmpeg -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
+                    ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
                     Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
-                # If the source file is smaller and backups are kept
+                # If the source file is larger and backups are kept
                 elseif ($env:BACKUPPROCESSED -eq 'true') {
                     Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
                     (Get-ChildItem $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
                 }
-                # If the source file is smaller and backups are not kept
+                # If the source file is larger and backups are not kept
                 else {
                     Remove-Item $sourcefiles[$i].fullname -Force -Verbose
                 }
