@@ -6,7 +6,7 @@ name: dev-alpine3.14-lts-amd64
   #      - opened
   push:
     branches-ignore:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:

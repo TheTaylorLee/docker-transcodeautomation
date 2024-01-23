@@ -6,7 +6,7 @@ name: dev-ubuntu22.04-lts-amd64
   #      - opened
   push:
     branches-ignore:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:

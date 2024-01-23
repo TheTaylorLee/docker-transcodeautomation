@@ -3,7 +3,7 @@ name: prod-alpine-amd64
 "on":
   pull_request:
     branches:
-      - master
+      - main
     types:
       - closed
 
