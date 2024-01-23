@@ -3,7 +3,7 @@
 **Contribution Guidelines**
 
 - An issue should be opened prior to any work being done. Use one of the existing templates.
-- Create a  branch off of the master branch. Name the branch sensibly regarding the changes made or the version it would update the release to.
+- Create a  branch off of the main branch. Name the branch sensibly regarding the changes made or the version it would update the release to.
 - Update the changelog with the new version number and a description of changes. See the "Version Guidelines" section of this document.
 - Update the version file with the new semantic version.
 
@@ -13,7 +13,7 @@
 - The pull request should use the name format outlined below in the "Pull Request Format" section of this document.
 - Code will be reviewed and once approved workflows will run to create dev docker images.
 - Dev images should be tested by the individual submitting the changes and might be reviewed by @TheTaylorLee
-- Once Dev Images have been tested and approved, the pull request will be merged to the master branch and workflows will create new production images.
+- Once Dev Images have been tested and approved, the pull request will be merged to the main branch and workflows will create new production images.
 
 #### Pull Request format
 - Type: Description
