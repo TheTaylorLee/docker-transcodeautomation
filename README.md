@@ -75,8 +75,8 @@ ENV Variable |  Description | Example
 ---------|---------|---------
 BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
 BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
-MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperate by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperate by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperated by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperated by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
 
 
 #### Optional Variables
