@@ -56,3 +56,4 @@
 - 2.24.2 Failed to use a dev branch for 2.24.1 and workflows didn't run. Using 2.24.2 to trigger workflows and test for bugs.
 - 2.25.0 Add the following to surpress verbose output, but still display stats. This will make logs easier to read by removing thousands of unneeded lines. (-hide_banner -loglevel error -stats)
 - 2.25.1 Add the suppress output parameters to Invoke-Process<media/show> functions. Larger file sizes resulted in updating metadata only and those runs of ffmpeg were missing the parameters.
+- 3.0.0 Deprecating Ubuntu Build and update alpine build
