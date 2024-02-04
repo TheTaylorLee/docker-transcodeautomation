@@ -1,14 +1,16 @@
-name: prod-alpine-amd64
+name: dev-alpine3.17-amd64
 
 "on":
-  pull_request:
-    branches:
+  #  pull_request:
+  #    types:
+  #      - opened
+  push:
+    branches-ignore:
       - main
-    types:
-      - closed
+  workflow_dispatch:
 
 jobs:
-  build-and-push-alpine-image:
+  build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,6 +46,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64-${{ env.tag }}
-            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64
-            ghcr.io/thetaylorlee/docker-transcodeautomation:latest
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64-develop-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64-develop

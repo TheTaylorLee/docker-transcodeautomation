@@ -5,6 +5,7 @@ build.sh
 changelog.md
 examples
 Dockerfile.alpine3.14-lts-amd64
+Dockerfile.alpine3.17-amd64
 Dockerfile.ubuntu22.04-lts-amd64
 LICENSE
 readme.md
