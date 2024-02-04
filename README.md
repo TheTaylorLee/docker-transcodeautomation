@@ -66,6 +66,8 @@ services:
       - /home/user/docker/appdata/docker-transcodeautomation/transcoding:/docker-transcodeautomation/transcoding
       - /media:/media
     network_mode: none
+    cap_add:
+      - SYS_NICE # Allows ffmpeg to set cpu affinity and allocate memory
     restart: unless-stopped
 ```
 
