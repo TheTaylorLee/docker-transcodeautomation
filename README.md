@@ -6,9 +6,6 @@ An automated media transcoding solution. This solution is completely automated a
       <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/actions/workflows/prod-alpine-amd64.yml">
       <img src="https://github.com/TheTaylorLee/docker-transcodeautomation/actions/workflows/prod-alpine-amd64.yml/badge.svg">
     </a>
-    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/actions/workflows/prod-ubuntu-amd64.yml">
-      <img src="https://github.com/TheTaylorLee/docker-transcodeautomation/actions/workflows/prod-ubuntu-amd64.yml/badge.svg">
-    </a>
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/issues?q=is%3Aopen+is%3Aissue">
       <img src ="https://img.shields.io/github/issues-raw/thetaylorlee/docker-transcodeautomation">
     </a>
