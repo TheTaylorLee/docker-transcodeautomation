@@ -13,7 +13,7 @@ else {
         Where-Object { $_.daterun -gt (Get-Date).AddDays(-7) }
 }
 
-# If not then run in the last 7 days, then update-processed
+# If not run in the last 7 days, then update-processed
 if ($null -eq $queryrun) {
     $startdt = Get-Date
     Write-Output "info: Update-Processed media check started at $startdt"
