@@ -7,6 +7,7 @@
 ## While recording streams I'll need to number them or concat them in some way to properly match each with their index. Such as audio codec, language, channels
 ### I can use a for loop with an integer condition to group the various audio or subtitle indexes properly. Then how do I intend to store them in the database?
 ## It then becomes a question of how do I display this data in grafana in a useful manner.
+### Items that have multiple values like many languages could be represented by a pie chart, or perhaps have it show each langauge as a percentage of total item counts in a table or bar chart.
 
 # METADATA TO LOG
 ## video codec + codec long name
