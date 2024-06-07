@@ -106,11 +106,11 @@ Transcoding | Transcoding of files occurs here | /home/user/docker/appdata/docke
 Media | Top volume containing media files | /media:/media
 
 ### Builds and Tags
-Build | Architecture | Updated
+Build | Architecture | Maintained
 ---------|----------|---------
-Alpine3.14-lts | amd64 | yes
+Alpine3.14-lts | amd64 | no
 Alpine3.17 | amd64 | yes
-Ubuntu22.04-lts | amd64 | yes
+Ubuntu22.04-lts | amd64 | no
 
 Tags | Description
 ---------|----------
