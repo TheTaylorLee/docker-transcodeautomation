@@ -17,5 +17,7 @@ $adjustedfilenamematch
 
 # adjusted filename variable would be used in lines 65, 106, and 113 of the above mentioned script for matching the file in the mediadb.sqlite database, and will update the entry.
 # The adjusted filename variable doesn't need to handle scenarios of the filenames already within the database since they are filtered prior to the foreach loop.
-## However if the folder path changes, then it will create a new entry in the database, which will result in lost statistics.
+## However if the folder path changes or the db ids are removed in the future, then it will create a new entry in the database, which will result in lost statistics.
 ### So this is a run once scenario and would be for ongoing use cases.
+
+# Will not implement this feature, but am creating a dev image for single use.
