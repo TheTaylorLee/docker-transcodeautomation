@@ -14,8 +14,8 @@ Function Invoke-MediaManagement {
 
     ##Shows
     ##Make sure no previous failures occurred prior to stepping forward with shows
-    $testnofiles = Get-ChildItem $env:FFToolsSource -File
-    $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
+    $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
+    $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
         Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource
@@ -27,8 +27,8 @@ Function Invoke-MediaManagement {
 
     ##Movies
     ##Make sure no previous failures occurred prior to stepping forward with movies
-    $testnofiles = Get-ChildItem $env:FFToolsSource -File
-    $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
+    $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
+    $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
         #Copy Files to processing folders
         Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
@@ -40,7 +40,7 @@ Function Invoke-MediaManagement {
 
     #Remove recover files older than 14 days.
     Write-Output "info: Deleting backup files over $env:BACKUPRETENTION days old"
-    Get-ChildItem -Path $env:FFToolsTarget/recover |
+    Get-ChildItem -LiteralPath $env:FFToolsTarget/recover |
         Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$env:BACKUPRETENTION) } |
         Remove-Item -Verbose
 

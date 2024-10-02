@@ -20,7 +20,7 @@ function Get-MissingYear {
         Remove-Item /docker-transcodeautomation/data/logs/missingyear.log -Force
     }
     foreach ($mediafolder in $mediafolders) {
-        Get-ChildItem $mediafolder -r |
+        Get-ChildItem -LiteralPath $mediafolder -r |
         Sort-Object fullname |
         Select-Object name, fullname |
         Where-Object { $_.name -notlike "*(*)*" } |

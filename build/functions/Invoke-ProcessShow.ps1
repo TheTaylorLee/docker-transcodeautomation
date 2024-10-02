@@ -21,8 +21,8 @@ function invoke-processshow {
     ##Source files will be moved into a recover folder in case transcode failed.
     ##If source files is smaller it's metadata will be cleaned up and the transcoded file removed.
     ##If target files has a length of 0 ffmpeg failed and processing aborts. This avoids transcode failures overwriting good files
-    $sourcefiles = Get-ChildItem $env:FFToolsSource -File | Select-Object fullname, Name, length
-    $targetfiles = Get-ChildItem $env:FFToolsTarget -File | Select-Object fullname, Name, length
+    $sourcefiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File | Select-Object fullname, Name, length
+    $targetfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File | Select-Object fullname, Name, length
     $scount = ($sourcefiles | Measure-Object).count
     $tcount = ($targetfiles | Measure-Object).count
 
@@ -34,18 +34,18 @@ function invoke-processshow {
                 # If the source file is smaller than the transcoded file
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
-                    Remove-Item $targetfiles[$i].FullName -Force -Verbose
+                    Remove-Item -LiteralPath $targetfiles[$i].FullName -Force -Verbose
                     ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
-                    Remove-Item $sourcefiles[$i].fullname -Force -Verbose
+                    Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
                 # If the source file is larger and backups are kept
                 elseif ($env:BACKUPPROCESSED -eq 'true') {
-                    Move-Item $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
-                    (Get-ChildItem $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
+                    Move-Item -LiteralPath $sourcefiles[$i].fullname $env:FFToolsTarget/recover -Force -Verbose
+                    (Get-ChildItem -LiteralPath $env:FFToolsTarget/recover/($sourcefiles[$i]).name).lastwritetime = (Get-Date)
                 }
                 # If the source file is larger and backups are not kept
                 else {
-                    Remove-Item $sourcefiles[$i].fullname -Force -Verbose
+                    Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
             }
             else {
@@ -56,12 +56,12 @@ function invoke-processshow {
     }
 
     ##Move transcoded files into a processed folder so future file handling may proceed without issue
-    $processedfiles = Get-ChildItem $env:FFToolsTarget -File | Select-Object fullname, Name, length
+    $processedfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File | Select-Object fullname, Name, length
     $pcount = ($processedfiles | Measure-Object).count
     [int]$max = $pcount
     for ($i = 0; $i -lt $max; $i++) {
         if ($processedfiles[$i].Length -gt 0) {
-            Move-Item $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed" -Verbose
+            Move-Item -LiteralPath $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed" -Verbose
         }
         else {
             break
