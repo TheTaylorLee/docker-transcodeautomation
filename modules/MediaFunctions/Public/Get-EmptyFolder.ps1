@@ -17,7 +17,7 @@ function Get-EmptyFolder {
     [string[]]$mediafolders = $mediashowfolders + $mediamoviefolders
 
     foreach ($mediafolder in $mediafolders) {
-        Get-ChildItem $mediafolder -Directory -Recurse |
+        Get-ChildItem -LiteralPath $mediafolder -Directory -Recurse |
         Where-Object { $_.GetFileSystemInfos().Count -eq 0 } |
         Select-Object FullName
     }

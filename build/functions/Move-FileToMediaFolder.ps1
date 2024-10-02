@@ -18,13 +18,13 @@ function Move-FileToMEDIAFolder {
 
         #Get a list of files in processed folder
         $processeddir = "$env:FFToolsTarget" + "processed"
-        [psobject]$filestomove = Get-ChildItem $processeddir -r -File -Include "*.mkv", "*.mp4" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
+        [psobject]$filestomove = Get-ChildItem -LiteralPath $processeddir -r -File -Include "*.mkv", "*.mp4" | Select-Object name, fullname, directory, @{ Name = "NewsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
 
         #Move processed movie files
         foreach ($file in $filestomove) {
             #move the file
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
-            $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
+            $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
                 # log stats and changes to database
                 $TableName = 'Movies'
@@ -35,7 +35,7 @@ function Move-FileToMEDIAFolder {
                 $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
             }
             # Fix for Issue 29. This will move the file and update the database.
             # If for any reason an interuption occurs, the original file might be deleted. This results consecutive runs of this foreach loop failing to move the file.
@@ -56,7 +56,7 @@ function Move-FileToMEDIAFolder {
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     # Move File
-                    Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
+                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -Verbose
                 }
             }
         }
@@ -66,7 +66,7 @@ function Move-FileToMEDIAFolder {
         foreach ($file in $filestomove) {
             #move the file
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
-            $oldsizemb = (Get-ChildItem $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
+            $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
             if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
                 # log stats and changes to database
                 $TableName = 'Shows'
@@ -77,7 +77,7 @@ function Move-FileToMEDIAFolder {
                 $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                 Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-                Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
             }
             # Fix for Issue 29. This will move the file and update the database.
             # If for any reason an interuption occurs, the original file might be deleted. This results consecutive runs of this foreach loop failing to move the file.
@@ -98,7 +98,7 @@ function Move-FileToMEDIAFolder {
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     # Move file
-                    Move-Item $file.fullname $destination.fullname -Force -Confirm:$false -Verbose
+                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -Verbose
                 }
             }
         }

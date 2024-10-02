@@ -20,7 +20,7 @@ Function Invoke-MEDIAMoviesToProcess {
             Set-Location $MEDIAmoviefolder
 
             # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-            $files = (Get-ChildItem -ErrorAction Inquire $MEDIAmoviefolder -r -File -Include "*.mkv", "*.mp4").fullname
+            $files = (Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAmoviefolder -r -File -Include "*.mkv", "*.mp4").fullname
             $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$MEDIAmoviefolder%`"" -ErrorAction Inquire
             $transcoded = ($query).fullname
             if ($null -eq $transcoded) {
@@ -33,8 +33,8 @@ Function Invoke-MEDIAMoviesToProcess {
             # Iterate possibly untranscoded Files
             foreach ($file in $filesforprocessing) {
                 ##Make sure no previous failures occurred prior to stepping forward
-                $testnofiles = Get-ChildItem $env:FFToolsSource -File
-                $testnofiles2 = Get-ChildItem $env:FFToolsTarget -File
+                $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
+                $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
 
                 if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
                     $test = Test-Path -Path $file
@@ -43,10 +43,10 @@ Function Invoke-MEDIAMoviesToProcess {
                     if ($test -eq 'True') {
                         # Check that 3 times the file size exists in free space on transcoding drive
                         $transcodingfreespace = (Get-PSDrive transcoding | Select-Object @{ Name = "FreeGB"; Expression = { [math]::round(($_.free / 1gb), 2) } }).FreeGB
-                        $filesizemultiplied = ((Get-ChildItem $file | Select-Object @{ Name = "filesizeGB"; Expression = { [math]::round(($_.length / 1gb), 3) } }).filesizeGB) * 3
+                        $filesizemultiplied = ((Get-ChildItem -LiteralPath $file | Select-Object @{ Name = "filesizeGB"; Expression = { [math]::round(($_.length / 1gb), 3) } }).filesizeGB) * 3
 
                         if ($transcodingfreespace -gt $filesizemultiplied) {
-                            $file = Get-ChildItem $file | Select-Object name, fullname, directory, LastWriteTime, @{ Name = "filesizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
+                            $file = Get-ChildItem -LiteralPath $file | Select-Object name, fullname, directory, LastWriteTime, @{ Name = "filesizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
                             $fullname = $file.fullname
                             $filename = $file.name
                             $directory = $file.directory
@@ -82,7 +82,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                     }
                                     # else comment tag of media file is not transcoded copy file for processing and update database
                                     else {
-                                        Copy-Item $fullname $env:FFToolsSource -Verbose
+                                        Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
 
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
@@ -108,7 +108,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                     }
                                     # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Will update if file is moved or not moved to new directory. Useful for when file has been replace by another download.
                                     else {
-                                        Copy-Item $fullname $env:FFToolsSource -Verbose
+                                        Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                                         $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query

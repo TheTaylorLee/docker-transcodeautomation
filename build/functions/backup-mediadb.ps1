@@ -8,7 +8,7 @@ function Backup-Mediadb {
     #Used in debug logs
     Write-Output "info: Backup-Mediadb Start"
 
-    $exists = Get-ChildItem -Path $backupfolder |
+    $exists = Get-ChildItem -LiteralPath $backupfolder |
         Where-Object { $_.CreationTime -gt (Get-Date).AddDays(-7) }
 
     if ($null -ne $exists) {
@@ -20,7 +20,7 @@ function Backup-Mediadb {
         Copy-Item -Path $database -Destination "$backupfolder/$date.sqlite" -Verbose
     }
 
-    Get-ChildItem -Path $backupfolder |
+    Get-ChildItem -LiteralPath $backupfolder |
         Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-30) } |
         Remove-Item -Verbose
 
