@@ -23,7 +23,7 @@ if ($null -eq $queryrun) {
     $sqlmovies = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName"
     foreach ($sqlmovie in $sqlmovies) {
         $fullname = $sqlmovie.fullname
-        if (Test-Path "$fullname") {
+        if (Test-Path -LiteralPath "$fullname") {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
@@ -45,7 +45,7 @@ if ($null -eq $queryrun) {
     $sqlshows = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName"
     foreach ($sqlshow in $sqlshows) {
         $fullname = $sqlshow.fullname
-        if (Test-Path "$fullname") {
+        if (Test-Path -LiteralPath "$fullname") {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment

@@ -31,7 +31,7 @@ function Move-FileToMediaFolder {
             #move the file
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
             $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
-            if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
+            if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
                 Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
                 # log stats and changes to database
@@ -55,7 +55,7 @@ function Move-FileToMediaFolder {
             #move the file
             $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
             $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
-            if (Test-Path $destination.fullname -ErrorAction SilentlyContinue) {
+            if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
                 Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
 
                 # log stats and changes to database

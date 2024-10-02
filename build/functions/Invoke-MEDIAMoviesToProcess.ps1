@@ -37,7 +37,7 @@ Function Invoke-MEDIAMoviesToProcess {
                 $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
 
                 if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
-                    $test = Test-Path -Path $file
+                    $test = Test-Path -LiteralPath $file
 
                     # If File Exists
                     if ($test -eq 'True') {

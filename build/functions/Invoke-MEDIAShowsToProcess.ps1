@@ -14,11 +14,11 @@ Function Invoke-MEDIAShowsToProcess {
     if ((Invoke-SqliteQuery -DataSource $datasource -Query "PRAGMA integrity_check").integrity_check -eq 'ok') {
         # Set static Table parameters
         $TableName = "Shows"
-        Write-Output "test: nest01"
+
         # Iterate Show libraries
         foreach ($MEDIAshowfolder in $MEDIAshowfolders) {
             Set-Location $MEDIAshowfolder
-            Write-Output "test: nest02"
+
             # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
             $files = (Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4").fullname
             $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$MEDIAshowfolder%`""
@@ -35,16 +35,16 @@ Function Invoke-MEDIAShowsToProcess {
                 ##Make sure no previous failures occurred prior to stepping forward
                 $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
                 $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
-                Write-Output "test: nest03"
+
                 if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
-                    $test = Test-Path -Path $file
-                    Write-Output "test: nest04-01"
+                    $test = Test-Path -LiteralPath $file
+
                     # If File Exists
                     if ($test -eq 'True') {
                         # Check that 3 times the file size exists in free space on transcoding drive
                         $transcodingfreespace = (Get-PSDrive transcoding | Select-Object @{ Name = "FreeGB"; Expression = { [math]::round(($_.free / 1gb), 2) } }).FreeGB
                         $filesizemultiplied = ((Get-ChildItem -LiteralPath $file | Select-Object @{ Name = "filesizeGB"; Expression = { [math]::round(($_.length / 1gb), 3) } }).filesizeGB) * 3
-                        Write-Output "test: nest05-01"
+
                         if ($transcodingfreespace -gt $filesizemultiplied) {
                             $file = Get-ChildItem -LiteralPath $file | Select-Object name, fullname, directory, LastWriteTime, @{ Name = "filesizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
                             $fullname = $file.fullname
@@ -53,13 +53,13 @@ Function Invoke-MEDIAShowsToProcess {
                             $lastupdatetime = $file.LastWriteTime
                             $filesizeMB = $file.filesizeMB
                             $nowtime = Get-Date
-                            Write-Output "test: nest06-01"
+
                             # If file age greater than or equal to hours old process file
                             if (($nowtime - $lastupdatetime).totalhours -ge $hours) {
                                 $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
                                 $convert = $Probe | ConvertFrom-Json
                                 $comment = $convert.format.tags.comment
-                                Write-Output "test: nest07-01"
+
                                 # If database entry doesn't exist for file create table entry.
                                 $query = "SELECT * FROM $TableName WHERE filename = `"$filename`""
                                 $result = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
@@ -67,7 +67,7 @@ Function Invoke-MEDIAShowsToProcess {
                                     # If comment tag of media file is transcoded, update database only
                                     if ($comment -eq 'transcoded') {
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
-                                        Write-Output "test: nest08-01"
+
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
                                             filename   = $filename
                                             fullname   = $fullname
@@ -84,7 +84,7 @@ Function Invoke-MEDIAShowsToProcess {
                                     else {
                                         Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
-                                        Write-Output "test: nest08-02"
+
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
                                             filename   = $filename
                                             fullname   = $fullname
