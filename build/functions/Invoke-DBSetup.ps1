@@ -63,7 +63,7 @@ function Invoke-DBSetup {
 ('growth180daysMB', 'this shows how much storage usage has increased in the past x days for existing media only', 'Statistics'),
 ('growth365daysMB', 'this shows how much storage usage has increased in the past x days for existing media only', 'Statistics'),
 ('daterun', 'tracks last run of the update-processed script, so it does not run again in the minimum delay period', 'UpdateProcessedLog'),
-('nextindex', 'next index to be used for new the next transcoded file', 'ImmutableIndex')"
+('nextindex', 'next index to be used for the next transcoded file', 'ImmutableIndex')"
 
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 

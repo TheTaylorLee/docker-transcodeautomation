@@ -44,7 +44,7 @@ $Tablename = "Descriptions"
 $result = Invoke-SqliteQuery -DataSource $DataSource -Query $checkQuery
 
 if ($null -eq $result) {
-    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('nextindex', 'next index to be used for new the next transcoded file', 'ImmutableIndex')"
+    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('nextindex', 'next index to be used for the next transcoded file', 'ImmutableIndex')"
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 }
 
