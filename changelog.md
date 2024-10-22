@@ -62,3 +62,4 @@
 - 3.1.2 fix move-filetomediafolder in optional media functions so parameters don't need supplied.
 - 4.0.0 Begining of work for [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
 - 4.1.0 Update database function and script for managing new ImmutableIndex table
+- 4.1.1 Fix database entries not populating
