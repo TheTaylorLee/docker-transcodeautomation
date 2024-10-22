@@ -60,3 +60,4 @@
 - 3.1.0 issues[#48](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/48) fix using literalpath
 - 3.1.1 issue [#29](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/29) may have been misunderstood. There was a different issue or an additional issue. Now both issues are handled by ensuring filtering is occuring for movies and shows blocks and preventing those running when they shouldn't. The old fix will remain as a solution should the original considered exception occur.
 - 3.1.2 fix move-filetomediafolder in optional media functions so parameters don't need supplied.
+- 4.0.0 Begining of work for [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
