@@ -63,7 +63,7 @@ function Invoke-DBSetup {
 ('growth180daysMB', 'this shows how much storage usage has increased in the past x days for existing media only', 'Statistics'),
 ('growth365daysMB', 'this shows how much storage usage has increased in the past x days for existing media only', 'Statistics'),
 ('daterun', 'tracks last run of the update-processed script, so it does not run again in the minimum delay period', 'UpdateProcessedLog'),
-('nextindex', 'next index to be used for the next transcoded file', 'ImmutableIndex')"
+('lastindex', 'last index used for the previous transcoded file', 'ImmutableIndex')"
 
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
@@ -84,11 +84,11 @@ function Invoke-DBSetup {
 
     # Check for and Create ImmutableIndex
     $Tablename = "ImmutableIndex"
-    $Query = "CREATE TABLE $Tablename (nextindext TEXT)"
+    $Query = "CREATE TABLE $Tablename (lastindex TEXT)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     ## Add initial entry to ImmutableIndex if it doesn't exists
-    [string]$query = "INSERT INTO $TableName (nextindex) Values ('dta-0000000000')"
+    [string]$query = "INSERT INTO $TableName (lastindex) Values ('0000000000')"
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
     # Create Views

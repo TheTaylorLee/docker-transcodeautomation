@@ -1,3 +1,7 @@
+param (
+    [Parameter(Mandatory = $true)][string]$DataSource
+)
+
 Write-Output "info: UPDATEMETADATA Start"
 #Movies
 foreach ($path in $MEDIAmoviefolders) {
@@ -5,10 +9,11 @@ foreach ($path in $MEDIAmoviefolders) {
     foreach ($ext in $extensions) {
         $files = Get-ChildItem -LiteralPath $path -Filter $ext -Recurse
         foreach ($file in $files) {
+            $comment = (Update-Lastindex -DataSource $datasource).newcomment
             $name = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $name
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="$comment" -c copy $name
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
         }
     }
@@ -20,10 +25,11 @@ foreach ($path in $MEDIAshowfolders) {
     foreach ($ext in $extensions) {
         $files = Get-ChildItem -LiteralPath $path -Filter $ext -Recurse
         foreach ($file in $files) {
+            $comment = (Update-Lastindex -DataSource $datasource).newcomment
             $name = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $name
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="$comment" -c copy $name
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
         }
     }

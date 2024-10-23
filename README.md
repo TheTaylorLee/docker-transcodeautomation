@@ -37,10 +37,11 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
   - `showscustomoptions.ps1`
   - `moviescustomoptions.ps1`
 - You may replace the `{Custom Options Here}` text with any custom Options you want to use. Be sure to remove the brackets.
-- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment.
+- All other options must be left alone and the $comment variable must be retained, or the transcode automation process will not work as intended. This is because of the way immutable file indexing is considered.
 - Example Options: `-metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast`
 ```powershell
-ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
+$comment = (Update-Lastindex -DataSource $datasource).newcomment
+ffmpeg -i $video -metadata COMMENT="$comment" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
@@ -117,8 +118,7 @@ Tags | Description
 `build`-`Architecture`-develop | Most recent dev image for for any build & architecture
 `build`-`Architecture`-develop-`version` | Versioned dev image for for any build & architecture
 `build`-`Architecture`-`version` | Versioned image for any build & architecture
-`build`-`Architecture` | Latest image for any build & architecture
-latest | Latest alpine amd64 image
+[latest](https://github.com/TheTaylorLee/docker-transcodeautomation/pkgs/container/docker-transcodeautomation) | There is no longer a latest docker-transcodeautomation build. Breaking changes have dictated requiring version pinning.
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions i've added for retrieving useful info. They are not necessary to use.

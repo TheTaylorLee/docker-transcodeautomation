@@ -26,7 +26,7 @@ if ($null -eq $result) {
 
 # Check for and Create ImmutableIndex
 $Tablename = "ImmutableIndex"
-$Query = "CREATE TABLE IF NOT EXISTS $Tablename (nextindex TEXT)"
+$Query = "CREATE TABLE IF NOT EXISTS $Tablename (lastindex TEXT)"
 Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
 ## Add initial entry to ImmutableIndex if it doesn't exists
@@ -34,17 +34,17 @@ Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 $result = Invoke-SqliteQuery -DataSource $DataSource -Query $checkQuery
 
 if ($null -eq $result) {
-    [string]$query = "INSERT INTO $TableName (nextindex) Values ('dta-0000000000')"
+    [string]$query = "INSERT INTO $TableName (lastindex) Values ('0000000000')"
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 }
 
 ## Update descriptions table if entry doesn't exists
 $Tablename = "Descriptions"
-[string]$checkQuery = "SELECT * FROM $TableName WHERE columnname = 'nextindex' AND tablename = 'ImmutableIndex'"
+[string]$checkQuery = "SELECT * FROM $TableName WHERE columnname = 'lastindex' AND tablename = 'ImmutableIndex'"
 $result = Invoke-SqliteQuery -DataSource $DataSource -Query $checkQuery
 
 if ($null -eq $result) {
-    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('nextindex', 'next index to be used for the next transcoded file', 'ImmutableIndex')"
+    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('lastindex', 'next index to be used for the next transcoded file', 'ImmutableIndex')"
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 }
 

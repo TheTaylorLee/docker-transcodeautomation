@@ -76,7 +76,7 @@ if ($host.version.major -eq '7') {
     # Begin Automation
     ##If set update metadata of existing media only
     if ($env:UPDATEMETADATA -eq 'true') {
-        /docker-transcodeautomation/scripts/Update-Metadata.ps1
+        /docker-transcodeautomation/scripts/Update-Metadata.ps1 -datasource $datasource
         while ($true) {
             Start-Sleep -Seconds 2147483
         }

@@ -60,6 +60,12 @@
 - 3.1.0 issues[#48](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/48) fix using literalpath
 - 3.1.1 issue [#29](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/29) may have been misunderstood. There was a different issue or an additional issue. Now both issues are handled by ensuring filtering is occuring for movies and shows blocks and preventing those running when they shouldn't. The old fix will remain as a solution should the original considered exception occur.
 - 3.1.2 fix move-filetomediafolder in optional media functions so parameters don't need supplied.
-- 4.0.0 Begining of work for [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
-- 4.1.0 Update database function and script for managing new ImmutableIndex table
-- 4.1.1 Fix database entries not populating
+- 4.0.0
+    - Implementing [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
+    - Update database function and script for managing new ImmutableIndex table
+    - Fix database entries not populating
+    - Update get-notprocessed to support new transcoded comments
+    - Create Update-LastIndex function for reuse
+    - Update update-metadata to use update-lastindex
+    - Updated update-processed script to look for dta-* instead of transcoded in comment metadata. No need to process indexes in this step.
+    - Eliminated latest tag. There are breaking change just like in the last major update and I don't need to be pushing that out unannounced. Create a release note for 4.0.0 announcing the changes and that update-metadata should be used on first update run.
