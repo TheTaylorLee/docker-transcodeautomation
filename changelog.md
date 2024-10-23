@@ -69,3 +69,4 @@
     - Update update-metadata to use update-lastindex
     - Updated update-processed script to look for dta-* instead of transcoded in comment metadata. No need to process indexes in this step.
     - Eliminated latest tag. There are breaking change just like in the last major update and I don't need to be pushing that out unannounced. Create a release note for 4.0.0 announcing the changes and that update-metadata should be used on first update run.
+    - Update Move-FileToMediaFolder to use the applied index for the comment instead of transcoded

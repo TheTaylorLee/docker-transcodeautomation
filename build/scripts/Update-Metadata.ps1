@@ -3,6 +3,13 @@ param (
 )
 
 Write-Output "info: UPDATEMETADATA Start"
+
+# Update Database Log Table. This ensures update-processed is not running unnecessarily after a first run or migration of media.
+$TableName = 'UpdateProcessedLog'
+$daterun = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$query = "INSERT INTO $TableName (daterun) Values (`"$daterun`")"
+Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
 #Movies
 foreach ($path in $MEDIAmoviefolders) {
     [string[]]$extensions = "*.mkv", "*.mp4"
@@ -13,7 +20,7 @@ foreach ($path in $MEDIAmoviefolders) {
             $name = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="$comment" -c copy $name
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $name
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
         }
     }
@@ -29,7 +36,7 @@ foreach ($path in $MEDIAshowfolders) {
             $name = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="$comment" -c copy $name
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $name
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
         }
     }
