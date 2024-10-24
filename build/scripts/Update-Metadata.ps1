@@ -17,11 +17,17 @@ foreach ($path in $MEDIAmoviefolders) {
         $files = Get-ChildItem -LiteralPath $path -Filter $ext -Recurse
         foreach ($file in $files) {
             $comment = (Update-Lastindex -DataSource $datasource).newcomment
-            $name = $file.fullname
+            $fullname = $file.fullname
             $oldname = $file.fullname + ".old"
-            Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $name
+            Rename-Item $fullname $oldname -Verbose
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $fullname
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
+
+            # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
+            $TableName = 'Movies'
+            $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            $query = "Update $TableName set comment = `"$comment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$fullname`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
         }
     }
 }
@@ -33,11 +39,17 @@ foreach ($path in $MEDIAshowfolders) {
         $files = Get-ChildItem -LiteralPath $path -Filter $ext -Recurse
         foreach ($file in $files) {
             $comment = (Update-Lastindex -DataSource $datasource).newcomment
-            $name = $file.fullname
+            $fullname = $file.fullname
             $oldname = $file.fullname + ".old"
-            Rename-Item $name $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $name
+            Rename-Item $fullname $oldname -Verbose
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $fullname
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
+
+            # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
+            $TableName = 'Shows'
+            $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            $query = "Update $TableName set comment = `"$comment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$fullname`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
         }
     }
 }

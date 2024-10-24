@@ -21,7 +21,7 @@ Function Invoke-MEDIAShowsToProcess {
 
             # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
             $files = (Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4").fullname
-            $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$MEDIAshowfolder%`""
+            $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$MEDIAshowfolder%`""
             $transcoded = ($query).fullname
             if ($null -eq $transcoded) {
                 $filesforprocessing = $files
@@ -61,11 +61,13 @@ Function Invoke-MEDIAShowsToProcess {
                                 $comment = $convert.format.tags.comment
 
                                 # If database entry doesn't exist for file create table entry.
-                                $query = "SELECT * FROM $TableName WHERE filename = `"$filename`""
-                                $result = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
-                                if ($null -eq $result) {
-                                    # If comment tag of media file is transcoded, update database only
-                                    if ($comment -eq 'transcoded') {
+                                $query = "SELECT * FROM $TableName WHERE fullname = `"$fullname`""
+                                $result01 = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
+                                $query = "SELECT * FROM $TableName WHERE (comment = `"$comment`" and comment != 'transcoded')"
+                                $result02 = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
+                                if ($null -eq $result01 -and $null -eq $result02) {
+                                    # If comment tag of media file is dta-*, update database only.
+                                    if ($comment -like "dta-*") {
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
 
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
@@ -80,7 +82,7 @@ Function Invoke-MEDIAShowsToProcess {
                                             updatedby  = "Invoke-MEDIAShowsToProcess"
                                         }
                                     }
-                                    # else comment tag of media file is not transcoded copy file for processing and update database
+                                    # else comment tag of media file is not dta-*, copy file for processing and update database
                                     else {
                                         Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
@@ -98,19 +100,19 @@ Function Invoke-MEDIAShowsToProcess {
                                         invoke-processshow -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                                     }
                                 }
-                                # else database entry exists, update existing entry. This prevents duplicate table entries and supports files moved to new directories
+                                # else database entry exists, update existing entry. This prevents duplicate table entries and supports files moved to new directories or renamed.
                                 else {
                                     # If ffprobe indicates comment tag of media file is transcoded and file directory has changed, update database only
-                                    if ($comment -eq 'transcoded') {
+                                    if ($comment -like "dta-*") {
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`" and directory != `"$directory`""
+                                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE comment = `"$comment`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                     }
-                                    # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Will update if file is moved or not moved to new directory. Useful for when file has been replace by another download.
+                                    # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Useful for when file has been replace by another download.
                                     else {
                                         Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Copy-MEDIAShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE filename = `"$filename`""
+                                        $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                         invoke-processshow -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                                     }

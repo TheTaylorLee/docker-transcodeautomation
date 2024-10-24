@@ -63,10 +63,11 @@
 - 4.0.0
     - Implementing [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
     - Update database function and script for managing new ImmutableIndex table
-    - Fix database entries not populating
     - Update get-notprocessed to support new transcoded comments
     - Create Update-LastIndex function for reuse
-    - Update update-metadata to use update-lastindex
+    - Update update-metadata to use update-lastindex add an entry to update-process to prevent unnecessary update-processed runs. Also will update the database for existing entries to apply handle database updates migrating to v4.
     - Updated update-processed script to look for dta-* instead of transcoded in comment metadata. No need to process indexes in this step.
-    - Eliminated latest tag. There are breaking change just like in the last major update and I don't need to be pushing that out unannounced. Create a release note for 4.0.0 announcing the changes and that update-metadata should be used on first update run.
     - Update Move-FileToMediaFolder to use the applied index for the comment instead of transcoded
+    - Update Invoke-Media(shows/movies)ToProcess. Change the logic up so that if an entry already exists that matches the immutable index it updates the files entry. This ensures renamed and moved files always update the pre-existing table entry.
+    - Update invoke-process(movie/show) and start-transcode(movies/show) to use update-lastindex for transcoding/remuxing index data into the processed media metadata.
+    - Eliminated latest tag. There are breaking change I don't need to be pushing that out unannounced. Read github release notes for how to migrate.

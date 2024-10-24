@@ -41,7 +41,7 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 - Example Options: `-metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast`
 ```powershell
 $comment = (Update-Lastindex -DataSource $datasource).newcomment
-ffmpeg -i $video -metadata COMMENT="$comment" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
+ffmpeg -i $video -metadata COMMENT=`"$comment`" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
