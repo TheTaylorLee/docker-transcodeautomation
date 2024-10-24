@@ -27,7 +27,10 @@ Function Invoke-MEDIAMoviesToProcess {
                 $filesforprocessing = $files
             }
             else {
-                $filesforprocessing = (Compare-Object $files $transcoded).inputobject
+                # COMPARE-OBJECT RETURNS FILES THAT ARE IN $FILES FIRST AND THEN ITEMS IN THE DATABASE.
+                # THIS IS VERY IMPORTANT FOR THE IF FILE EXISTS COMMENTED BLOCK.
+                # WITHOUT THIS STEP THE EXISTING DB ENTRY COMMENT IS NULLED AND THE FILE WOULD NOT BE PROCESSED.
+                $filesforprocessing = (Compare-Object $files $transcoded | Sort-Object sideindicator).inputobject
             }
 
             # Iterate possibly untranscoded Files
