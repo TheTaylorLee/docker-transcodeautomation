@@ -117,7 +117,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                     # If ffprobe indicates comment tag of media file is transcoded and file directory has changed, update database only
                                     if ($comment -like "dta-*") {
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE comment = `"$comment`""
+                                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', filename = `"$filename`", fullname = `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE comment = `"$comment`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                     }
                                     # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Useful for when file has been replace by another download.
