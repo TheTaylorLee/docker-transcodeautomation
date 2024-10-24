@@ -37,10 +37,22 @@ Function Invoke-MEDIAShowsToProcess {
                 $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
 
                 if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
+                    # Test if file exists by path or matching immutable index in table.
                     $test = Test-Path -LiteralPath $file
 
+                    $fullname = $file.fullname
+                    $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
+                    $convert = $Probe | ConvertFrom-Json -ErrorAction SilentlyContinue
+                    $comment = $convert.format.tags.comment
+                    if ($null -eq $comment) {
+                        $query = $null
+                    }
+                    else {
+                        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE (comment = `"$comment`" and comment IS NOT NULL)" -ErrorAction Inquire
+                    }
+
                     # If File Exists
-                    if ($test -eq 'True') {
+                    if ($test -eq 'True' -or $null -ne $query) {
                         # Check that 3 times the file size exists in free space on transcoding drive
                         $transcodingfreespace = (Get-PSDrive transcoding | Select-Object @{ Name = "FreeGB"; Expression = { [math]::round(($_.free / 1gb), 2) } }).FreeGB
                         $filesizemultiplied = ((Get-ChildItem -LiteralPath $file | Select-Object @{ Name = "filesizeGB"; Expression = { [math]::round(($_.length / 1gb), 3) } }).filesizeGB) * 3
@@ -56,9 +68,6 @@ Function Invoke-MEDIAShowsToProcess {
 
                             # If file age greater than or equal to hours old process file
                             if (($nowtime - $lastupdatetime).totalhours -ge $hours) {
-                                $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
-                                $convert = $Probe | ConvertFrom-Json
-                                $comment = $convert.format.tags.comment
 
                                 # If database entry doesn't exist for file create table entry.
                                 $query = "SELECT * FROM $TableName WHERE fullname = `"$fullname`""
