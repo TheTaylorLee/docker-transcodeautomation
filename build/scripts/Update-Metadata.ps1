@@ -20,7 +20,7 @@ foreach ($path in $MEDIAmoviefolders) {
             $fullname = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $fullname $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $fullname
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $fullname
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
 
             # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
@@ -42,7 +42,7 @@ foreach ($path in $MEDIAshowfolders) {
             $fullname = $file.fullname
             $oldname = $file.fullname + ".old"
             Rename-Item $fullname $oldname -Verbose
-            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $fullname
+            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $fullname
             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
 
             # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.

@@ -38,7 +38,7 @@ function invoke-processshow {
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
                     Remove-Item -LiteralPath $targetfiles[$i].FullName -Force -Verbose
-                    ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=`"$comment`" -c copy $targetfiles[$i].FullName
+                    ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfiles[$i].FullName
                     Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
                 # If the source file is larger and backups are kept
