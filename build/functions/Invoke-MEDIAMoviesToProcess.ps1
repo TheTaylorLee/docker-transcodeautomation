@@ -43,8 +43,7 @@ Function Invoke-MEDIAMoviesToProcess {
                     # Test if file exists by path or matching immutable index in table.
                     $test = Test-Path -LiteralPath $file
 
-                    $fullname = $file.fullname
-                    $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
+                    $Probe = ffprobe -loglevel 0 -print_format json -show_format $file
                     $convert = $Probe | ConvertFrom-Json -ErrorAction SilentlyContinue
                     $comment = $convert.format.tags.comment
                     if ($null -eq $comment) {
