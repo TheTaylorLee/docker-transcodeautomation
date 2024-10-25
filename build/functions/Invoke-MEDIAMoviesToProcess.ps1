@@ -53,7 +53,7 @@ Function Invoke-MEDIAMoviesToProcess {
                         $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE (comment = `"$comment`" and comment IS NOT NULL)" -ErrorAction Inquire
                     }
 
-                    # If File Exists on disk
+                    # If File Exists on disk or matches immutable index in table
                     if ($test -eq 'True' -or $null -ne $query) {
                         # Check that 3 times the file size exists in free space on transcoding drive
                         $transcodingfreespace = (Get-PSDrive transcoding | Select-Object @{ Name = "FreeGB"; Expression = { [math]::round(($_.free / 1gb), 2) } }).FreeGB
