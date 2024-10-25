@@ -2,8 +2,8 @@ The pull request checklist must be reviewed and completed prior to completing a 
 
 # Pull Request Checklist
 - [ ] Reviewed the [Contributing Guidelines](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/contributing.md)
-- [ ] Updated changelog.md
-- [ ] Updated version with new semver
+- [ ] Update changelog.md
+- [ ] Update version with new semver
 - [ ] Build dev images and test changes
     - [ ] Rename a file and ensure the database entry updates paths & retains statistics.
     - [ ] Delete a file. The associated table entry should mark fileexists false and not modify the comment.
