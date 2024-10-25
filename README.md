@@ -143,3 +143,4 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy.
   - /docker-transcodeautomation/data/MediaDB.SQLite #database location
   - /docker-transcodeautomation/data/Backups #BackupsLocation
+- If wanting to add media to an existing watched directory but not actually transcode it; remux it with comment of dta-remuxed.

@@ -79,13 +79,24 @@ Function Invoke-MEDIAMoviesToProcess {
                                 if ($null -eq $result01 -and $null -eq $result02) {
                                     # If comment tag of media file is dta-*, update database only.
                                     if ($comment -like "dta-*") {
-                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
+                                        if ($comment -eq "dta-remuxed") {
+                                            # Remux an immutable index into the file.
+                                            $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                                            $oldname = $file + ".old"
+                                            Rename-Item $fullname $oldname -Verbose
+                                            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $file
+                                            Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
+                                        }
+                                        else {
+                                            $newcomment = $comment
+                                        }
 
+                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
                                             filename   = $filename
                                             fullname   = $fullname
                                             directory  = $directory
-                                            comment    = $comment
+                                            comment    = $newcomment
                                             Added      = Get-Date
                                             modified   = Get-Date
                                             filesizeMB = $filesizeMB
