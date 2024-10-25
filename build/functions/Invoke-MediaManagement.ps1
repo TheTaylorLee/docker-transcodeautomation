@@ -20,7 +20,6 @@ Function Invoke-MediaManagement {
         #Copy Files to processing folders
         Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource
     }
-
     else {
         Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }
@@ -33,7 +32,6 @@ Function Invoke-MediaManagement {
         #Copy Files to processing folders
         Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
     }
-
     else {
         Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
     }

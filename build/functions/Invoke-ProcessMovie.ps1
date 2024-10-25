@@ -14,8 +14,11 @@ function invoke-processmovie {
         $env:MOVIESCRF = "21"
     }
 
+    # Get an index number for the transcoded files
+    $comment = (Update-Lastindex -DataSource $datasource).newcomment
+
     ##Process files
-    Start-TranscodeMovies -crf $env:MOVIESCRF
+    Start-TranscodeMovies -crf $env:MOVIESCRF -comment $comment
 
     ##Compare processed files to the original files.
     ##Source files will be moved into a recover folder in case transcode failed.
@@ -35,7 +38,7 @@ function invoke-processmovie {
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
                     Remove-Item -LiteralPath $targetfiles[$i].FullName -Force -Verbose
-                    ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c copy $targetfiles[$i].FullName
+                    ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfiles[$i].FullName
                     Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
                 # If the source file is larger and backups are kept

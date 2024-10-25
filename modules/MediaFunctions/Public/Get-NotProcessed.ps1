@@ -22,7 +22,7 @@ Function Get-NotProcessed {
         $TableName = 'Movies'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
         $files = (Get-ChildItem -LiteralPath $mediamoviefolder -r -File -Include "*.mkv", "*.mp4").fullname
-        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment = 'transcoded' and directory like `"%$mediamoviefolder%`""
+        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$mediamoviefolder%`""
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
             $filesforprocessing = $files
@@ -55,7 +55,7 @@ Function Get-NotProcessed {
         $TableName = 'Shows'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
         $files = (Get-ChildItem -LiteralPath $mediashowfolder -r -File -Include "*.mkv", "*.mp4").fullname
-        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select fullname FROM $TableName WHERE comment = 'transcoded' and directory like `"%$mediashowfolder%`" and fileexists = 'true'"
+        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select fullname FROM $TableName WHERE comment like 'dta-%' and directory like `"%$mediashowfolder%`" and fileexists = 'true'"
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
             $filesforprocessing = $files

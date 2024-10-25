@@ -76,7 +76,7 @@ if ($host.version.major -eq '7') {
     # Begin Automation
     ##If set update metadata of existing media only
     if ($env:UPDATEMETADATA -eq 'true') {
-        /docker-transcodeautomation/scripts/Update-Metadata.ps1
+        /docker-transcodeautomation/scripts/Update-Metadata.ps1 -datasource $datasource
         while ($true) {
             Start-Sleep -Seconds 2147483
         }
@@ -92,9 +92,18 @@ if ($host.version.major -eq '7') {
                 $dt = Get-Date
                 Write-Output "info: Transcodeautomation while loop started at $dt"
                 ###The Move-FiletoMediaFolder function is run here as a part of the fix for issue #29 Having it run here ensures even if there are no files to transcode, the failed file move is processed during the next window.
-                /docker-transcodeautomation/scripts/Update-Processed.ps1
                 Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource #Issue 29
                 Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                # Update-Processed can only run after the all possible file handling delays have passed. This ensures that if a file name changed but still exists, other functions update the database first.
+                if ($null -eq $runthisonetimeonly) {
+                    Write-Output "info: Set runthisonetimeonly to true and populate a date variable for update-processed to leverage."
+                    $runthisonetimeonly = $true
+                    $updateprocesseddate = Get-Date
+                    [int]$updateprocessedsecondsdelay = 90000 + $minseconds + ([int]$env:MINAGE * 3600)
+                }
+                if ($updateprocesseddate -lt (Get-Date).AddSeconds(-$updateprocessedsecondsdelay)) {
+                    /docker-transcodeautomation/scripts/Update-Processed.ps1 -DataSource $datasource
+                }
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
             }

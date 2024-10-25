@@ -3,8 +3,10 @@ function Start-TranscodeShows {
     [cmdletbinding()]
     [Alias('Transcode')]
     param (
-        [Parameter(Mandatory = $true)]$crf
+        [Parameter(Mandatory = $true)]$crf,
+        [Parameter(Mandatory = $true)]$comment
     )
+
     #Used in debug logs
     Write-Output "info: Start-Transcode Start"
 
@@ -21,7 +23,7 @@ function Start-TranscodeShows {
                 /docker-transcodeautomation/data/showscustomoptions.ps1
             }
             else {
-                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
+                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
         }
 
@@ -33,7 +35,7 @@ function Start-TranscodeShows {
                 /docker-transcodeautomation/data/showscustomoptions.ps1
             }
             else {
-                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
+                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
             }
         }
     }

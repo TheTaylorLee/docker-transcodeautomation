@@ -60,3 +60,16 @@
 - 3.1.0 issues[#48](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/48) fix using literalpath
 - 3.1.1 issue [#29](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/29) may have been misunderstood. There was a different issue or an additional issue. Now both issues are handled by ensuring filtering is occuring for movies and shows blocks and preventing those running when they shouldn't. The old fix will remain as a solution should the original considered exception occur.
 - 3.1.2 fix move-filetomediafolder in optional media functions so parameters don't need supplied.
+- 4.0.0
+    - Implementing [#50](https://github.com/TheTaylorLee/docker-transcodeautomation/issues/50) file immutable indexing
+    - Update database function and script for managing new ImmutableIndex table
+    - Update get-notprocessed to support new transcoded comments
+    - Create Update-LastIndex function for reuse
+    - Update update-metadata to use update-lastindex add an entry to update-process to prevent unnecessary update-processed runs. Also will update the database for existing entries to apply handle database updates migrating to v4.
+    - Updated update-processed script to look for dta-* instead of transcoded in comment metadata. No need to process indexes in this step.
+    - Update Move-FileToMediaFolder to use the applied index for the comment instead of transcoded
+    - Update Invoke-Media(shows/movies)ToProcess. Change the logic up so that if an entry already exists that matches the immutable index it updates the files entry. This ensures renamed and moved files always update the pre-existing table entry.
+    - Update invoke-process(movie/show) and start-transcode(movies/show) to use update-lastindex for transcoding/remuxing index data into the processed media metadata.
+    - Eliminated latest tag. There are breaking change I don't need to be pushing that out unannounced. Read github release notes for how to migrate.
+- 4.0.1 Fix file failing to update the database properly if renamed. Had to add delays for update-processed and not null comments when running these functions. Invoke-Media(shows/movies)ToProcess
+- 4.1.0 Add functionality to add files to an existing media database without transcoding them. Will remux the comment metadata.
