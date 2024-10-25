@@ -82,9 +82,9 @@ Function Invoke-MEDIAMoviesToProcess {
                                         if ($comment -eq "dta-remuxed") {
                                             # Remux an immutable index into the file.
                                             $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
-                                            $oldname = $file + ".old"
+                                            [string]$oldname = $fullname + ".old"
                                             Rename-Item $fullname $oldname -Verbose
-                                            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $file
+                                            ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $fullname
                                             Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
                                         }
                                         else {
