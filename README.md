@@ -144,3 +144,7 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
   - /docker-transcodeautomation/data/MediaDB.SQLite #database location
   - /docker-transcodeautomation/data/Backups #BackupsLocation
 - If wanting to add media to an existing watched directory but not actually transcode it; remux it with comment of dta-remuxed.
+  ```bash
+  # replace $oldname and $name with filepaths
+  ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="dta-remuxed" -c copy -stats_period 60 $name
+  ```
