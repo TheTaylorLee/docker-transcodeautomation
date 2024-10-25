@@ -1,6 +1,8 @@
 Write-Output "info: Update-Processed Start"
 
-[string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
+param (
+    [string]$DataSource
+)
 
 # Test to see if update-processed has run in the last 7 days
 $getcount = Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog"

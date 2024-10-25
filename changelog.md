@@ -71,4 +71,4 @@
     - Update Invoke-Media(shows/movies)ToProcess. Change the logic up so that if an entry already exists that matches the immutable index it updates the files entry. This ensures renamed and moved files always update the pre-existing table entry.
     - Update invoke-process(movie/show) and start-transcode(movies/show) to use update-lastindex for transcoding/remuxing index data into the processed media metadata.
     - Eliminated latest tag. There are breaking change I don't need to be pushing that out unannounced. Read github release notes for how to migrate.
-- 4.0.1 Fix file failing to update the database properly if if renamed.
+- 4.0.1 Fix file failing to update the database properly if renamed. Had to add delays for update-processed and not null comments when running these functions. Invoke-Media(shows/movies)ToProcess

@@ -53,7 +53,7 @@ Function Invoke-MEDIAShowsToProcess {
                         $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE (comment = `"$comment`" and comment IS NOT NULL)" -ErrorAction Inquire
                     }
 
-                    # If File Exists
+                    # If File Exists on disk
                     if ($test -eq 'True' -or $null -ne $query) {
                         # Check that 3 times the file size exists in free space on transcoding drive
                         $transcodingfreespace = (Get-PSDrive transcoding | Select-Object @{ Name = "FreeGB"; Expression = { [math]::round(($_.free / 1gb), 2) } }).FreeGB
@@ -138,7 +138,7 @@ Function Invoke-MEDIAShowsToProcess {
                     else {
                         $fullname = $file
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                        $query = "Update $TableName SET comment = NULL, filesizeMB = NULL,  fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess' WHERE fullname = `"$fullname`""
+                        $query = "Update $TableName SET filesizeMB = NULL,  fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess' WHERE fullname = `"$fullname`""
                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                     }
                 }

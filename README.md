@@ -135,3 +135,11 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - [Here is an example using Grafana](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/grafana)
+
+## Additional Notes
+- If a file is is replaced by another file of the same name, and the old file is deleted, statistics cannot update sooner than (25 hours + PROCDELAY + MINAGE). This ensures statistics are not lost in rare circumstances. Becuase of this the container must run at a minimum that long without restart prior to a replaced files database entry being updated.
+- Docker logs should provide hints to the root of the issue and relevant snippets need to be included in opened issues.
+- If the logs indicate that there are files leftover in the transcoding directory you must remove them. This is a safety feature that ensures failed transcodes don't replace original files.
+- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy.
+  - /docker-transcodeautomation/data/MediaDB.SQLite #database location
+  - /docker-transcodeautomation/data/Backups #BackupsLocation
