@@ -92,7 +92,7 @@ UPDATEMETADATA | If true, existing media will have metadata updated only | UPDAT
 
 #### Variable Notes
 - If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
-- `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss.
+- `UPDATEMETADATA` can be used to have the comment 'transcoded' added to media that has been transcoded in the past. This will prevent that media being processed and is recommend to avoid undesired quality loss. **This process does not backup media even if set to true and will corrupt files if interuppted by other scanners. Have good backups prior to running.**
   - After metadata has been updated remove this variable and restart the container.
 - If `ENDTIMEUTC` is an earlier time than `STARTTIMEUTC`, then it will be treated as next day. For example 18:30 UTC start time with an end time of 03:00 UTC, the end time will stop processing new transcodes the next day for the given UTC Datetime.
 - `PROCDELAY` and `MINAGE` defaults are 4 hours. `PROCDELAY` will respect UTC time windows. It is recommended to maintain a larger processing delay to limit excessive disk reads.
