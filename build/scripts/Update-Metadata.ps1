@@ -21,7 +21,7 @@ foreach ($path in $MEDIAmoviefolders) {
             $convert = $Probe | ConvertFrom-Json
             $filecomment = $convert.format.tags.comment
 
-            if ($filecomment -like "dta-*") {
+            if ($filecomment -notlike "dta-*") {
                 $fullname = $file.fullname
                 $oldname = $file.fullname + ".old"
                 $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
@@ -50,7 +50,7 @@ foreach ($path in $MEDIAshowfolders) {
             $convert = $Probe | ConvertFrom-Json
             $filecomment = $convert.format.tags.comment
 
-            if ($filecomment -like "dta-*") {
+            if ($filecomment -notlike "dta-*") {
                 $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
                 $fullname = $file.fullname
                 $oldname = $file.fullname + ".old"
