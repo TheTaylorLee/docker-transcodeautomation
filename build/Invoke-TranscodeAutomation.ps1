@@ -96,7 +96,6 @@ if ($host.version.major -eq '7') {
                 Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
                 # Update-Processed can only run after the all possible file handling delays have passed. This ensures that if a file name changed but still exists, other functions update the database first.
                 if ($null -eq $runthisonetimeonly) {
-                    Write-Output "info: Set runthisonetimeonly to true and populate a date variable for update-processed to leverage."
                     $runthisonetimeonly = $true
                     $updateprocesseddate = Get-Date
                     [int]$updateprocessedsecondsdelay = 90000 + $minseconds + ([int]$env:MINAGE * 3600)
