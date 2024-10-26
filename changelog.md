@@ -74,3 +74,4 @@
 - 4.0.1 Fix file failing to update the database properly if renamed. Had to add delays for update-processed and not null comments when running these functions. Invoke-Media(shows/movies)ToProcess
 - 4.1.0 Add functionality to add files to an existing media database without transcoding them. Will remux the comment metadata.
 - 4.1.1 Add log output for when Update-Processed skips running.
+- 4.1.2 Update-metadata can take a long time. Add handling in case it must be run after a restart so that remuxed files are only handled once.
