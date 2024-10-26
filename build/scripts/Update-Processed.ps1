@@ -1,6 +1,6 @@
 Write-Output "info: Update-Processed Start"
 
-[string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
+$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
 
 # Test to see if update-processed has run in the last 7 days
 $getcount = Invoke-SqliteQuery -DataSource $DataSource -Query "select * from UpdateProcessedLog"
@@ -27,7 +27,7 @@ if ($null -eq $queryrun) {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
-            if ($comment -ne 'transcoded') {
+            if ($comment -notlike "dta-*") {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`" WHERE fullname = `"$fullname`""
             }
@@ -49,7 +49,7 @@ if ($null -eq $queryrun) {
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $fullname
             $convert = $Probe | ConvertFrom-Json
             $comment = $convert.format.tags.comment
-            if ($comment -ne 'transcoded') {
+            if ($comment -notlike "dta-*") {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`" WHERE fullname = `"$fullname`""
             }

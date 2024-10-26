@@ -37,10 +37,11 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
   - `showscustomoptions.ps1`
   - `moviescustomoptions.ps1`
 - You may replace the `{Custom Options Here}` text with any custom Options you want to use. Be sure to remove the brackets.
-- All other options must be left alone or the transcode automation process will not work as intended. This is because of the way ffprobe handles media with the transcoded comment.
+- All other options must be left alone and the $comment variable must be retained, or the transcode automation process will not work as intended. This is because of the way immutable file indexing is considered.
 - Example Options: `-metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast`
 ```powershell
-ffmpeg -i $video -metadata COMMENT="transcoded" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
+$comment = (Update-Lastindex -DataSource $datasource).newcomment
+ffmpeg -i $video -metadata COMMENT=`"$comment`" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
@@ -117,8 +118,7 @@ Tags | Description
 `build`-`Architecture`-develop | Most recent dev image for for any build & architecture
 `build`-`Architecture`-develop-`version` | Versioned dev image for for any build & architecture
 `build`-`Architecture`-`version` | Versioned image for any build & architecture
-`build`-`Architecture` | Latest image for any build & architecture
-latest | Latest alpine amd64 image
+[latest](https://github.com/TheTaylorLee/docker-transcodeautomation/pkgs/container/docker-transcodeautomation) | There is no longer a latest docker-transcodeautomation build. Breaking changes have dictated requiring version pinning.
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions i've added for retrieving useful info. They are not necessary to use.
@@ -135,3 +135,16 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
 - `/docker-transcodeautomation/data/MediaDB.sqlite` volume file is a sqlite database containing media data and statistics
 - Any sqlite viewer of choice can be leveraged if desired to view this data
 - [Here is an example using Grafana](https://github.com/TheTaylorLee/docker-transcodeautomation/tree/master/examples/grafana)
+
+## Additional Notes
+- If a file is is replaced by another file of the same name, and the old file is deleted, statistics cannot update sooner than (25 hours + PROCDELAY + MINAGE). This ensures statistics are not lost in rare circumstances. Becuase of this the container must run at a minimum that long without restart prior to a replaced files database entry being updated.
+- Docker logs should provide hints to the root of the issue and relevant snippets need to be included in opened issues.
+- If the logs indicate that there are files leftover in the transcoding directory you must remove them. This is a safety feature that ensures failed transcodes don't replace original files.
+- If your media database becomes corrupted, use the backed-up databases to restore a healthy copy.
+  - /docker-transcodeautomation/data/MediaDB.SQLite #database location
+  - /docker-transcodeautomation/data/Backups #BackupsLocation
+- If wanting to add media to an existing watched directory but not actually transcode it; remux it with comment of dta-remuxed.
+  ```bash
+  # replace $oldname and $name with filepaths
+  ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="dta-remuxed" -c copy -stats_period 60 $name
+  ```

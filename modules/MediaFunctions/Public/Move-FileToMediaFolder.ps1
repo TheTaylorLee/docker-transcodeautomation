@@ -24,6 +24,13 @@ function Move-FileToMEDIAFolder {
 
 
         foreach ($file in $filestomove) {
+
+            # Get comment from file
+            $probefile = $file.fullname
+            $Probe = ffprobe -loglevel 0 -print_format json -show_format $probefile
+            $convert = $Probe | ConvertFrom-Json
+            $comment = $convert.format.tags.comment
+
             #Move processed movie files
             $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
             if ($null -ne $destination) {
@@ -35,7 +42,7 @@ function Move-FileToMEDIAFolder {
                     $newsizeMB = $file.newsizeMB
                     $oldsizeMB = $oldsizemb
                     $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
@@ -53,7 +60,7 @@ function Move-FileToMEDIAFolder {
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                         $filesizeMB = $file.newsizeMB
                         $fullname = $destination.fullname
-                        $query = "Update $TableName SET comment = 'transcoded', fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                         Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                         # Move File
@@ -73,7 +80,7 @@ function Move-FileToMEDIAFolder {
                     $newsizeMB = $file.newsizeMB
                     $oldsizeMB = $oldsizemb
                     $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = 'transcoded', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
@@ -91,7 +98,7 @@ function Move-FileToMEDIAFolder {
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                         $filesizeMB = $file.newsizeMB
                         $fullname = $destination.fullname
-                        $query = "Update $TableName SET comment = 'transcoded', fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                         Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                         # Move file
