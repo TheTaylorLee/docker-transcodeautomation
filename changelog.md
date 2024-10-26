@@ -73,3 +73,4 @@
     - Eliminated latest tag. There are breaking change I don't need to be pushing that out unannounced. Read github release notes for how to migrate.
 - 4.0.1 Fix file failing to update the database properly if renamed. Had to add delays for update-processed and not null comments when running these functions. Invoke-Media(shows/movies)ToProcess
 - 4.1.0 Add functionality to add files to an existing media database without transcoding them. Will remux the comment metadata.
+- 4.1.1 Add log output for when Update-Processed skips running.

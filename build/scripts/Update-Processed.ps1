@@ -72,4 +72,8 @@ if ($null -eq $queryrun) {
     Write-Output "info: Update-Processed media check ended at $enddt"
 }
 
+else {
+    Write-Output "info: Update-Processed has run in the last 7 days and will be skipped"
+}
+
 Write-Output "info: Update-Processed End"

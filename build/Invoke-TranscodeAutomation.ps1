@@ -104,6 +104,10 @@ if ($host.version.major -eq '7') {
                 if ($updateprocesseddate -lt (Get-Date).AddSeconds(-$updateprocessedsecondsdelay)) {
                     /docker-transcodeautomation/scripts/Update-Processed.ps1 -DataSource $datasource
                 }
+                else {
+                    $delayinfo = "{0:N3}" -f (($updateprocesseddate - (Get-Date).AddSeconds(-$updateprocessedsecondsdelay)).TotalHours)
+                    Write-Output "info: Update-Processed skipped. Will not run until the container is running for another $delayinfo hours."
+                }
                 Backup-Mediadb -backupfolder $backupfolder -datasource $datasource
                 Update-Statistics -DataSource $datasource
             }
