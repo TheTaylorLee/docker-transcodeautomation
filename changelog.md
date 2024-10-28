@@ -75,3 +75,4 @@
 - 4.1.0 Add functionality to add files to an existing media database without transcoding them. Will remux the comment metadata.
 - 4.1.1 Add log output for when Update-Processed skips running.
 - 4.1.2 Update-metadata can take a long time. Add handling in case it must be run after a restart so that remuxed files are only handled once.
+- 4.2.0 Modify Update-Processed null oldsizemb and newsizemb for shows and movies tables if filesexists is false. This ensures old stats aren't inserted for dta-remuxed comment files. Rare scenario but is possible.
