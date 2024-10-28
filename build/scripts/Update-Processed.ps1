@@ -62,6 +62,11 @@ if ($null -eq $queryrun) {
         }
     }
 
+    # Null oldsizeMB and newsizeMB in shows and movies tables where fileexists = false
+    # This is listed here and not in the foreach loop above to resolve past missed updates
+    Invoke-SqliteQuery -DataSource $DataSource -Query "Update Movies set oldsizeMB = NULL, newsizeMB = NULL WHERE fileexists = 'false'"
+    Invoke-SqliteQuery -DataSource $DataSource -Query "Update Shows set oldsizeMB = NULL, newsizeMB = NULL WHERE fileexists = 'false'"
+
     # Update Database Log Table
     $TableName = 'UpdateProcessedLog'
     $daterun = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
