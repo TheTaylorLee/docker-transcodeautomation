@@ -2,8 +2,8 @@
 ```pwsh
 $videofile = "C:\Users\taylo\Downloads\RPO HDR 10-bit.mp4"
 $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,pix_fmt" -i $videofile
-$frames = ($out | ConvertFrom-Json).frames
-$side_data_list = (($out | ConvertFrom-Json).frames).side_data_list
+$frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
+$side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
 
 ```
 - Probe data results
@@ -40,15 +40,48 @@ side_data_type : H.26[45] User Data Unregistered SEI message
 ```
 
 
-- Command to convert it. (options may be missing here. Values will need to be fed back into ffmpeg using a single string.)
+- Performing the conversion (options may be missing here. Values will need to be fed back into ffmpeg using variables if they exist.)
 ```pwsh
-$redx = ([string]$side_data_list.red_x).split('/')[0]
+if ($null -ne $frames -and $null -ne ($frames.pix_fmt)) {
+    $pxf = $frames.pix_fmt
+    $pix_fmt = "-pix_fmt $pxf"
+}
 
-ffmpeg -hide_banner -loglevel error -stats -i "C:\Users\taylo\Downloads\RPO HDR 10-bit.mp4" \
--map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" \
--metadata COMMENT=transcoded -c:v libx265 -crf 21 -c:a copy -c:s copy \
--preset veryfast -colorspace bt2020nc -color_trc smpte2084 -color_primaries bt2020 \
--master_display "G(13250,34500)B(7500,3000)R($redx,16000)WP(15635,16450)L(40000000,50)" \
--max_cll "1000,400" -strict -2 -stats_period 60 \
-"C:\Users\taylo\Downloads\RPO HDR 10-bit - test out.mp4"
+if ($null -ne $frames -and $null -ne ($frames.color_space)) {
+    $cosp = $frames.color_space
+    $colorspace = "-colorspace $cosp"
+}
+
+if ($null -ne $frames -and $null -ne ($frames.color_transfer)) {
+    $cotr = $frames.color_transfer
+    $color_trc = "-color_trc $cotr"
+}
+
+if ($null -ne $frames -and $null -ne ($frames.color_primaries)) {
+    $coprim = $frames.color_primaries
+    $color_primaries = "-color_trc $coprim"
+}
+
+
+# to add
+## -color_range ...
+## -color_matrix ...
+## -max_cll "1000,400"
+## -copy_unknown -strict -2 ## if $null -ne $out
+
+if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
+    $greenx = ([string]$side_data_list.green_x).split('/')[0]
+    $greeny = ([string]$side_data_list.green_y).split('/')[0]
+    $bluex = ([string]$side_data_list.blue_x).split('/')[0]
+    $bluey = ([string]$side_data_list.blue_y).split('/')[0]
+    $redx = ([string]$side_data_list.red_x).split('/')[0]
+    $redy = ([string]$side_data_list.red_y).split('/')[0]
+    $whitepointx = ([string]$side_data_list.white_point_x).split('/')[0]
+    $whitepointy = ([string]$side_data_list.white_point_y).split('/')[0]
+    $maxluminance = ([string]$side_data_list.max_luminance).split('/')[0]
+    $minluminance = ([string]$side_data_list.min_luminance).split('/')[0]
+    $master_display = "-master_display ""G($greenx,$greeny)B($bluex,$bluey)R($redx,$redy)WP($whitepointx,$whitepointy)L($maxluminance,$minluminance)"""
+}
+
+ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast $pix_fmt $colorspace $color_trc $color_primaries $master_display -stats_period 60 "$env:FFToolsTarget$video"
 ```

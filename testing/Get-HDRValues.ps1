@@ -1,0 +1,1 @@
+# This will be a reusable script for getting hdr values and feeding them into ffmpeg inside other functions.
