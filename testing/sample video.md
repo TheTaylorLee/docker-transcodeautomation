@@ -1,7 +1,7 @@
 - Get probe data
 ```pwsh
 $videofile = "C:\Users\taylo\Downloads\RPO HDR 10-bit.mp4"
-$out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,pix_fmt" -i $videofile
+$out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,pix_fmt,color_range,color_matrix" -i $videofile
 $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
 $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
 
@@ -10,6 +10,7 @@ $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frame
 ```pwsh
 # Result of ($out | ConvertFrom-Json).frames
 pix_fmt         : yuv420p10le
+color_range     : tv
 color_space     : bt2020nc
 color_primaries : bt2020
 color_transfer  : smpte2084
@@ -57,17 +58,27 @@ if ($null -ne $frames -and $null -ne ($frames.color_transfer)) {
     $color_trc = "-color_trc $cotr"
 }
 
+
 if ($null -ne $frames -and $null -ne ($frames.color_primaries)) {
     $coprim = $frames.color_primaries
-    $color_primaries = "-color_trc $coprim"
+    $color_primaries = "-color_primaries $coprim"
 }
 
+if ($null -ne $frames -and $null -ne ($frames.color_range)) {
+    $coran = $frames.color_range
+    $color_range = "-color_range $coran"
+}
 
-# to add
-## -color_range ...
-## -color_matrix ...
-## -max_cll "1000,400"
-## -copy_unknown -strict -2 ## if $null -ne $out
+if ($null -ne $frames -and $null -ne ($frames.color_matrix)) {
+    $colmat = $frames.color_matrix
+    $color_matrix = "-color_range $colmat"
+}
+
+if ($null -ne $side_data_list -and $null -ne ($side_data_list.max_content)) {
+    $cllmax = ([string]$side_data_list.max_content).Trim()
+    $cllavg = ([string]$side_data_list.max_average).Trim()
+    $max_cll = "-max_cll ""$cllmax,$cllavg"""
+}
 
 if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
     $greenx = ([string]$side_data_list.green_x).split('/')[0]
@@ -83,5 +94,13 @@ if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
     $master_display = "-master_display ""G($greenx,$greeny)B($bluex,$bluey)R($redx,$redy)WP($whitepointx,$whitepointy)L($maxluminance,$minluminance)"""
 }
 
-ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast $pix_fmt $colorspace $color_trc $color_primaries $master_display -stats_period 60 "$env:FFToolsTarget$video"
+if ($null -ne $out) {
+    # handle extras hdr metadata and don't fail on experimental
+    $exexp = "-copy_unknown -strict -2"
+}
+# to add
+##  ## if $null -ne $out
+
+
+ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast $pix_fmt $colorspace $color_trc $color_primaries $color_range $color_matrix $max_cll $master_display $exexp -stats_period 60 "$env:FFToolsTarget$video"
 ```
