@@ -4,7 +4,6 @@ $videofile = "C:\Users\taylo\Downloads\RPO HDR 10-bit.mp4"
 $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,pix_fmt,color_range,color_matrix" -i $videofile
 $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
 $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
-
 ```
 - Probe data results
 ```pwsh
@@ -47,39 +46,31 @@ if ($null -ne $frames -and $null -ne ($frames.pix_fmt)) {
     $pxf = $frames.pix_fmt
     $pix_fmt = "-pix_fmt $pxf"
 }
-
 if ($null -ne $frames -and $null -ne ($frames.color_space)) {
     $cosp = $frames.color_space
     $colorspace = "-colorspace $cosp"
 }
-
 if ($null -ne $frames -and $null -ne ($frames.color_transfer)) {
     $cotr = $frames.color_transfer
     $color_trc = "-color_trc $cotr"
 }
-
-
 if ($null -ne $frames -and $null -ne ($frames.color_primaries)) {
     $coprim = $frames.color_primaries
     $color_primaries = "-color_primaries $coprim"
 }
-
 if ($null -ne $frames -and $null -ne ($frames.color_range)) {
     $coran = $frames.color_range
     $color_range = "-color_range $coran"
 }
-
 if ($null -ne $frames -and $null -ne ($frames.color_matrix)) {
     $colmat = $frames.color_matrix
-    $color_matrix = "-color_range $colmat"
+    $color_matrix = "-color_matrix $colmat"
 }
-
 if ($null -ne $side_data_list -and $null -ne ($side_data_list.max_content)) {
     $cllmax = ([string]$side_data_list.max_content).Trim()
     $cllavg = ([string]$side_data_list.max_average).Trim()
     $max_cll = "-max_cll ""$cllmax,$cllavg"""
 }
-
 if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
     $greenx = ([string]$side_data_list.green_x).split('/')[0]
     $greeny = ([string]$side_data_list.green_y).split('/')[0]
@@ -93,13 +84,10 @@ if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
     $minluminance = ([string]$side_data_list.min_luminance).split('/')[0]
     $master_display = "-master_display ""G($greenx,$greeny)B($bluex,$bluey)R($redx,$redy)WP($whitepointx,$whitepointy)L($maxluminance,$minluminance)"""
 }
-
-if ($null -ne $out) {
-    # handle extras hdr metadata and don't fail on experimental
+if ($null -ne $colorspace -or $null -ne $color_trc -or $null -ne $color_primaries -or $null -ne $color_matrix -or $null -ne $max_cll -or $null -ne $master_display) {
+    # handle extra hdr metadata and don't fail on experimental
     $exexp = "-copy_unknown -strict -2"
 }
-# to add
-##  ## if $null -ne $out
 
 
 ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast $pix_fmt $colorspace $color_trc $color_primaries $color_range $color_matrix $max_cll $master_display $exexp -stats_period 60 "$env:FFToolsTarget$video"
