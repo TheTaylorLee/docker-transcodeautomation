@@ -5,23 +5,34 @@ Generates FFmpeg arguments for processing HDR video files.
 .DESCRIPTION
 This script constructs an array of arguments to be used with FFmpeg for processing HDR video files. By probing the source file and re-submitting the parameters to the ffmpeg command.
 
+.PARAMETER comment
+The comment to be added to the video file.
+
+.PARAMETER crf
+The constant rate factor to be used for the video file.
+
 .PARAMETER video
 The filename for the video file to be processed and not the fullpath.
 
 .EXAMPLE
 Write-Output "info: Get-HDRValues Start"
-$ffmpegargs = Get-HDRValues -video $video
+$ffmpegargs = Build-TranscodeParams -video $video -comment $comment -crf $crf
 $outargs = ($ffmpegArgs -join " ")
 Write-Output "debug FFmpeg arguments being used: $outargs"
 Write-Output "info: Get-HDRValues End"
 ffmpeg $ffmpegArgs
 
 Example usage of this helper function.
+
+.NOTES
+Not needed for remuxing files, because the remuxing process will include HDR metadata.
 #>
 
-function Get-HDRValues {
+function Build-TranscodeParams {
 
     param (
+        [Parameter(Mandatory = $true, HelpMessage = "This should be the immutable index.")][ValidateNotNullOrEmpty()][string]$comment,
+        [Parameter(Mandatory = $true, HelpMessage = "This is the constant rate factor.")][ValidateNotNullOrEmpty()][string]$crf,
         [Parameter(Mandatory = $true, HelpMessage = "This accepts a filename, but not fullname.")][ValidateNotNullOrEmpty()][string]$video
     )
 
@@ -41,9 +52,9 @@ function Get-HDRValues {
         "-map", "0:s?",
         "-metadata", "title=",
         "-metadata", "description=",
-        "-metadata", "COMMENT=dta0123456789",
+        "-metadata", "COMMENT=$comment",
         "-c:v", "libx265",
-        "-crf", "21",
+        "-crf", "$crf",
         "-c:a", "copy",
         "-c:s", "copy",
         "-preset", "veryfast"
