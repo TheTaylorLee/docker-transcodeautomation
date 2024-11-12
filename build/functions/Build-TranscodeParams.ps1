@@ -15,11 +15,11 @@ The constant rate factor to be used for the video file.
 The filename for the video file to be processed and not the fullpath.
 
 .EXAMPLE
-Write-Output "info: Get-HDRValues Start"
+Write-Output "info: Build-TranscodeParams Start"
 $ffmpegargs = Build-TranscodeParams -video $video -comment $comment -crf $crf
 $outargs = ($ffmpegArgs -join " ")
 Write-Output "debug FFmpeg arguments being used: $outargs"
-Write-Output "info: Get-HDRValues End"
+Write-Output "info: Build-TranscodeParams End"
 ffmpeg $ffmpegArgs
 
 Example usage of this helper function.
