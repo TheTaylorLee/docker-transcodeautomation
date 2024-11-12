@@ -19,7 +19,7 @@ The fullpath for the video file to be processed and not the fullpath.
 
 .EXAMPLE
 Write-Output "info: Build-TranscodeParams Start"
-$ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$output
+$ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
 $outargs = ($ffmpegArgs -join " ")
 Write-Output "debug FFmpeg arguments being used: $outargs"
 Write-Output "info: Build-TranscodeParams End"

@@ -28,7 +28,7 @@ function Start-TranscodeShows {
                     # ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
 
                     Write-Output "info: Build-TranscodeParams Start"
-                    $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$output
+                    $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
                     $outargs = ($ffmpegArgs -join " ")
                     Write-Output "debug FFmpeg arguments being used: $outargs"
                     Write-Output "info: Build-TranscodeParams End"
