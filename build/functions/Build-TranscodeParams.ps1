@@ -11,12 +11,15 @@ The comment to be added to the video file.
 .PARAMETER crf
 The constant rate factor to be used for the video file.
 
+.PARAMETER output
+The fullpath for the output file to be processed.
+
 .PARAMETER video
-The filename for the video file to be processed and not the fullpath.
+The fullpath for the video file to be processed and not the fullpath.
 
 .EXAMPLE
 Write-Output "info: Build-TranscodeParams Start"
-$ffmpegargs = Build-TranscodeParams -video $video -comment $comment -crf $crf
+$ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$output
 $outargs = ($ffmpegArgs -join " ")
 Write-Output "debug FFmpeg arguments being used: $outargs"
 Write-Output "info: Build-TranscodeParams End"
@@ -33,11 +36,11 @@ function Build-TranscodeParams {
     param (
         [Parameter(Mandatory = $true, HelpMessage = "This should be the immutable index.")][ValidateNotNullOrEmpty()][string]$comment,
         [Parameter(Mandatory = $true, HelpMessage = "This is the constant rate factor.")][ValidateNotNullOrEmpty()][string]$crf,
+        [Parameter(Mandatory = $true, HelpMessage = "This is the video out file.")][ValidateNotNullOrEmpty()][string]$output,
         [Parameter(Mandatory = $true, HelpMessage = "This accepts a filename, but not fullname.")][ValidateNotNullOrEmpty()][string]$video
     )
 
-    $videoin = $env:FFToolsSource + $video
-    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix" -i $videoin
+    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix" -i $video
     $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
     $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
 
@@ -46,7 +49,7 @@ function Build-TranscodeParams {
         "-hide_banner",
         "-loglevel", "error",
         "-stats",
-        "-i", $videoin,
+        "-i", $video,
         "-map", "0:v:0?",
         "-map", "0:a?",
         "-map", "0:s?",
@@ -113,7 +116,6 @@ function Build-TranscodeParams {
     }
 
     # Add output parameters
-    $videoout = $env:FFToolsTarget + $video
-    $ffmpegArgs += "-stats_period", "60", $videoout
+    $ffmpegArgs += "-stats_period", "60", $output
     $ffmpegArgs
 }
