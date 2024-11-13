@@ -15,27 +15,25 @@ function Start-TranscodeMovies {
         Set-Location $env:FFToolsSource
         $CustomMovieOptionsApplied = Test-Path /docker-transcodeautomation/data/moviescustomoptions.ps1
 
-        $ext = "*.mkv"
-        $array = @(Get-ChildItem -Filter $ext)
-        Foreach ($video in $array.Name) {
-            if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "info: Using Custom Movies Parameters"
-                /docker-transcodeautomation/data/moviescustomoptions.ps1
-            }
-            else {
-                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
-            }
-        }
+        [string[]]$ext = "*.mkv", "*.mp4"
+        foreach ($extension in $ext) {
+            $array = @(Get-ChildItem -Filter $extension)
+            Foreach ($video in $array.Name) {
+                if ($CustomMovieOptionsApplied -eq $true) {
+                    Write-Output "info: Using Custom Movies Parameters"
+                    /docker-transcodeautomation/data/moviescustomoptions.ps1
+                }
+                else {
+                    # Command prior to refactoring this else block
+                    ## ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
 
-        $ext = "*.mp4"
-        $array = @(Get-ChildItem -Filter $ext)
-        Foreach ($video in $array.Name) {
-            if ($CustomMovieOptionsApplied -eq $true) {
-                Write-Output "info: Using Custom Movies Parameters"
-                /docker-transcodeautomation/data/moviescustomoptions.ps1
-            }
-            else {
-                ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
+                    Write-Output "info: Build-TranscodeParams Start"
+                    $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
+                    $outargs = ($ffmpegArgs -join " ")
+                    Write-Output "debug: ffmpeg $outargs"
+                    Write-Output "info: Build-TranscodeParams End"
+                    ffmpeg $ffmpegArgs
+                }
             }
         }
     }

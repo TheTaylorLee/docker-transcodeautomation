@@ -46,7 +46,7 @@ ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata d
 - Example Options: `-metadata title="" -metadata description="" -map 0:v:0? -map 0:a? -map 0:s? -c:v libx265 -crf 23 -c:a aac -c:s copy -preset veryfast`
 ```powershell
 $comment = (Update-Lastindex -DataSource $datasource).newcomment
-ffmpeg -i $video -metadata COMMENT=`"$comment`" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
+ffmpeg -i $video -metadata COMMENT="$comment" {Custom Options Here} -stats_period 60 "$env:FFToolsTarget$video"
 ```
 
 ## Deploying the image
@@ -143,7 +143,7 @@ Move-FileToMediaFolder #Move transcoded files back to media folders. TranscodeAu
 ## Additional Notes
 - If a file is is replaced by another file of the same name, and the old file is deleted, statistics cannot update sooner than (25 hours + PROCDELAY + MINAGE). This ensures statistics are not lost in rare circumstances. Becuase of this the container must run at a minimum that long without restart prior to a replaced files database entry being updated.
 - Docker logs should provide hints to the root of the issue and relevant snippets need to be included in opened issues.
-- If the logs indicate that there are files leftover in the transcoding directory you must remove them. This is a safety feature that ensures failed transcodes don't replace original files.
+- If the logs indicate that there are files leftover in the transcoding directory you must remove them. This is a safety feature that allows for addressing reasons for failed transcodes before continuing.
 - If your media database becomes corrupted, use the backed-up databases to restore a healthy copy.
   - /docker-transcodeautomation/data/MediaDB.SQLite #database location
   - /docker-transcodeautomation/data/Backups #BackupsLocation
