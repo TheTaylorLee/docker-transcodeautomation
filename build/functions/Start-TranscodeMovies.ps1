@@ -30,7 +30,7 @@ function Start-TranscodeMovies {
                     Write-Output "info: Build-TranscodeParams Start"
                     $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
                     $outargs = ($ffmpegArgs -join " ")
-                    Write-Output "debug FFmpeg arguments being used: $outargs"
+                    Write-Output "debug: ffmpeg $outargs"
                     Write-Output "info: Build-TranscodeParams End"
                     ffmpeg $ffmpegArgs
                 }
