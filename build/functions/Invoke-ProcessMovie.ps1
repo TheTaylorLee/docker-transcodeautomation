@@ -15,7 +15,12 @@ function invoke-processmovie {
     }
 
     # Get an index number for the transcoded files
-    $comment = (Update-Lastindex -DataSource $datasource).newcomment
+    $commentbuilder = (Get-ChildItem -LiteralPath $env:FFToolsSource -File).name
+    $comment = $commentbuilder | ForEach-Object {
+        if ($_ -match 'dta-\d{10}') {
+            $matches[0]
+        }
+    }
 
     ##Process files
     Start-TranscodeMovies -crf $env:MOVIESCRF -comment $comment
