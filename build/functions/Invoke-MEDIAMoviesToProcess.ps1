@@ -60,7 +60,9 @@ Function Invoke-MEDIAMoviesToProcess {
                         $filesizemultiplied = ((Get-ChildItem -LiteralPath $file | Select-Object @{ Name = "filesizeGB"; Expression = { [math]::round(($_.length / 1gb), 3) } }).filesizeGB) * 3
 
                         if ($transcodingfreespace -gt $filesizemultiplied) {
-                            $file = Get-ChildItem -LiteralPath $file | Select-Object name, fullname, directory, LastWriteTime, @{ Name = "filesizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
+                            $file = Get-ChildItem -LiteralPath $file | Select-Object name, basename, extension, fullname, directory, LastWriteTime, @{ Name = "filesizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }
+                            $basename = $file.basename
+                            $extension = $file.extension
                             $fullname = $file.fullname
                             $filename = $file.name
                             $directory = $file.directory
@@ -106,13 +108,16 @@ Function Invoke-MEDIAMoviesToProcess {
                                     }
                                     # else comment tag of media file is not dta-*, copy file for processing and update database
                                     else {
-                                        Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
-                                        $query = "INSERT INTO $TableName (filename, fullname, directory, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
+                                        $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                                        $destination = $env:FFToolsSource + "$basename$newcomment$extension"
+                                        Copy-Item -LiteralPath $fullname $destination -Verbose
+                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
 
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
                                             filename   = $filename
                                             fullname   = $fullname
                                             directory  = $directory
+                                            comment    = $newcomment
                                             Added      = Get-Date
                                             modified   = Get-Date
                                             filesizeMB = $filesizeMB
@@ -132,9 +137,11 @@ Function Invoke-MEDIAMoviesToProcess {
                                     }
                                     # else ffprobe indicates comment tag of media file is not transcoded, copy and update database. Useful for when file has been replace by another download.
                                     else {
-                                        Copy-Item -LiteralPath $fullname $env:FFToolsSource -Verbose
+                                        $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                                        $destination = $env:FFToolsSource + "$basename$newcomment$extension"
+                                        Copy-Item -LiteralPath $fullname $destination -Verbose
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+                                        $query = "Update $TableName SET comment = `"$newcomment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                         invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                                     }
