@@ -141,7 +141,7 @@ Function Invoke-MEDIAShowsToProcess {
                                         $destination = $env:FFToolsSource + "$basename$newcomment$extension"
                                         Copy-Item -LiteralPath $fullname $destination -Verbose
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET comment = `"$comment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+                                        $query = "Update $TableName SET comment = `"$newcomment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                         invoke-processshow -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                                     }
