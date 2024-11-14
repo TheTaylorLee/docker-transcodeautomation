@@ -78,3 +78,4 @@
 - 4.2.0 Modify Update-Processed null oldsizemb and newsizemb for shows and movies tables if filesexists is false. This ensures old stats aren't inserted for dta-remuxed comment files. Rare scenario but is possible.
 - 4.3.0 Add in support for retaining HDR colormapping data
 - 4.4.0 Add support for repeating filenames in different directories.
+- 4.4.1 Add verbosity to log output.

@@ -32,7 +32,7 @@ function Move-FileToMEDIAFolder {
             $comment = $convert.format.tags.comment
 
             #Move processed movie files
-            $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+            $destination = $moviesdb | Where-Object { $_.comment -eq $comment }
             if ($null -ne $destination) {
                 $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
                 if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
@@ -45,12 +45,12 @@ function Move-FileToMEDIAFolder {
                     $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
                 }
-                # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldzieMB from being nulled out.
+                # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
                 else {
                     $fname = $file.fullname
-                    $destination = $moviesdb | Where-Object { $_.filename -eq $file.name }
+                    $destination = $moviesdb | Where-Object { $_.comment -eq $comment }
 
                     if ($null -ne $destination) {
                         Write-Output "error: Previous File move failed for $fname. Attempting the file move now for movie files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
@@ -70,7 +70,7 @@ function Move-FileToMEDIAFolder {
             }
 
             #Move processed show files
-            $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+            $destination = $showsdb | Where-Object { $_.comment -eq $comment }
             if ($null -ne $destination) {
                 $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
                 if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
@@ -83,12 +83,12 @@ function Move-FileToMEDIAFolder {
                     $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue
+                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
                 }
-                # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldzieMB from being nulled out.
+                # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
                 else {
                     $fname = $file.fullname
-                    $destination = $showsdb | Where-Object { $_.filename -eq $file.name }
+                    $destination = $showsdb | Where-Object { $_.comment -eq $comment }
 
                     if ($null -ne $destination) {
                         Write-Output "error: Previous File move failed for $fname. Attempting the file move now for show files. If a verbose file move message is seen then the error is successfully handled. Otherwise manual intervention will be required to move the file. This is only likely to occur if the destination directory cannot be written to, doesn't exist, or something corrupted the database."
