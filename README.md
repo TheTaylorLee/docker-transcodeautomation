@@ -22,7 +22,7 @@ An automated media transcoding solution. This solution is completely automated a
 
 ## Transcoding Process and Options
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
-- The comment metadata is set to `transcoded`. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
+- The comment metadata is set to an immutable index. This ensures even if the database is lost or filename changed, the file will not be transcoded again.
 - If the transcoded file is larger than the original it will be excluded and the source file remuxed to only update metadata while keeping all media, video, and audio streams.
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
 
