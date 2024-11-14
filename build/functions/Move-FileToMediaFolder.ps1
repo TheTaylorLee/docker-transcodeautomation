@@ -68,7 +68,7 @@ function Move-FileToMEDIAFolder {
             }
 
             #Move processed show files
-            $destination = $showsdb | Where-Object { $_.filename -eq $destinationfilename }
+            $destination = $showsdb | Where-Object { $_.comment -eq $comment }
             if ($null -ne $destination) {
                 $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
                 if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
