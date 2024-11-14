@@ -1,7 +1,7 @@
 ## Contributing
 
 **Development Rules**
-1. Queries that update or insert into the database must use where filters matching fullpath or comment indexes.
+1. Queries that update the database must use where filters matching fullpath or comment indexes.
 2. Removed files must maintain an index entry with fileexist set to false.
 3. Any new functions or scripts must be inserted into the Invoke-MediaManagement workflow, otherwise they should not insert or update the database.
 
