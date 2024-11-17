@@ -40,7 +40,7 @@ function Build-TranscodeParams {
         [Parameter(Mandatory = $true, HelpMessage = "This accepts a filename, but not fullname.")][ValidateNotNullOrEmpty()][string]$video
     )
 
-    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix" -i $video
+    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix,bit_depth,chroma_subsampling" -i $video
     $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
     $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
 
@@ -82,6 +82,12 @@ function Build-TranscodeParams {
     }
     if ($null -ne $frames -and $null -ne ($frames.color_matrix)) {
         $ffmpegArgs += "-colormatrix", $frames.color_matrix
+    }
+    if ($null -ne $frames -and $null -ne ($frames.bit_depth)) {
+        $ffmpegArgs += "-bit_depth", $frames.bit_depth
+    }
+    if ($null -ne $frames -and $null -ne ($frames.chroma_subsampling)) {
+        $ffmpegArgs += "-chroma_subsampling", $frames.chroma_subsampling
     }
 
     # HDR Metadata as x265 params
