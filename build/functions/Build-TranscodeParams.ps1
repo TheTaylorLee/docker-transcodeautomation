@@ -118,6 +118,7 @@ function Build-TranscodeParams {
 
     # Add x265 params if we have any
     if ($x265Params.Count -gt 0) {
+        $x265Params += "repeat-headers=1"
         $ffmpegArgs += "-x265-params", ($x265Params -join ":")
     }
 

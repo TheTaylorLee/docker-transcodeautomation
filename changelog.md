@@ -80,3 +80,4 @@
 - 4.4.0 Add support for repeating filenames in different directories.
 - 4.4.1 Add verbosity to log output.
 - 4.5.0 Carryover subsampling and bit depth metadata explicitly. While likely included by default it is now specified.
+- 4.5.1 Add repeat headers in with HDR metadata to prevent warnings.
