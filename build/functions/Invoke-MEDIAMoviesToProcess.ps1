@@ -27,9 +27,6 @@ Function Invoke-MEDIAMoviesToProcess {
                 $filesforprocessing = $files
             }
             else {
-                # COMPARE-OBJECT RETURNS FILES THAT ARE IN $FILES FIRST AND THEN ITEMS IN THE DATABASE.
-                # THIS IS VERY IMPORTANT FOR THE IF FILE EXISTS COMMENTED BLOCK.
-                # WITHOUT THIS STEP THE EXISTING DB ENTRY COMMENT IS NULLED AND THE FILE WOULD NOT BE PROCESSED.
                 $filesforprocessing = (Compare-Object $files $transcoded | Sort-Object sideindicator).inputobject
             }
 
@@ -156,7 +153,7 @@ Function Invoke-MEDIAMoviesToProcess {
                     else {
                         $fullname = $file
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                        $query = "Update $TableName SET filesizeMB = NULL, fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess' WHERE fullname = `"$fullname`""
+                        $query = "Update $TableName SET filesizeMB = NULL, fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess' WHERE fullname = `"$fullname`" and fileexists is NOT false and filesizeMB is NOT NULL"
                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                     }
                 }
