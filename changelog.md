@@ -81,3 +81,4 @@
 - 4.4.1 Add verbosity to log output.
 - 4.5.0 Carryover subsampling and bit depth metadata explicitly. While likely included by default it is now specified.
 - 4.5.1 Add repeat headers in with HDR metadata to prevent warnings.
+- 4.5.2 Modify Invoke-Media(Shows/Movies)ToProcess function so that items items marked as no longer existing are only updated in the table once prior to update-processed running.
