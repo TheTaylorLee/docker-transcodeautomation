@@ -7,7 +7,7 @@
 4. Handling for the following scenarios must be maintained and tested.
     - Renaming a file will update database paths & retain entry statistics.
     - Deleting a file will update the associated table entry, mark fileexists false, and not modify the comment.
-        - Update-Processed once run will mark the comment NULL and next process run will mark fileexists false.
+        - Update-Processed once run will mark the comment NULL. The delay prior to nulling the comment is necessary for immutable indexing to work with moved/renamed files.
     - Replacing a file with a file of the same name will update the table entry and transcode the file.
     - Adding a new unique file will create a table entry and transcoded the file
     - Moving a file to a new parent directory will update that files table entry without transcoding or inserting a new table entry.
