@@ -24,7 +24,7 @@
 - Once the changes are ready for testing a pull request may be submitted to the repository.
 - The pull request should use the name format outlined below in the "Pull Request Format" section of this document.
 - Code will be reviewed and once approved workflows will run to create dev docker images.
-- Dev images should be tested by the individual submitting the changes and might be reviewed by @TheTaylorLee
+- Dev images should be tested by the individual submitting the changes and will be reviewed by a maintainer.
 - Once Dev Images have been tested and approved, the pull request will be merged to the main branch and workflows will create new production images.
 
 #### Pull Request format
