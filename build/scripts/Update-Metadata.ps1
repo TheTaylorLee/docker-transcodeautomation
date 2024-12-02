@@ -8,7 +8,7 @@ Write-Output "info: UPDATEMETADATA Start"
 $tempdb = '/docker-transcodeautomation/data/update-metadata.db'
 if ((Test-Path $tempdb) -eq $false) {
     Write-Output "info: create update-metadata temp db"
-    Invoke-SqliteQuery -Query "CREATE TABLE path (filename TEXT, fullname TEXT)" -DataSource $tempdb
+    Invoke-SqliteQuery -Query "CREATE TABLE path (filename TEXT, fullname TEXT, tempname TEXT)" -DataSource $tempdb
 }
 
 # Update Database Log Table. This ensures update-processed is not running unnecessarily after a first run or migration of media.
@@ -32,11 +32,25 @@ foreach ($path in $MEDIAmoviefolders) {
                 $filecomment = $convert.format.tags.comment
 
                 if ($filecomment -notlike "dta-*") {
+                    $basename = $file.basename
+                    $extension = $file.extension
                     $fullname = $file.fullname
-                    $oldname = $file.fullname + ".old"
+                    $filename = $file.name
                     $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                    $destination = $env:FFToolsSource + "$basename$newcomment$extension"
+                    $tempname = "$basename$newcomment$extension"
+                    Copy-Item -LiteralPath $fullname $destination -Verbose
+
+                    $query = "INSERT INTO path (filename, fullname, tempname) Values (@filename, @fullname, @tempname)"
+                    Invoke-SqliteQuery -ErrorAction Inquire -DataSource $tempdb -Query $query -SqlParameters @{
+                        filename = $filename
+                        fullname = $fullname
+                        tempname = $tempname
+                    }
+
+                    # continue from here with remuxing
                     Rename-Item $fullname $oldname -Verbose
-                    ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $fullname
+                    ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $fullname
                     Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
 
                     # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
@@ -65,11 +79,25 @@ foreach ($path in $MEDIAshowfolders) {
                 $filecomment = $convert.format.tags.comment
 
                 if ($filecomment -notlike "dta-*") {
-                    $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                    $basename = $file.basename
+                    $extension = $file.extension
                     $fullname = $file.fullname
-                    $oldname = $file.fullname + ".old"
+                    $filename = $file.name
+                    $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                    $destination = $env:FFToolsSource + "$basename$newcomment$extension"
+                    $tempname = "$basename$newcomment$extension"
+                    Copy-Item -LiteralPath $fullname $destination -Verbose
+
+                    $query = "INSERT INTO path (filename, fullname, tempname) Values (@filename, @fullname, @tempname)"
+                    Invoke-SqliteQuery -ErrorAction Inquire -DataSource $tempdb -Query $query -SqlParameters @{
+                        filename = $filename
+                        fullname = $fullname
+                        tempname = $tempname
+                    }
+
+                    # continue from here with remuxing
                     Rename-Item $fullname $oldname -Verbose
-                    ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $fullname
+                    ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $fullname
                     Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
 
                     # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
