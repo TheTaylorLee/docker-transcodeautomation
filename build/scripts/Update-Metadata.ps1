@@ -32,9 +32,9 @@ foreach ($path in $MEDIAmoviefolders) {
                 $filecomment = $convert.format.tags.comment
 
                 if ($filecomment -notlike "dta-*") {
+                    # Populate variables, copy file into processing directory, and update the tempdb
                     $basename = $file.basename
                     $extension = $file.extension
-                    $fullname = $file.fullname
                     $filename = $file.name
                     $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
                     $destination = $env:FFToolsSource + "$basename$newcomment$extension"
@@ -48,16 +48,30 @@ foreach ($path in $MEDIAmoviefolders) {
                         tempname = $tempname
                     }
 
-                    # continue from here with remuxing
-                    Rename-Item $fullname $oldname -Verbose
-                    ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $fullname
+                    # Remux the file
+                    ffmpeg -hide_banner -loglevel error -stats -i $destination -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $env:FFToolsTarget$tempname
                     Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
+                    if ("$env:FFToolsTarget$tempname" -gt 0) {
+                        $processedfile = (Get-ChildItem -LiteralPath $env:FFToolsTarget -File).fullname
+                        Move-Item -LiteralPath $processedfile.fullname -Destination "$env:FFToolsTarget/processed" -Verbose
+                    }
 
-                    # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
-                    $TableName = 'Movies'
-                    $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                    $query = "Update $TableName set comment = `"$newcomment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$fullname`""
-                    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+                    # Processing of file complete. Move it back and make any needed database updates
+                    $filestomove = Get-ChildItem "$env:FFToolsTarget/processed" -File | Select-Object name, fullname
+                    foreach ($filetomove in $filestomove) {
+                        # Get the original sourcefile from the tempdb and move the file
+                        $filetomovename = $filetomove.name
+                        $filetomovefullname = $filetomove.fullname
+                        $query = "Select * from path where tempname = `"$filetomovename`""
+                        $filetomovedestination = (Invoke-SqliteQuery -DataSource $tempdb -Query $query).fullname
+                        Move-Item -LiteralPath $filetomovefullname -Destination $filetomovedestination -Force -Confirm:$false -Verbose
+
+                        # If file already existed in the MediaDB database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
+                        $TableName = 'Movies'
+                        $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+                        $query = "Update $TableName set comment = `"$newcomment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$filetomovedestination`""
+                        Invoke-SqliteQuery -DataSource $DataSource -Query $query
+                    }
                 }
             }
         }
@@ -79,9 +93,9 @@ foreach ($path in $MEDIAshowfolders) {
                 $filecomment = $convert.format.tags.comment
 
                 if ($filecomment -notlike "dta-*") {
+                    # Populate variables, copy file into processing directory, and update the tempdb
                     $basename = $file.basename
                     $extension = $file.extension
-                    $fullname = $file.fullname
                     $filename = $file.name
                     $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
                     $destination = $env:FFToolsSource + "$basename$newcomment$extension"
@@ -95,16 +109,30 @@ foreach ($path in $MEDIAshowfolders) {
                         tempname = $tempname
                     }
 
-                    # continue from here with remuxing
-                    Rename-Item $fullname $oldname -Verbose
-                    ffmpeg -hide_banner -loglevel error -stats -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $fullname
+                    # Remux the file
+                    ffmpeg -hide_banner -loglevel error -stats -i $destination -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $env:FFToolsTarget$tempname
                     Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
+                    if ("$env:FFToolsTarget$tempname" -gt 0) {
+                        $processedfile = (Get-ChildItem -LiteralPath $env:FFToolsTarget -File).fullname
+                        Move-Item -LiteralPath $processedfile.fullname -Destination "$env:FFToolsTarget/processed" -Verbose
+                    }
 
-                    # If file already existed in the database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
-                    $TableName = 'Shows'
-                    $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                    $query = "Update $TableName set comment = `"$newcomment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$fullname`""
-                    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+                    # Processing of file complete. Move it back and make any needed database updates
+                    $filestomove = Get-ChildItem "$env:FFToolsTarget/processed" -File | Select-Object name, fullname
+                    foreach ($filetomove in $filestomove) {
+                        # Get the original sourcefile from the tempdb and move the file
+                        $filetomovename = $filetomove.name
+                        $filetomovefullname = $filetomove.fullname
+                        $query = "Select * from path where tempname = `"$filetomovename`""
+                        $filetomovedestination = (Invoke-SqliteQuery -DataSource $tempdb -Query $query).fullname
+                        Move-Item -LiteralPath $filetomovefullname -Destination $filetomovedestination -Force -Confirm:$false -Verbose
+
+                        # If file already existed in the MediaDB database and this is used due to a migration run upgrading to v4+ then update the database with the new comment.
+                        $TableName = 'Shows'
+                        $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+                        $query = "Update $TableName set comment = `"$newcomment`", updatedby = 'Update-Metadata', modified = `"$modified`" WHERE fullname = `"$filetomovedestination`""
+                        Invoke-SqliteQuery -DataSource $DataSource -Query $query
+                    }
                 }
             }
         }
@@ -112,4 +140,4 @@ foreach ($path in $MEDIAshowfolders) {
 }
 
 Write-Output "info: UPDATEMETADATA End"
-Write-Output "warning: Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable"
+Write-Output "warning: Metadata cleanup for existing media is complete. Stop the container and remove the UPDATEMETADATA environment Variable."

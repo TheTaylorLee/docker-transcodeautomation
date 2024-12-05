@@ -17,6 +17,9 @@ Function Invoke-MediaManagement {
     $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
     $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
+        # Delete update-metadata tempdb if it exists.
+        Remove-Item '/docker-transcodeautomation/data/update-metadata.db' -ErrorAction SilentlyContinue
+
         #Copy Files to processing folders
         Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource
     }
@@ -29,6 +32,9 @@ Function Invoke-MediaManagement {
     $testnofiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File
     $testnofiles2 = Get-ChildItem -LiteralPath $env:FFToolsTarget -File
     if ($null -eq $testnofiles -and $null -eq $testnofiles2) {
+        # Delete update-metadata tempdb if it exists.
+        Remove-Item '/docker-transcodeautomation/data/update-metadata.db' -ErrorAction SilentlyContinue
+
         #Copy Files to processing folders
         Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
     }
