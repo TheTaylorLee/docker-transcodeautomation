@@ -53,10 +53,9 @@ foreach ($path in $MEDIAmoviefolders) {
 
                 # Remux the file
                 ffmpeg -hide_banner -loglevel error -stats -i $destination -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $env:FFToolsTarget$tempname
-                Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
-                if ("$env:FFToolsTarget$tempname" -gt 0) {
-                    $processedfile = (Get-ChildItem -LiteralPath $env:FFToolsTarget -File).fullname
-                    Move-Item -LiteralPath $processedfile.fullname -Destination "$env:FFToolsTarget/processed" -Verbose
+                Remove-Item -LiteralPath $destination -Force -Confirm:$false -Verbose
+                if ((Get-ChildItem -LiteralPath $env:FFToolsTarget -File).length -gt 0) {
+                    Move-Item -LiteralPath "$env:FFToolsTarget$tempname" -Destination "$env:FFToolsTarget/processed" -Verbose
                 }
 
                 # Processing of file complete. Move it back and make any needed database updates
@@ -117,10 +116,9 @@ foreach ($path in $MEDIAshowfolders) {
 
                 # Remux the file
                 ffmpeg -hide_banner -loglevel error -stats -i $destination -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy -stats_period 60 $env:FFToolsTarget$tempname
-                Remove-Item -LiteralPath $oldname -Force -Confirm:$false -Verbose
-                if ("$env:FFToolsTarget$tempname" -gt 0) {
-                    $processedfile = (Get-ChildItem -LiteralPath $env:FFToolsTarget -File).fullname
-                    Move-Item -LiteralPath $processedfile.fullname -Destination "$env:FFToolsTarget/processed" -Verbose
+                Remove-Item -LiteralPath $destination -Force -Confirm:$false -Verbose
+                if ((Get-ChildItem -LiteralPath $env:FFToolsTarget -File).length -gt 0) {
+                    Move-Item -LiteralPath "$env:FFToolsTarget$tempname" -Destination "$env:FFToolsTarget/processed" -Verbose
                 }
 
                 # Processing of file complete. Move it back and make any needed database updates
