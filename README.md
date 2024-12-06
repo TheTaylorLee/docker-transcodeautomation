@@ -15,9 +15,7 @@ An automated media transcoding solution. This solution is completely automated a
   </p>
 </div>
 
-# WARNING
-- UPDATEMETADATA if set to true, does not extend the same protections the normal transcode process does. You should absolutely not use it without backing up files first.
-- If you have any file watching services like plex, jellyfin, or emby, TURN THEM OFF during the UPDATEMETADATA process. File watching can corrupt the files as they are remuxed.
+- You should absolutely not use this or any transcoding solution without backing up files first.
 - You are responsible for the integrity of your media and having a plan to recover.
 
 ## Transcoding Process and Options
