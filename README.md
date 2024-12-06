@@ -1,5 +1,5 @@
 # Docker-TranscodeAutomation
-An automated media transcoding solution. This solution is completely automated and retains statistics. **By using this container, you assume all risks.** Be careful and begin by testing with a copy of only a few files for transcoding. For a better understanding of this containers function and workflow see this [diagram](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/examples/workflowdiagram/Docker-TranscodeAutomation.png).
+An automated media transcoding solution with statistics. **By using this container, you assume all risks, and it is recommened to maintain backups.** For a better understanding of this containers function and workflow see this [diagram](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/examples/workflowdiagram/Docker-TranscodeAutomation.png).
 
 <div>
   <p align="Left">
@@ -14,9 +14,6 @@ An automated media transcoding solution. This solution is completely automated a
 	  </a>
   </p>
 </div>
-
-- You should absolutely not use this or any transcoding solution without backing up files first.
-- You are responsible for the integrity of your media and having a plan to recover.
 
 ## Transcoding Process and Options
 - This solution comes with preset transcoding options, but if you wish to use your own options, skip to Option 2.
