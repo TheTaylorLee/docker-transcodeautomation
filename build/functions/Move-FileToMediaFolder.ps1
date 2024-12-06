@@ -104,6 +104,12 @@ function Move-FileToMEDIAFolder {
                     }
                 }
             }
+
+            #Output updated table entry into the log
+            $query = "select * from movies where comment = `"$comment`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
+            $query = "select * from shows where comment = `"$comment`""
+            Invoke-SqliteQuery -DataSource $DataSource -Query $query
         }
     }
     else {
