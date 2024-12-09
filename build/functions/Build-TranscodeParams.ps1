@@ -94,24 +94,25 @@ function Build-TranscodeParams {
     $x265Params = @()
 
     # Add CLL (Content Light Level) information if it exists
-    if ($null -ne $side_data_list -and $null -ne ($side_data_list.max_content)) {
-        $cllmax = ([string]$side_data_list.max_content).Trim()
-        $cllavg = ([string]$side_data_list.max_average).Trim()
+    $cllmax = ([string]$side_data_list.max_content).Trim()
+    $cllavg = ([string]$side_data_list.max_average).Trim()
+    if ($cllavg -match '\d' -and $cllmax -match '\d') {
         $x265Params += "max-cll=$cllmax,$cllavg"
     }
 
     # Add mastering display information if it exists
-    if ($null -ne $side_data_list -and $null -ne ($side_data_list.red_x)) {
-        $greenx = ([string]$side_data_list.green_x).split('/')[0]
-        $greeny = ([string]$side_data_list.green_y).split('/')[0]
-        $bluex = ([string]$side_data_list.blue_x).split('/')[0]
-        $bluey = ([string]$side_data_list.blue_y).split('/')[0]
-        $redx = ([string]$side_data_list.red_x).split('/')[0]
-        $redy = ([string]$side_data_list.red_y).split('/')[0]
-        $whitepointx = ([string]$side_data_list.white_point_x).split('/')[0]
-        $whitepointy = ([string]$side_data_list.white_point_y).split('/')[0]
-        $maxluminance = ([string]$side_data_list.max_luminance).split('/')[0]
-        $minluminance = ([string]$side_data_list.min_luminance).split('/')[0]
+    $greenx = ([string]$side_data_list.green_x).split('/')[0]
+    $greeny = ([string]$side_data_list.green_y).split('/')[0]
+    $bluex = ([string]$side_data_list.blue_x).split('/')[0]
+    $bluey = ([string]$side_data_list.blue_y).split('/')[0]
+    $redx = ([string]$side_data_list.red_x).split('/')[0]
+    $redy = ([string]$side_data_list.red_y).split('/')[0]
+    $whitepointx = ([string]$side_data_list.white_point_x).split('/')[0]
+    $whitepointy = ([string]$side_data_list.white_point_y).split('/')[0]
+    $maxluminance = ([string]$side_data_list.max_luminance).split('/')[0]
+    $minluminance = ([string]$side_data_list.min_luminance).split('/')[0]
+
+    if ($greenx -match '\d' -and $greeny -match '\d' -and $bluex -match '\d' -and $bluey -match '\d' -and $redx -match '\d' -and $redy -match '\d' -and $whitepointx -match '\d' -and $whitepointy -match '\d' -and $maxluminance -match '\d' -and $minluminance -match '\d') {
         $masterDisplay = "G($greenx,$greeny)B($bluex,$bluey)R($redx,$redy)WP($whitepointx,$whitepointy)L($maxluminance,$minluminance)"
         $x265Params += "master-display=$masterDisplay"
     }
