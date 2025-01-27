@@ -1,2078 +1,2125 @@
 {
-    "__inputs": [
-        {
-            "name": "DS_MEDIADB",
-            "label": "MediaDB",
-            "description": "",
-            "type": "datasource",
-            "pluginId": "frser-sqlite-datasource",
-            "pluginName": "SQLite"
-        }
-    ],
-    "__elements": {},
-    "__requires": [
-        {
-            "type": "datasource",
-            "id": "frser-sqlite-datasource",
-            "name": "SQLite",
-            "version": "3.1.0"
-        },
-        {
-            "type": "panel",
-            "id": "gauge",
-            "name": "Gauge",
-            "version": ""
-        },
-        {
-            "type": "grafana",
-            "id": "grafana",
-            "name": "Grafana",
-            "version": "11.3.0"
-        },
-        {
-            "type": "panel",
-            "id": "stat",
-            "name": "Stat",
-            "version": ""
-        },
-        {
-            "type": "panel",
-            "id": "table",
-            "name": "Table",
-            "version": ""
-        }
-    ],
-    "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": {
-                    "type": "grafana",
-                    "uid": "-- Grafana --"
-                },
-                "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "target": {
-                    "limit": 100,
-                    "matchAny": false,
-                    "tags": [],
-                    "type": "dashboard"
-                },
-                "type": "dashboard"
-            }
-        ]
+  "__inputs": [
+    {
+      "name": "DS_MEDIADB",
+      "label": "MediaDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "frser-sqlite-datasource",
+      "pluginName": "SQLite"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "frser-sqlite-datasource",
+      "name": "SQLite",
+      "version": "3.1.0"
     },
-    "description": "Shows statistics for existing media and transcoding operations.",
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": null,
-    "links": [
-        {
-            "asDropdown": true,
-            "icon": "external link",
-            "includeVars": false,
-            "keepTime": false,
-            "tags": [
-                "crowdsec"
-            ],
-            "targetBlank": false,
-            "title": "crowdsec",
-            "tooltip": "",
-            "type": "dashboards",
-            "url": ""
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.4.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        {
-            "asDropdown": true,
-            "icon": "external link",
-            "includeVars": false,
-            "keepTime": false,
-            "tags": [
-                "favorites"
-            ],
-            "targetBlank": false,
-            "title": "favorites",
-            "tooltip": "",
-            "type": "dashboards",
-            "url": ""
-        }
-    ],
-    "panels": [
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 0
-            },
-            "id": 10,
-            "panels": [],
-            "title": "Shows/Movies All Time Statistics",
-            "type": "row"
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
         },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Shows the all time percent of storage saved by transcoding.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "decimals": 2,
-                    "displayName": "Percent of Original Size",
-                    "mappings": [],
-                    "max": 100,
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "blue",
-                                "value": 50
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "percent"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 0,
-                "y": 1
-            },
-            "id": 6,
-            "maxDataPoints": 9999999,
-            "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "vertical",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": true,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n",
-                    "refId": "Shows",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n",
-                    "refId": "Movies",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Percent of Original Size All Time",
-            "transparent": true,
-            "type": "gauge"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Total number of existing media files.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "displayName": "File Count",
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Episodes"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 9,
-                "w": 12,
-                "x": 12,
-                "y": 1
-            },
-            "id": 17,
-            "maxDataPoints": 9999999,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value_and_name",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "refId": "Shows",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
-                    "refId": "Movies",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "File Count",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "All Time storage saved from transcoding.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "decimals": 2,
-                    "displayName": "Storage Saved",
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "decmbytes"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 10
-            },
-            "id": 21,
-            "maxDataPoints": 9999999,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "vertical",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "value_and_name",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "refId": "Shows",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
-                    "refId": "Movies",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Storage Saved All Time",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Total storage used by media files.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "decimals": 2,
-                    "displayName": "Media Storage Used",
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "decmbytes"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 10
-            },
-            "id": 19,
-            "maxDataPoints": 9999999,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "vertical",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "value_and_name",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
-                    "refId": "Shows",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
-                    "refId": "Movies",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Total Storage Usage",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 18
-            },
-            "id": 45,
-            "panels": [],
-            "title": "Shows/Movies Over Time Statistics",
-            "type": "row"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Shows the growth in storage usage over time. Useful in predicting when additional storage will be required.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "decimals": 2,
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "decmbytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 13,
-                "w": 12,
-                "x": 0,
-                "y": 19
-            },
-            "id": 8,
-            "maxDataPoints": 9999999,
-            "options": {
-                "colorMode": "none",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "horizontal",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "firstNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "value_and_name",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 365",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 365",
-                    "refId": "A",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Increased Disk usage Shows",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Shows the growth in storage usage over time. Useful in predicting when additional storage will be required.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "decimals": 2,
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "decmbytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 13,
-                "w": 12,
-                "x": 12,
-                "y": 19
-            },
-            "id": 15,
-            "maxDataPoints": 9999999,
-            "options": {
-                "colorMode": "none",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "horizontal",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "firstNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "value_and_name",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 365",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 365",
-                    "refId": "A",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Increased Disk usage Movies",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Graph helps to illustrate how changes in the media sources or transcoding parameters result in changes to file size over time.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "decimals": 2,
-                    "displayName": "Percent of Original Size",
-                    "mappings": [],
-                    "max": 100,
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "blue",
-                                "value": 50
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "percent"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 30"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 30 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 90"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 90 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 180"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 180 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 365"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 365 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 30"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 30 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 90"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 90 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 180"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 180 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 365"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 365 Days"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 32
-            },
-            "id": 43,
-            "maxDataPoints": 9999999,
-            "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "vertical",
-                "reduceOptions": {
-                    "calcs": [
-                        "mean"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": true,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Shows\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Shows\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
-                    "refId": "Shows 30",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-90 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-90 day')",
-                    "refId": "Shows 90",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-180 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-180 day')",
-                    "refId": "Shows 180",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-365 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-365 day')",
-                    "refId": "Shows 365",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Shows Percent of Original Size Over Time",
-            "transparent": true,
-            "type": "gauge"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Graph helps to illustrate how changes in the media sources or transcoding parameters result in changes to file size over time.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "decimals": 2,
-                    "displayName": "Percent of Original Size",
-                    "mappings": [],
-                    "max": 100,
-                    "min": 0,
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "blue",
-                                "value": 50
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "percent"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 30"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 30 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 90"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 90 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 180"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 180 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Shows 365"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Shows 365 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 30"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 30 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 90"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 90 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 180"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 180 Days"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byFrameRefID",
-                            "options": "Movies 365"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Movies 365 Days"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 40
-            },
-            "id": 44,
-            "maxDataPoints": 999999,
-            "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "vertical",
-                "reduceOptions": {
-                    "calcs": [
-                        "mean"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": true,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
-                    "refId": "Movies 30",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-90 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-90 day')",
-                    "refId": "Movies 90",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-180 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-180 day')",
-                    "refId": "Movies 180",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                },
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-365 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-365 day')",
-                    "refId": "Movies 365",
-                    "timeColumns": [
-                        "time",
-                        "ts"
-                    ]
-                }
-            ],
-            "title": "Movies Percent of Original Size over Time",
-            "transparent": true,
-            "type": "gauge"
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 48
-            },
-            "id": 35,
-            "panels": [],
-            "title": "Count of Added",
-            "type": "row"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 5,
-                "x": 0,
-                "y": 49
-            },
-            "id": 34,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
-                    "refId": "A",
-                    "timeColumns": []
-                }
-            ],
-            "title": "30 Days Shows",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 6,
-                "x": 5,
-                "y": 49
-            },
-            "id": 36,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
-                    "refId": "B",
-                    "timeColumns": []
-                }
-            ],
-            "title": "90 Days Shows",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "blue",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 5,
-                "x": 11,
-                "y": 49
-            },
-            "id": 39,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
-                    "refId": "A",
-                    "timeColumns": []
-                }
-            ],
-            "title": "30 Days Movies",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "blue",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 6,
-                "x": 16,
-                "y": 49
-            },
-            "id": 40,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
-                    "refId": "B",
-                    "timeColumns": []
-                }
-            ],
-            "title": "90 Days Movies",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 5,
-                "x": 0,
-                "y": 55
-            },
-            "id": 37,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
-                    "refId": "C",
-                    "timeColumns": []
-                }
-            ],
-            "title": "180 Days Shows",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 6,
-                "x": 5,
-                "y": 55
-            },
-            "id": 38,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
-                    "refId": "D",
-                    "timeColumns": []
-                }
-            ],
-            "title": "365 Days Shows",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "blue",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 5,
-                "x": 11,
-                "y": 55
-            },
-            "id": 41,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
-                    "refId": "C",
-                    "timeColumns": []
-                }
-            ],
-            "title": "180 Days Movies",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "frser-sqlite-datasource",
-                "uid": "${DS_MEDIADB}"
-            },
-            "description": "Simply shows the number of added media files in a given time period.",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "blue",
-                                "value": null
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 6,
-                "w": 6,
-                "x": 16,
-                "y": 55
-            },
-            "id": 42,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "count"
-                    ],
-                    "fields": "/^fullname$/",
-                    "values": false
-                },
-                "showPercentChange": false,
-                "text": {},
-                "textMode": "value",
-                "wideLayout": true
-            },
-            "pluginVersion": "11.3.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "hide": false,
-                    "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
-                    "queryType": "table",
-                    "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
-                    "refId": "D",
-                    "timeColumns": []
-                }
-            ],
-            "title": "365 Days Movies",
-            "transparent": true,
-            "type": "stat"
-        },
-        {
-            "collapsed": true,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 61
-            },
-            "id": 29,
-            "panels": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "custom": {
-                                "align": "auto",
-                                "cellOptions": {
-                                    "type": "auto"
-                                },
-                                "filterable": true,
-                                "inspect": false
-                            },
-                            "decimals": 2,
-                            "mappings": [],
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    },
-                                    {
-                                        "color": "red",
-                                        "value": 80
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": [
-                            {
-                                "matcher": {
-                                    "id": "byName",
-                                    "options": "filename"
-                                },
-                                "properties": [
-                                    {
-                                        "id": "custom.width",
-                                        "value": 198
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    "gridPos": {
-                        "h": 17,
-                        "w": 24,
-                        "x": 0,
-                        "y": 56
-                    },
-                    "id": 23,
-                    "maxDataPoints": 9999999,
-                    "options": {
-                        "cellHeight": "sm",
-                        "footer": {
-                            "countRows": false,
-                            "enablePagination": false,
-                            "fields": "",
-                            "reducer": [
-                                "sum"
-                            ],
-                            "show": false
-                        },
-                        "showHeader": true,
-                        "sortBy": [
-                            {
-                                "desc": true,
-                                "displayName": "modified"
-                            }
-                        ]
-                    },
-                    "pluginVersion": "10.2.0",
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "frser-sqlite-datasource",
-                                "uid": "${DS_MEDIADB}"
-                            },
-                            "queryText": "SELECT * From Movies",
-                            "queryType": "table",
-                            "rawQueryText": "SELECT * From Movies",
-                            "refId": "A",
-                            "timeColumns": [
-                                "time",
-                                "ts"
-                            ]
-                        }
-                    ],
-                    "title": "Movies",
-                    "transparent": true,
-                    "type": "table"
-                }
-            ],
-            "title": "Movies Table",
-            "type": "row"
-        },
-        {
-            "collapsed": true,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 62
-            },
-            "id": 31,
-            "panels": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "custom": {
-                                "align": "auto",
-                                "cellOptions": {
-                                    "type": "auto"
-                                },
-                                "filterable": true,
-                                "inspect": false
-                            },
-                            "decimals": 2,
-                            "mappings": [],
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green",
-                                        "value": null
-                                    },
-                                    {
-                                        "color": "red",
-                                        "value": 80
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 16,
-                        "w": 24,
-                        "x": 0,
-                        "y": 63
-                    },
-                    "id": 25,
-                    "maxDataPoints": 9999999,
-                    "options": {
-                        "cellHeight": "sm",
-                        "footer": {
-                            "countRows": false,
-                            "fields": "",
-                            "reducer": [
-                                "sum"
-                            ],
-                            "show": false
-                        },
-                        "showHeader": true,
-                        "sortBy": [
-                            {
-                                "desc": true,
-                                "displayName": "modified"
-                            }
-                        ]
-                    },
-                    "pluginVersion": "11.3.0",
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "frser-sqlite-datasource",
-                                "uid": "${DS_MEDIADB}"
-                            },
-                            "queryText": "Select * From Shows",
-                            "queryType": "table",
-                            "rawQueryText": "Select * From Shows",
-                            "refId": "A",
-                            "timeColumns": [
-                                "time",
-                                "ts"
-                            ]
-                        }
-                    ],
-                    "title": "Shows",
-                    "transparent": true,
-                    "type": "table"
-                }
-            ],
-            "title": "Shows Table",
-            "type": "row"
-        },
-        {
-            "collapsed": true,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 63
-            },
-            "id": 33,
-            "panels": [
-                {
-                    "datasource": {
-                        "type": "frser-sqlite-datasource",
-                        "uid": "${DS_MEDIADB}"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "custom": {
-                                "align": "auto",
-                                "cellOptions": {
-                                    "type": "auto"
-                                },
-                                "filterable": true,
-                                "inspect": false
-                            },
-                            "decimals": 2,
-                            "mappings": [],
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    },
-                                    {
-                                        "color": "red",
-                                        "value": 80
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 15,
-                        "w": 24,
-                        "x": 0,
-                        "y": 58
-                    },
-                    "id": 27,
-                    "maxDataPoints": 9999999,
-                    "options": {
-                        "cellHeight": "sm",
-                        "footer": {
-                            "countRows": false,
-                            "fields": "",
-                            "reducer": [
-                                "sum"
-                            ],
-                            "show": false
-                        },
-                        "showHeader": true,
-                        "sortBy": [
-                            {
-                                "desc": false,
-                                "displayName": "added"
-                            }
-                        ]
-                    },
-                    "pluginVersion": "10.2.0",
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "frser-sqlite-datasource",
-                                "uid": "${DS_MEDIADB}"
-                            },
-                            "queryText": "SELECT * From Statistics",
-                            "queryType": "table",
-                            "rawQueryText": "SELECT * From Statistics",
-                            "refId": "A",
-                            "timeColumns": [
-                                "time",
-                                "ts"
-                            ]
-                        }
-                    ],
-                    "title": "Statistics",
-                    "transparent": true,
-                    "type": "table"
-                }
-            ],
-            "title": "Statistics Table",
-            "type": "row"
-        }
-    ],
-    "refresh": "5m",
-    "schemaVersion": 40,
-    "tags": [
-        "Transcode Stats",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Shows statistics for existing media and transcoding operations.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
         "favorites"
-    ],
-    "templating": {
-        "list": []
+      ],
+      "targetBlank": false,
+      "title": "favorites",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Shows/Movies All Time Statistics",
+      "type": "row"
     },
-    "time": {
-        "from": "now-5m",
-        "to": "now"
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Shows the all time percent of storage saved by transcoding.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "Percent of Original Size",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 9,
+        "x": 0,
+        "y": 1
+      },
+      "id": 6,
+      "maxDataPoints": 9999999,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n",
+          "queryType": "table",
+          "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n",
+          "refId": "Shows",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n",
+          "queryType": "table",
+          "rawQueryText": "SELECT existspercent, added, tablename \r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n",
+          "refId": "Movies",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Percent of Original Size All Time",
+      "transparent": true,
+      "type": "gauge"
     },
-    "timepicker": {},
-    "timezone": "America/Chicago",
-    "title": "MediaDB",
-    "uid": "0u0XAp24k",
-    "version": 170,
-    "weekStart": "sunday"
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 9,
+        "y": 1
+      },
+      "id": 46,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^directory$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "queryText": "SELECT directory\nFROM shows\nWHERE fileexists = 'true'\nGROUP BY directory",
+          "queryType": "table",
+          "rawQueryText": "SELECT directory\nFROM shows\nWHERE fileexists = 'true'\nGROUP BY directory",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ],
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          }
+        }
+      ],
+      "title": "Series Count",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Total number of existing media files.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "displayName": "File Count",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Episodes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 13,
+        "y": 1
+      },
+      "id": 17,
+      "maxDataPoints": 9999999,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "refId": "Shows",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT mediacount, added\r\nFrom StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
+          "refId": "Movies",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "File Count",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "All Time storage saved from transcoding.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "decimals": 2,
+          "displayName": "Storage Saved",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 21,
+      "maxDataPoints": 9999999,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "refId": "Shows",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT existsdifferenceMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\n--ORDER BY added DESC LIMIT 1",
+          "refId": "Movies",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Storage Saved All Time",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Total storage used by media files.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "decimals": 2,
+          "displayName": "Media Storage Used",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 19,
+      "maxDataPoints": 9999999,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Shows'\r\n--ORDER BY added DESC LIMIT 1",
+          "refId": "Shows",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
+          "queryType": "table",
+          "rawQueryText": "SELECT existssumsizeMB, added\r\nFROM StatisticsLive WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 1",
+          "refId": "Movies",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Total Storage Usage",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 45,
+      "panels": [],
+      "title": "Shows/Movies Over Time Statistics",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Shows the growth in storage usage over time. Useful in predicting when additional storage will be required.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 8,
+      "maxDataPoints": 9999999,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "firstNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 365",
+          "queryType": "table",
+          "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Shows'\r\nORDER BY added DESC LIMIT 365",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Increased Disk usage Shows",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Shows the growth in storage usage over time. Useful in predicting when additional storage will be required.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 15,
+      "maxDataPoints": 9999999,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "firstNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 365",
+          "queryType": "table",
+          "rawQueryText": "SELECT growth30daysMB, growth90daysMB, growth180daysMB, growth365daysMB, added\r\nFROM Statistics WHERE tablename = 'Movies'\r\nORDER BY added DESC LIMIT 365",
+          "refId": "A",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Increased Disk usage Movies",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Graph helps to illustrate how changes in the media sources or transcoding parameters result in changes to file size over time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "Percent of Original Size",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "blue",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 30"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 30 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 90"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 90 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 180"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 180 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 365"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 365 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 30"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 30 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 90"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 90 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 180"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 180 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 365"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 365 Days"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 43,
+      "maxDataPoints": 9999999,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Shows\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Shows\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
+          "refId": "Shows 30",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-90 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-90 day')",
+          "refId": "Shows 90",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-180 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-180 day')",
+          "refId": "Shows 180",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-365 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\nFROM Shows\nWHERE fileexists = 'true'\n  And added > DATETIME('now', '-365 day')",
+          "refId": "Shows 365",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Shows Percent of Original Size Over Time",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Graph helps to illustrate how changes in the media sources or transcoding parameters result in changes to file size over time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "Percent of Original Size",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "blue",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 30"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 30 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 90"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 90 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 180"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 180 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Shows 365"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Shows 365 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 30"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 30 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 90"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 90 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 180"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 180 Days"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Movies 365"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Movies 365 Days"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "id": 44,
+      "maxDataPoints": 999999,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-30 day')",
+          "refId": "Movies 30",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-90 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-90 day')",
+          "refId": "Movies 90",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-180 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-180 day')",
+          "refId": "Movies 180",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        },
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-365 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT (100 / sum(oldsizeMB)) * sum(newsizeMB)\r\nFROM Movies\r\nWHERE fileexists = 'true'\r\n  And added > DATETIME('now', '-365 day')",
+          "refId": "Movies 365",
+          "timeColumns": [
+            "time",
+            "ts"
+          ]
+        }
+      ],
+      "title": "Movies Percent of Original Size over Time",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 35,
+      "panels": [],
+      "title": "Count of Added",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 49
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
+          "refId": "A",
+          "timeColumns": []
+        }
+      ],
+      "title": "30 Days Shows",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 5,
+        "y": 49
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
+          "refId": "B",
+          "timeColumns": []
+        }
+      ],
+      "title": "90 Days Shows",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 11,
+        "y": 49
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-30 day')",
+          "refId": "A",
+          "timeColumns": []
+        }
+      ],
+      "title": "30 Days Movies",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 16,
+        "y": 49
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-90 day')",
+          "refId": "B",
+          "timeColumns": []
+        }
+      ],
+      "title": "90 Days Movies",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 55
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
+          "refId": "C",
+          "timeColumns": []
+        }
+      ],
+      "title": "180 Days Shows",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 5,
+        "y": 55
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Shows WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
+          "refId": "D",
+          "timeColumns": []
+        }
+      ],
+      "title": "365 Days Shows",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 11,
+        "y": 55
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-180 day')",
+          "refId": "C",
+          "timeColumns": []
+        }
+      ],
+      "title": "180 Days Movies",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "${DS_MEDIADB}"
+      },
+      "description": "Simply shows the number of added media files in a given time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 16,
+        "y": 55
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^fullname$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "hide": false,
+          "queryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
+          "queryType": "table",
+          "rawQueryText": "SELECT * FROM Movies WHERE fileexists = 'true' AND added > DATETIME('now', '-365 day')",
+          "refId": "D",
+          "timeColumns": []
+        }
+      ],
+      "title": "365 Days Movies",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 29,
+      "panels": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "filename"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 198
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 24,
+            "x": 0,
+            "y": 56
+          },
+          "id": 23,
+          "maxDataPoints": 9999999,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "modified"
+              }
+            ]
+          },
+          "pluginVersion": "10.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "${DS_MEDIADB}"
+              },
+              "queryText": "SELECT * From Movies",
+              "queryType": "table",
+              "rawQueryText": "SELECT * From Movies",
+              "refId": "A",
+              "timeColumns": [
+                "time",
+                "ts"
+              ]
+            }
+          ],
+          "title": "Movies",
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "Movies Table",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 62
+      },
+      "id": 31,
+      "panels": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 24,
+            "x": 0,
+            "y": 63
+          },
+          "id": 25,
+          "maxDataPoints": 9999999,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "modified"
+              }
+            ]
+          },
+          "pluginVersion": "11.3.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "${DS_MEDIADB}"
+              },
+              "queryText": "Select * From Shows",
+              "queryType": "table",
+              "rawQueryText": "Select * From Shows",
+              "refId": "A",
+              "timeColumns": [
+                "time",
+                "ts"
+              ]
+            }
+          ],
+          "title": "Shows",
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "Shows Table",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "id": 33,
+      "panels": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "${DS_MEDIADB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 58
+          },
+          "id": 27,
+          "maxDataPoints": 9999999,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "added"
+              }
+            ]
+          },
+          "pluginVersion": "10.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "frser-sqlite-datasource",
+                "uid": "${DS_MEDIADB}"
+              },
+              "queryText": "SELECT * From Statistics",
+              "queryType": "table",
+              "rawQueryText": "SELECT * From Statistics",
+              "refId": "A",
+              "timeColumns": [
+                "time",
+                "ts"
+              ]
+            }
+          ],
+          "title": "Statistics",
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "Statistics Table",
+      "type": "row"
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 40,
+  "tags": [
+    "Transcode Stats",
+    "favorites"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "America/Chicago",
+  "title": "MediaDB",
+  "uid": "0u0XAp24k",
+  "version": 171,
+  "weekStart": "sunday"
 }
