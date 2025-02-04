@@ -84,6 +84,7 @@ ENV Variable | Description | Example
 ---------|---------|--------
 ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
 MINAGE | Minimum age in hours of a file before it's processed | MINAGE=1.5
+MINSIZEMB | Minimum size in Megabytes for a file to be processed. Default is 10 MB | MINSIZEMB=1024
 MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
 PROCDELAY | Time delay in hours between processing files | PROCDELAY=4
 SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23

@@ -85,3 +85,4 @@
 - 4.5.3 Improve Update-Metadata workflow with better protections.
 - 4.5.4 Add output listing the table entry data for files once transcoding completes.
 - 4.5.5 Fix $null conditions not reading null
+- 4.6.0 Add support for minimum file size for processesing.

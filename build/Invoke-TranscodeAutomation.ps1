@@ -66,6 +66,12 @@ if ($host.version.major -eq '7') {
     if ($null -eq $env:MINAGE) {
         $env:MINAGE = "4"
     }
+    if ($null -eq $env:MINSIZEMB) {
+        [decimal]$MinSizeMB = "10"
+    }
+    else {
+        [decimal]$MinSizeMB = $env:MINSIZEMB
+    }
     if ($null -eq $env:PROCDELAY) {
         [int]$minseconds = "14400"
     }
@@ -93,7 +99,7 @@ if ($host.version.major -eq '7') {
                 Write-Output "info: Transcodeautomation while loop started at $dt"
                 ###The Move-FiletoMediaFolder function is run here as a part of the fix for issue #29 Having it run here ensures even if there are no files to transcode, the failed file move is processed during the next window.
                 Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource #Issue 29
-                Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+                Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource -MinSizeMB $MinSizeMB
                 # Update-Processed can only run after the all possible file handling delays have passed. This ensures that if a file name changed but still exists, other functions update the database first.
                 if ($null -eq $runthisonetimeonly) {
                     $runthisonetimeonly = $true
