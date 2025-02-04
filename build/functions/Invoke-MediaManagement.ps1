@@ -5,6 +5,7 @@ Function Invoke-MediaManagement {
     Param (
         [Parameter(Mandatory = $true)][string[]]$MEDIAshowfolders,
         [Parameter(Mandatory = $true)][string[]]$MEDIAmoviefolders,
+        [Parameter(Mandatory = $true)][decimal]$MinSizeMB,
         [Parameter(Mandatory = $true)][int]$hours,
         [Parameter(Mandatory = $true)][string]$DataSource
     )
@@ -21,7 +22,7 @@ Function Invoke-MediaManagement {
         Remove-Item '/docker-transcodeautomation/data/update-metadata.db' -ErrorAction SilentlyContinue
 
         #Copy Files to processing folders
-        Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource
+        Invoke-MEDIAShowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -hours $hours -DataSource $DataSource -MinSizeMB $MinSizeMB
     }
     else {
         Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"
@@ -36,7 +37,7 @@ Function Invoke-MediaManagement {
         Remove-Item '/docker-transcodeautomation/data/update-metadata.db' -ErrorAction SilentlyContinue
 
         #Copy Files to processing folders
-        Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
+        Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource -MinSizeMB $MinSizeMB
     }
     else {
         Write-Output "error: Files in transcoding folders preventing this function from running. Clear up this issue first"

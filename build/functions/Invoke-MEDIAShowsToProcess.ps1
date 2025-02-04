@@ -4,6 +4,7 @@ Function Invoke-MEDIAShowsToProcess {
     Param (
         [Parameter(Mandatory = $true)][string[]]$MEDIAshowfolders,
         [Parameter(Mandatory = $true)][string[]]$MEDIAmoviefolders,
+        [Parameter(Mandatory = $true)][decimal]$MinSizeMB,
         [Parameter(Mandatory = $true)][int]$hours,
         [Parameter(Mandatory = $true)][string]$DataSource
     )
@@ -20,8 +21,11 @@ Function Invoke-MEDIAShowsToProcess {
             Set-Location $MEDIAshowfolder
 
             # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-            $files = (Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4").fullname
-            $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$MEDIAshowfolder%`""
+            $files = Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4" |
+                Select-Object fullname, @{ Name = "filesizemb"; Expression = { [math]::round(($_.length / 1mb), 3) } } |
+                Where-Object { $_.filesizemb -ge $MINSIZEMB }
+            $files = $files.fullname
+            $query = Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$MEDIAshowfolder%`" and filesizeMB >= `"$MinSizeMB`""
             $transcoded = ($query).fullname
             if ($null -eq $transcoded) {
                 $filesforprocessing = $files
