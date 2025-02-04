@@ -21,7 +21,7 @@ Function Invoke-MEDIAMoviesToProcess {
             Set-Location $MEDIAmoviefolder
 
             # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-            $files = Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4" |
+            $files = Get-ChildItem -ErrorAction Inquire -LiteralPath $MEDIAmoviefolder -r -File -Include "*.mkv", "*.mp4" |
                 Select-Object fullname, @{ Name = "filesizemb"; Expression = { [math]::round(($_.length / 1mb), 3) } } |
                 Where-Object { $_.filesizemb -ge $MINSIZEMB }
             $files = $files.fullname

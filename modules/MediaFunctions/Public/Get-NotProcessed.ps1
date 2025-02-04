@@ -15,14 +15,23 @@ Function Get-NotProcessed {
     [string[]]$mediashowfolders = $env:MEDIASHOWFOLDERS -split ', '
     [string[]]$mediamoviefolders = $env:MEDIAMOVIEFOLDERS -split ', '
     [string]$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
+    if ($null -eq $env:MINSIZEMB) {
+        [decimal]$MinSizeMB = "10"
+    }
+    else {
+        [decimal]$MinSizeMB = $env:MINSIZEMB
+    }
 
     #Movies
     foreach ($mediamoviefolder in $mediamoviefolders) {
         Set-Location $mediamoviefolder
         $TableName = 'Movies'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem -LiteralPath $mediamoviefolder -r -File -Include "*.mkv", "*.mp4").fullname
-        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$mediamoviefolder%`""
+        $files = Get-ChildItem -LiteralPath $mediamoviefolder -r -File -Include "*.mkv", "*.mp4" |
+                Select-Object fullname, @{ Name = "filesizemb"; Expression = { [math]::round(($_.length / 1mb), 3) } } |
+                Where-Object { $_.filesizemb -ge $MINSIZEMB }
+        $files = $files.fullname
+        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$MEDIAmoviefolder%`" and filesizeMB >= `"$MinSizeMB`"" -ErrorAction Inquire
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
             $filesforprocessing = $files
@@ -54,8 +63,11 @@ Function Get-NotProcessed {
         Set-Location $mediashowfolder
         $TableName = 'Shows'
         # Identify media files that might not be transcoded through a comparison with the database. Should occasionally run update-processed to correct invalid data cause by re-downloaded media files and upgrades.
-        $files = (Get-ChildItem -LiteralPath $mediashowfolder -r -File -Include "*.mkv", "*.mp4").fullname
-        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select fullname FROM $TableName WHERE comment like 'dta-%' and directory like `"%$mediashowfolder%`" and fileexists = 'true'"
+        $files = Get-ChildItem -LiteralPath $MEDIAshowfolder -r -File -Include "*.mkv", "*.mp4" |
+                Select-Object fullname, @{ Name = "filesizemb"; Expression = { [math]::round(($_.length / 1mb), 3) } } |
+                Where-Object { $_.filesizemb -ge $MINSIZEMB }
+        $files = $files.fullname
+        $query = Invoke-SqliteQuery -DataSource $DataSource -Query "Select * FROM $TableName WHERE comment like 'dta-%' and directory like `"%$MEDIAmoviefolder%`" and filesizeMB >= `"$MinSizeMB`"" -ErrorAction Inquire
         $transcoded = ($query).fullname
         if ($null -eq $transcoded) {
             $filesforprocessing = $files
