@@ -82,15 +82,18 @@ function invoke-processmovie {
                     Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
             }
-            # If the target file doesn't exists because it was skipped by Skip-Analysis
-            elseif (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
-                $targetfile = $env:FFToolsTarget + $sourcefiles[$i].name
-                ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfile
-                Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
-            }
             else {
                 Write-Output "error: Transcoded file shows a size of 0 or doesn't exist. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
             }
+        }
+    }
+    # If the target file doesn't exists because it was skipped by Skip-Analysis
+    if (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
+        [int]$max = $scount
+        for ($i = 0; $i -lt $max; $i++) {
+            $targetfile = $env:FFToolsTarget + $sourcefiles[$i].name
+            ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfile
+            Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
         }
     }
 

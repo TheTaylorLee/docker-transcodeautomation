@@ -44,7 +44,7 @@ function Start-TranscodeShows {
                     $skipanalysis | Select-Object bitrate, codec, skip, skipreason
 
                     if ($skipanalysis.skip -eq $true) {
-                        New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file
+                        New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file | Out-Null
                         $file = $skipanalysis.video
                         $reason = ($skipanalysis.skipreason) -join " and "
 
