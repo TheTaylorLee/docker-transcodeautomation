@@ -41,23 +41,23 @@ Function Skip-Analysis {
     $skipreason = @()
 
     # Strict Typing
-    $env:SKIPAV1 = [boolean]$env:SKIPAV1
-    $env:SKIPHEVC = [boolean]$env:SKIPHEVC
-    $env:SKIPDOVI = [boolean]$env:SKIPDOVI
-    $env:SKIPHDR = [boolean]$env:SKIPHDR
+    $env:SKIPAV1 = [string]$env:SKIPAV1
+    $env:SKIPHEVC = [string]$env:SKIPHEVC
+    $env:SKIPDOVI = [string]$env:SKIPDOVI
+    $env:SKIPHDR = [string]$env:SKIPHDR
     $env:SKIPKBPSBITRATEMIN = [int]$env:SKIPKBPSBITRATEMIN
 
     # Skip matched codecs
     $codec = ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $video
     switch ($codec) {
         "av1" {
-            if ($env:SKIPAV1 -eq $true) {
+            if ($env:SKIPAV1 -eq 'true') {
                 $skip = $true
                 $skipreason += "av1 codec found"
             }
         }
         "hevc" {
-            if ($env:SKIPHEVC -eq $true) {
+            if ($env:SKIPHEVC -eq 'true') {
                 $skip = $true
                 $skipreason += "hevc codec found"
             }
@@ -85,13 +85,13 @@ Function Skip-Analysis {
     $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
     if ($null -ne $frames.side_data_list) {
         foreach ($side_data in $frames.side_data_list) {
-            if ($env:SKIPHDR -and ($side_data.side_data_type -like "*DHDR10*" -or $side_data.side_data_type -like "*HDR10+*" -or $side_data.side_data_type -like "*SMPTE2094-40*")) {
+            if ($env:SKIPHDR -eq 'true' -and ($side_data.side_data_type -like "*DHDR10*" -or $side_data.side_data_type -like "*HDR10+*" -or $side_data.side_data_type -like "*SMPTE2094-40*")) {
                 if ($skipreason -notcontains "HDR metadata found") {
                     $skipreason += "HDR metadata found"
                 }
                 $skip = $true
             }
-            if ($env:DOVI -and ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*")) {
+            if ($env:DOVI -eq 'true' -and ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*")) {
                 if ($skipreason -notcontains "Dolby Vision metadata found") {
                     $skipreason += "Dolby Vision metadata found"
                 }

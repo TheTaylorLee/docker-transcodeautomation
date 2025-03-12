@@ -73,27 +73,27 @@ services:
 #### Required Variables
 ENV Variable |  Description | Example
 ---------|---------|---------
-BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
-BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
-MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperated by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperated by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | false
+BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | 14
+MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperated by ", " (Comma and a trailing space) and not be surrounded by quotes. | /media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperated by ", "  (Comma and a trailing space) and not be surrounded by quotes. | /media/test/shows
 
 
 #### Optional Variables
 ENV Variable | Description | Example
 ---------|---------|--------
-ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
-MINAGE | Minimum age in hours of a file before it's processed | MINAGE=1.5
-MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
-PROCDELAY | Time delay in hours between processing files | PROCDELAY=4
-SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
-STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
-SKIPAV1 | Skip processing files that are av1 encoded | $true
-SKIPHEVC | Skip processing files that are x265/hevc encoded | $false
+ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | 02:00
+MINAGE | Minimum age in hours of a file before it's processed | 1.5
+MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | 21
+PROCDELAY | Time delay in hours between processing files | 4
+SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | 23
+STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | 17:00
+SKIPAV1 | Skip processing files that are av1 encoded | true
+SKIPHEVC | Skip processing files that are x265/hevc encoded | false
 SKIPKBPSBITRATEMIN | Skip files below a minimum bitrate in kbps | 1000
-SKIPHDR | Skip files containing HDR metadata | $false
-SKIPDOVI | Skip files containing Dolby Vision metadata | $true
-UPDATEMETADATA | If true, existing media will have metadata updated only | UPDATEMETADATA=true
+SKIPHDR | Skip files containing HDR metadata | false
+SKIPDOVI | Skip files containing Dolby Vision metadata | true
+UPDATEMETADATA | If true, existing media will have metadata updated only | true
 
 #### Variable Notes
 - If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
