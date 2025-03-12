@@ -87,3 +87,4 @@
 - 4.5.5 Fix $null conditions not reading null
 - 4.6.0 Add additional ffmpeg sidecar data to carry over by default as groundwork for hdr10+ and dovi future integration. Additional work required to cary over tone mapping and some necessary metadata.
 - 4.6.1 Add help blocks at the top of functions.
+- 4.7.0 Add skip options to allow skipping transcodes based on various criteria.
