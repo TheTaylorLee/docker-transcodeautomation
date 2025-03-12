@@ -40,9 +40,10 @@ function Build-TranscodeParams {
         [Parameter(Mandatory = $true, HelpMessage = "This accepts a filename, but not fullname.")][ValidateNotNullOrEmpty()][string]$video
     )
 
-    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix,bit_depth,chroma_subsampling" -i $video
+    $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix,bit_depth,chroma_subsampling,stream_side_data=type,stream=codec_tag_string,profile" -i $video
     $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
     $side_data_list = (($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames).side_data_list
+    $streams = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).streams
 
     # Build array of arguments
     $ffmpegArgs = @(
@@ -93,7 +94,56 @@ function Build-TranscodeParams {
     # HDR Metadata as x265 params
     $x265Params = @()
 
-    # Add CLL (Content Light Level) information if it exists
+    # Add HDR10+ parameter only if the source has HDR10+ metadata
+    if ($null -ne $frames.side_data_list) {
+        foreach ($side_data in $frames.side_data_list) {
+            if ($side_data.side_data_type -like "*DHDR10*" -or $side_data.side_data_type -like "*HDR10+*" -or $side_data.side_data_type -like "*SMPTE2094-40*") {
+                $x265Params += "hdr10_plus=1"
+                break
+            }
+        }
+    }
+
+    # Dolby Vision Detection and parameter add
+    $dolbyVisionProfile = $null
+    $hasDolbyVision = $false
+
+    if ($null -ne $frames.side_data_list) {
+        foreach ($side_data in $frames.side_data_list) {
+            if ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*") {
+                $hasDolbyVision = $true
+                break
+            }
+        }
+    }
+
+    $dvCodecTags = @("dvhe", "dvh1", "dvav", "dvh2")
+    if ($streams.codec_tag_string -match ($dvCodecTags -join '|')) {
+        $hasDolbyVision = $true
+        break
+    }
+
+    if ($hasDolbyVision) {
+        if ($streams.profile -match "^Dolby Vision (\d+)") {
+            $dolbyVisionProfile = $Matches[1]
+        }
+
+        $x265Params += "dolby-vision-rpu=1"
+        $x265Params += "vbv-maxrate=160000"
+        $x265Params += "vbv-bufsize=160000"
+        $x265Params += "vbv-init=0.9"
+        $x265Params += "hrd=1"
+
+        switch ($dolbyVisionProfile) {
+            "5" { $x265Params += "dolby-vision-profile=5" }
+            "7" { $x265Params += "dolby-vision-profile=7" }
+            "8" { $x265Params += "dolby-vision-profile=8.1" }
+            "9" { $x265Params += "dolby-vision-profile=9" }
+            default { $x265Params += "dolby-vision-profile=8.1" }
+        }
+    }
+
+    # Add CLL information if it exists
     $cllmax = ([string]$side_data_list.max_content).Trim()
     $cllavg = ([string]$side_data_list.max_average).Trim()
     if ($cllavg -match '\d' -and $cllmax -match '\d') {
