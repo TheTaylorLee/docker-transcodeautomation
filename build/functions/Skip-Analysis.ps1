@@ -91,7 +91,7 @@ Function Skip-Analysis {
                 }
                 $skip = $true
             }
-            if ($env:DOVI -eq 'true' -and ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*")) {
+            if ($env:SKIPDOVI -eq 'true' -and ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*")) {
                 if ($skipreason -notcontains "Dolby Vision metadata found") {
                     $skipreason += "Dolby Vision metadata found"
                 }
