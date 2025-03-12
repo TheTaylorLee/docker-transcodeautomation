@@ -91,6 +91,7 @@ function invoke-processmovie {
     if (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
         [int]$max = $scount
         for ($i = 0; $i -lt $max; $i++) {
+            Write-Output "info: Remuxing skipped file"
             $targetfile = $env:FFToolsTarget + $sourcefiles[$i].name
             ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfile
             Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
