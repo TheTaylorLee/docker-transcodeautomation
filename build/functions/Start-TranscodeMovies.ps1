@@ -45,14 +45,13 @@ function Start-TranscodeMovies {
 
                     if ($skipanalysis.skip -eq $true) {
                         New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file | Out-Null
-                        $file = $skipanalysis.video
                         $reason = ($skipanalysis.skipreason) -join " and "
 
                         $tablename = "movies"
                         $query = "Update $tableName SET transcodeskipreason = `"$reason`" WHERE comment = `"$comment`""
                         Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
-                        Write-Output "[+] info: Skipping transcode for $file due to $reason"
+                        Write-Output "[+] info: Skipping transcode for $video due to $reason"
                     }
                     else {
                         Write-Output "info: Build-TranscodeParams Start"
