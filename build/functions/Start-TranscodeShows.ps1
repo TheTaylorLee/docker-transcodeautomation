@@ -39,14 +39,14 @@ function Start-TranscodeShows {
                     /docker-transcodeautomation/data/showscustomoptions.ps1
                 }
                 else {
-                    Write-Output "[+] Info: Skip-Analysis Begin"
+                    Write-Output "[+] Info: Skip-Analysis Results"
                     $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
-                    $skipanalysis
+                    $skipanalysis | Select-Object bitrate, codec, skip, skipreason
 
                     if ($skipanalysis.skip -eq $true) {
                         New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file
                         $file = $skipanalysis.video
-                        $reason = ($skipanalysis.skipreason) -join "and "
+                        $reason = ($skipanalysis.skipreason) -join " and "
 
                         $tablename = "shows"
                         $query = "Update $tableName SET transcodeskipreason = `"$reason`" WHERE comment = `"$comment`""

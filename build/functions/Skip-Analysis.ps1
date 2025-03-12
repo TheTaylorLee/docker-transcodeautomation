@@ -106,6 +106,5 @@ Function Skip-Analysis {
         codec      = $codec
         skip       = $skip
         skipreason = $skipreason
-        video      = $video
     }
 }

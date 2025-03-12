@@ -84,7 +84,8 @@ function invoke-processshow {
             }
             # If the target file doesn't exists because it was skipped by Skip-Analysis
             elseif (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
-                ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfiles[$i].FullName
+                $targetfile = $env:FFToolsTarget + $sourcefiles[$i].name
+                ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfile
                 Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
             }
             else {
