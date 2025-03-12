@@ -85,4 +85,5 @@
 - 4.5.3 Improve Update-Metadata workflow with better protections.
 - 4.5.4 Add output listing the table entry data for files once transcoding completes.
 - 4.5.5 Fix $null conditions not reading null
-- 4.6.0 Add additional ffmpeg sidecar data to carry over by default. Now hopefully hdr10+ and dovi content will be retained in most if not all scenarios.
+- 4.6.0 Add additional ffmpeg sidecar data to carry over by default as groundwork for hdr10+ and dovi future integration. Additional work required to cary over tone mapping and some necessary metadata.
+- 4.6.1 Add help blocks at the top of functions.

@@ -1,3 +1,23 @@
+<#
+.SYNOPSIS
+Moves processed media files to their respective media folders based on database entries.
+
+.DESCRIPTION
+The Move-FileToMEDIAFolder function moves processed media files (movies and shows) from a finalized transcode directory to their respective media folders. It updates the database with the new file information and logs the process. The function ensures database integrity before proceeding and handles any interruptions during the file move process.
+
+.PARAMETER MEDIAshowfolders
+An array of strings specifying the folders where show files are stored.
+
+.PARAMETER MEDIAmoviefolders
+An array of strings specifying the folders where movie files are stored.
+
+.PARAMETER DataSource
+A string specifying the path to the SQLite database file.
+
+.EXAMPLE
+Move-FileToMEDIAFolder -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
+#>
+
 function Move-FileToMEDIAFolder {
 
     [CmdletBinding()]

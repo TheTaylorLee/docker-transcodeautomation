@@ -1,3 +1,23 @@
+<#
+.SYNOPSIS
+Processes and transcodes movie files, compares the processed files to the original files, and handles file movements and metadata updates.
+
+.DESCRIPTION
+The Invoke-ProcessMovie function processes and transcodes movie files from specified source folders. It compares the processed files to the original files, handles error cases, updates metadata, and moves files to appropriate folders. The function ensures that transcoded files are correctly handled and moved back to their respective media folders.
+
+.PARAMETER MEDIAshowfolders
+An array of strings specifying the folders containing TV show media files.
+
+.PARAMETER MEDIAmoviefolders
+An array of strings specifying the folders containing movie media files.
+
+.PARAMETER DataSource
+A string specifying the data source for the media files.
+
+.EXAMPLE
+invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
+#>
+
 function invoke-processmovie {
 
     [CmdletBinding()]

@@ -1,3 +1,26 @@
+<#
+.SYNOPSIS
+Processes movie files in specified folders to identify and handle untranscoded media files.
+
+.DESCRIPTION
+The Invoke-MEDIAMoviesToProcess function scans specified movie folders, identifies media files that may not have been transcoded, and processes them accordingly. It performs various checks, including database integrity, file existence, and free space on the transcoding drive. The function updates the database with relevant information about the media files and handles transcoding tasks as needed.
+
+.PARAMETER MEDIAshowfolders
+An array of strings specifying the show folders to be processed.
+
+.PARAMETER MEDIAmoviefolders
+An array of strings specifying the movie folders to be processed.
+
+.PARAMETER hours
+An integer specifying the minimum age of files (in hours) to be considered for processing.
+
+.PARAMETER DataSource
+A string specifying the data source for the SQLite database.
+
+.EXAMPLE
+Invoke-MEDIAMoviesToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
+#>
+
 Function Invoke-MEDIAMoviesToProcess {
 
     [CmdletBinding()]

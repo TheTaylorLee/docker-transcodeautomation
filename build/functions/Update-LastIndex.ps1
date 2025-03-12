@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+Updates the last index in the ImmutableIndex table and returns a new comment string.
+
+.DESCRIPTION
+The Update-LastIndex function retrieves the current last index from the ImmutableIndex table in the specified SQLite database, increments it, formats it as a 10-digit string, and updates the table with the new index. It then returns a new comment string based on the updated index.
+
+.PARAMETER DataSource
+The path to the SQLite database file.
+
+.OUTPUTS
+[pscustomobject]
+Returns a custom object with the following property:
+- newcomment: The new comment string based on the updated index.
+
+.EXAMPLE
+$result = Update-LastIndex -DataSource $datasource
+$result.newcomment
+dta-0000000001
+#>
+
 function Update-LastIndex {
     param (
         [Parameter(Mandatory = $true)][string]$DataSource
