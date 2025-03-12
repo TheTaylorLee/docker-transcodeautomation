@@ -26,12 +26,12 @@ function Invoke-DBSetup {
 
     # Create Movies Table
     $Tablename = "Movies"
-    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT)"
+    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT, transcodeskipreason TEXT)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     # Create Shows Table
     $Tablename = "Shows"
-    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT)"
+    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT, transcodeskipreason TEXT)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     # Create Descriptions Table

@@ -6,7 +6,7 @@ if ($host.version.major -eq '7') {
     Write-Output "info: TranscodeAutomation Start"
 
     ##Debug log management
-    Get-ChildItem -Path $PSScriptRoot/data/logs/ |
+    Get-ChildItem -Path $PSScriptRoot/data/logs/ -File -Recurse |
         Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
         Remove-Item
 
@@ -19,6 +19,7 @@ if ($host.version.major -eq '7') {
     New-Item /docker-transcodeautomation/transcoding/new/recover -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/transcoding/new/processed -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction silentlycontinue -Verbose
+    New-Item /docker-transcodeautomation/data/logs/skipcheck -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue -Verbose
 
     ##Import PSSqlite

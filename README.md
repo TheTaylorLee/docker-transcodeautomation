@@ -88,6 +88,11 @@ MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:
 PROCDELAY | Time delay in hours between processing files | PROCDELAY=4
 SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
 STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
+SKIPAV1 | Skip processing files that are av1 encoded | $true
+SKIPHEVC | Skip processing files that are x265/hevc encoded | $false
+SKIPKBPSBITRATEMIN | Skip files below a minimum bitrate in kbps | 1000
+SKIPHDR | Skip files containing HDR metadata | $false
+SKIPDOVI | Skip files containing Dolby Vision metadata | $true
 UPDATEMETADATA | If true, existing media will have metadata updated only | UPDATEMETADATA=true
 
 #### Variable Notes

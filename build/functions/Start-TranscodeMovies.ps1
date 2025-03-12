@@ -1,3 +1,17 @@
+<#
+.SYNOPSIS
+Starts the transcoding process by determining if a file should be skipped or transcoded.
+
+.PARAMETER crf
+The Constant Rate Factor (CRF) value to be used for transcoding.
+
+.PARAMETER comment
+A comment or tag to be associated with the transcoding process.
+
+.EXAMPLE
+Start-TranscodeMovies -crf 23 -comment "dta-0000000001"
+#>
+
 function Start-TranscodeMovies {
 
     [cmdletbinding()]
@@ -24,15 +38,24 @@ function Start-TranscodeMovies {
                     /docker-transcodeautomation/data/moviescustomoptions.ps1
                 }
                 else {
-                    # Command prior to refactoring this else block
-                    ## ffmpeg -hide_banner -loglevel error -stats -i $video -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c:v libx265 -crf $crf -c:a copy -c:s copy -preset veryfast -stats_period 60 "$env:FFToolsTarget$video"
+                    Write-Output "[+] Info: Skip-Analysis Begin"
+                    $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
+                    $skipanalysis
 
-                    Write-Output "info: Build-TranscodeParams Start"
-                    $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
-                    $outargs = ($ffmpegArgs -join " ")
-                    Write-Output "debug: ffmpeg $outargs"
-                    Write-Output "info: Build-TranscodeParams End"
-                    ffmpeg $ffmpegArgs
+                    if ($skipanalysis.skip -eq $true) {
+                        New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file
+                        $file = $skipanalysis.video
+                        $reason = ($skipanalysis.skipreason) -join "and "
+                        Write-Output "[+] info: Skipping transcode for $file due to $reason"
+                    }
+                    else {
+                        Write-Output "info: Build-TranscodeParams Start"
+                        $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
+                        $outargs = ($ffmpegArgs -join " ")
+                        Write-Output "debug: ffmpeg $outargs"
+                        Write-Output "info: Build-TranscodeParams End"
+                        ffmpeg $ffmpegArgs
+                    }
                 }
             }
         }

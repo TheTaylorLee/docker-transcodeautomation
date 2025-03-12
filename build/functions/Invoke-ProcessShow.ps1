@@ -50,7 +50,7 @@ function invoke-processshow {
     ##If source files is smaller it's metadata will be cleaned up and the transcoded file removed.
     ##If target files has a length of 0 ffmpeg failed and processing aborts. This avoids transcode failures overwriting good files
     $sourcefiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File | Select-Object fullname, Name, length
-    $targetfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File | Select-Object fullname, Name, length
+    $targetfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File -ErrorAction SilentlyContinue | Select-Object fullname, Name, length
     $scount = ($sourcefiles | Measure-Object).count
     $tcount = ($targetfiles | Measure-Object).count
 
@@ -76,9 +76,13 @@ function invoke-processshow {
                     Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
                 }
             }
+            # If the target file doesn't exists because it was skipped by Skip-Analysis
+            elseif (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
+                ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfiles[$i].FullName
+                Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
+            }
             else {
-                Write-Output "error: Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
-                break
+                Write-Output "error: Transcoded file shows a size of 0 or doesn't exist. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
             }
         }
     }
@@ -90,9 +94,6 @@ function invoke-processshow {
     for ($i = 0; $i -lt $max; $i++) {
         if ($processedfiles[$i].Length -gt 0) {
             Move-Item -LiteralPath $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed" -Verbose
-        }
-        else {
-            break
         }
     }
 
