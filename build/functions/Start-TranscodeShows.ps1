@@ -46,9 +46,10 @@ function Start-TranscodeShows {
                     if ($skipanalysis.skip -eq $true) {
                         New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file | Out-Null
                         $reason = ($skipanalysis.skipreason) -join " and "
+                        $reasondb = ($skipanalysis.skipreason) -join ", "
 
                         $tablename = "shows"
-                        $query = "Update $tableName SET transcodeskipreason = `"$reason`" WHERE comment = `"$comment`""
+                        $query = "Update $tableName SET transcodeskipreason = `"$reasondb`" WHERE comment = `"$comment`""
                         Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                         Write-Output "[+] info: Skipping transcode for $video due to $reason"
