@@ -18,7 +18,8 @@ function Start-TranscodeShows {
     [Alias('Transcode')]
     param (
         [Parameter(Mandatory = $true)]$crf,
-        [Parameter(Mandatory = $true)]$comment
+        [Parameter(Mandatory = $true)]$comment,
+        [Parameter(Mandatory = $true)][string]$DataSource
     )
 
     #Used in debug logs
@@ -46,6 +47,11 @@ function Start-TranscodeShows {
                         New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file
                         $file = $skipanalysis.video
                         $reason = ($skipanalysis.skipreason) -join "and "
+
+                        $tablename = "shows"
+                        $query = "Update $tableName SET transcodeskipreason = `"$reason`" WHERE comment = `"$comment`""
+                        Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
                         Write-Output "[+] info: Skipping transcode for $file due to $reason"
                     }
                     else {

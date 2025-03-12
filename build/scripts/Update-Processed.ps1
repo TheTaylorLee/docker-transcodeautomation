@@ -29,13 +29,13 @@ if ($null -eq $queryrun) {
             $comment = $convert.format.tags.comment
             if ($comment -notlike "dta-*") {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`" WHERE fullname = `"$fullname`""
+                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", transcodeskipreason = NULL WHERE fullname = `"$fullname`""
             }
         }
         else {
             if ($null -ne $sqlmovie.comment -or $null -ne $sqlmovie.filesizeMB -or $sqlmovie.fileexists -ne 'false') {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", filesizeMB = NULL, fileexists = 'false' WHERE fullname = `"$fullname`""
+                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", filesizeMB = NULL, fileexists = 'false', transcodeskipreason = NULL WHERE fullname = `"$fullname`""
             }
         }
     }
@@ -51,13 +51,13 @@ if ($null -eq $queryrun) {
             $comment = $convert.format.tags.comment
             if ($comment -notlike "dta-*") {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`" WHERE fullname = `"$fullname`""
+                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", transcodeskipreason = NULL WHERE fullname = `"$fullname`""
             }
         }
         else {
             if ($null -ne $sqlshow.comment -or $null -ne $sqlshow.filesizeMB -or $sqlshow.fileexists -ne 'false') {
                 $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", filesizeMB = NULL, fileexists = 'false' WHERE fullname = `"$fullname`""
+                Invoke-SqliteQuery -DataSource $DataSource -Query "Update $TableName set comment = NULL, updatedby = 'Update-Processed', modified = `"$modified`", filesizeMB = NULL, fileexists = 'false', transcodeskipreason = NULL WHERE fullname = `"$fullname`""
             }
         }
     }
@@ -67,7 +67,7 @@ if ($null -eq $queryrun) {
     Invoke-SqliteQuery -DataSource $DataSource -Query "Update Movies set oldsizeMB = NULL, newsizeMB = NULL WHERE fileexists = 'false'"
     Invoke-SqliteQuery -DataSource $DataSource -Query "Update Shows set oldsizeMB = NULL, newsizeMB = NULL WHERE fileexists = 'false'"
 
-    # Update Database Log Table
+    # Update Processed Log Table
     $TableName = 'UpdateProcessedLog'
     $daterun = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $query = "INSERT INTO $TableName (daterun) Values (`"$daterun`")"
