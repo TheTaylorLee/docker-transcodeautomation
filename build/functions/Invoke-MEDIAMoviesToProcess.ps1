@@ -104,6 +104,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                         if ($comment -eq "dta-remuxed") {
                                             # Remux an immutable index into the file.
                                             $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                                            $reason = "File was Previously Remuxed"
                                             [string]$oldname = $fullname + ".old"
                                             Rename-Item $fullname $oldname -Verbose
                                             ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $fullname
@@ -111,19 +112,21 @@ Function Invoke-MEDIAMoviesToProcess {
                                         }
                                         else {
                                             $newcomment = $comment
+                                            $reason = $null
                                         }
 
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
-                                            filename   = $filename
-                                            fullname   = $fullname
-                                            directory  = $directory
-                                            comment    = $newcomment
-                                            Added      = Get-Date
-                                            modified   = Get-Date
-                                            filesizeMB = $filesizeMB
-                                            fileexists = "true"
-                                            updatedby  = "Invoke-MEDIAMoviesToProcess"
+                                            filename            = $filename
+                                            fullname            = $fullname
+                                            directory           = $directory
+                                            comment             = $newcomment
+                                            Added               = Get-Date
+                                            modified            = Get-Date
+                                            filesizeMB          = $filesizeMB
+                                            fileexists          = "true"
+                                            updatedby           = "Invoke-MEDIAMoviesToProcess"
+                                            transcodeskipreason = $reason
                                         }
                                     }
                                     # else comment tag of media file is not dta-*, copy file for processing and update database
@@ -176,7 +179,7 @@ Function Invoke-MEDIAMoviesToProcess {
                     else {
                         $fullname = $file
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                        $query = "Update $TableName SET filesizeMB = NULL, fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess' WHERE fullname = `"$fullname`" and fileexists is NOT false and filesizeMB is NOT NULL"
+                        $query = "Update $TableName SET filesizeMB = NULL, fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', transcodeskipreason = NULL WHERE fullname = `"$fullname`" and fileexists is NOT false and filesizeMB is NOT NULL"
                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                     }
                 }

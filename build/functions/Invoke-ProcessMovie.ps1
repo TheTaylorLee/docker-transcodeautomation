@@ -62,10 +62,11 @@ function invoke-processmovie {
                 # If the source file is smaller than the transcoded file
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
+                    New-Item /docker-transcodeautomation/data/logs/remuxcheck/$comment -ItemType file | Out-Null
 
                     $tablename = "movies"
                     $reason = "Transcoded File Was Larger"
-                    $query = "Update $tableName SET transcodeskipreason = `"$reason`" WHERE comment = `"$comment`""
+                    $query = "Update $tableName SET transcodeskipreason = `"$reason`", updatedby = 'Invoke-ProcessMovie' WHERE comment = `"$comment`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Remove-Item -LiteralPath $targetfiles[$i].FullName -Force -Verbose

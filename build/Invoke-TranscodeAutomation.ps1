@@ -20,6 +20,7 @@ if ($host.version.major -eq '7') {
     New-Item /docker-transcodeautomation/transcoding/new/processed -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/data/logs -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/data/logs/skipcheck -ItemType Directory -ErrorAction silentlycontinue -Verbose
+    New-Item /docker-transcodeautomation/data/logs/remuxcheck -ItemType Directory -ErrorAction silentlycontinue -Verbose
     New-Item /docker-transcodeautomation/data/Backups -ItemType Directory -ErrorAction silentlycontinue -Verbose
 
     ##Import PSSqlite

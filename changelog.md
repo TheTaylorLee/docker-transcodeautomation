@@ -90,3 +90,4 @@
 - 4.7.0 Add skip options to allow skipping transcodes based on various criteria.
 - 4.7.1 Bugfix for skipped files not remuxing.
 - 4.7.2 Rework Start-TranscodeMovies/Shows to apply skip analysis to customtranscode options as well.
+- 4.7.3 Add additional transcode skip reason to other functions, and prevent logging old/new size for remuxed only transcodes.

@@ -48,7 +48,7 @@ function Start-TranscodeMovies {
                     $reasondb = ($skipanalysis.skipreason) -join ", "
 
                     $tablename = "movies"
-                    $query = "Update $tableName SET transcodeskipreason = `"$reasondb`" WHERE comment = `"$comment`""
+                    $query = "Update $tableName SET transcodeskipreason = `"$reasondb`", updatedby = 'Start-TranscodeMovies' WHERE comment = `"$comment`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Write-Output "[+] info: Skipping transcode for $video due to $reason"

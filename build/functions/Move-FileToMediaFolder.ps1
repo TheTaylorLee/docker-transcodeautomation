@@ -42,6 +42,9 @@ function Move-FileToMEDIAFolder {
 
 
         foreach ($file in $filestomove) {
+            # Reset Variables
+            $newsizeMB = $null
+            $oldsizeMB = $null
 
             # Get comment from file
             $probefile = $file.fullname
@@ -57,10 +60,14 @@ function Move-FileToMEDIAFolder {
                     # log stats and changes to database
                     $TableName = 'Movies'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                    $newsizeMB = $file.newsizeMB
-                    $oldsizeMB = $oldsizemb
+                    $filesizeMB = $file.newsizeMB
+                    # Check if file was remuxed by existence of skipcheck file
+                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false) {
+                        $newsizeMB = $file.newsizeMB
+                        $oldsizeMB = $oldsizemb
+                    }
                     $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
@@ -95,10 +102,14 @@ function Move-FileToMEDIAFolder {
                     # log stats and changes to database
                     $TableName = 'Shows'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                    $newsizeMB = $file.newsizeMB
-                    $oldsizeMB = $oldsizemb
+                    $filesizeMB = $file.newsizeMB
+                    # Check if file was remuxed by existence of skipcheck file
+                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false) {
+                        $newsizeMB = $file.newsizeMB
+                        $oldsizeMB = $oldsizemb
+                    }
                     $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$newsizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
+                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
