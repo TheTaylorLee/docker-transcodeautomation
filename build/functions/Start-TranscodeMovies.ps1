@@ -34,34 +34,32 @@ function Start-TranscodeMovies {
         foreach ($extension in $ext) {
             $array = @(Get-ChildItem -Filter $extension)
             Foreach ($video in $array.Name) {
-                if ($CustomMovieOptionsApplied -eq $true) {
+                Write-Output "[+] Info: Skip-Analysis Results"
+                $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
+                $skipanalysis | Select-Object bitrate, codec, skip, skipreason
+
+                if ($CustomMovieOptionsApplied -eq $true -and $skipanalysis.skip -eq $false) {
                     Write-Output "info: Using Custom Movies Parameters"
                     /docker-transcodeautomation/data/moviescustomoptions.ps1
                 }
+                elseif ($skipanalysis.skip -eq $true) {
+                    New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file | Out-Null
+                    $reason = ($skipanalysis.skipreason) -join " and "
+                    $reasondb = ($skipanalysis.skipreason) -join ", "
+
+                    $tablename = "movies"
+                    $query = "Update $tableName SET transcodeskipreason = `"$reasondb`" WHERE comment = `"$comment`""
+                    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
+                    Write-Output "[+] info: Skipping transcode for $video due to $reason"
+                }
                 else {
-                    Write-Output "[+] Info: Skip-Analysis Results"
-                    $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
-                    $skipanalysis | Select-Object bitrate, codec, skip, skipreason
-
-                    if ($skipanalysis.skip -eq $true) {
-                        New-Item /docker-transcodeautomation/data/logs/skipcheck/$comment -ItemType file | Out-Null
-                        $reason = ($skipanalysis.skipreason) -join " and "
-                        $reasondb = ($skipanalysis.skipreason) -join ", "
-
-                        $tablename = "movies"
-                        $query = "Update $tableName SET transcodeskipreason = `"$reasondb`" WHERE comment = `"$comment`""
-                        Invoke-SqliteQuery -DataSource $DataSource -Query $query
-
-                        Write-Output "[+] info: Skipping transcode for $video due to $reason"
-                    }
-                    else {
-                        Write-Output "info: Build-TranscodeParams Start"
-                        $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
-                        $outargs = ($ffmpegArgs -join " ")
-                        Write-Output "debug: ffmpeg $outargs"
-                        Write-Output "info: Build-TranscodeParams End"
-                        ffmpeg $ffmpegArgs
-                    }
+                    Write-Output "info: Build-TranscodeParams Start"
+                    $ffmpegargs = Build-TranscodeParams -video $env:FFToolsSource$video -comment $comment -crf $crf -output $env:FFToolsTarget$video
+                    $outargs = ($ffmpegArgs -join " ")
+                    Write-Output "debug: ffmpeg $outargs"
+                    Write-Output "info: Build-TranscodeParams End"
+                    ffmpeg $ffmpegArgs
                 }
             }
         }

@@ -89,3 +89,4 @@
 - 4.6.1 Add help blocks at the top of functions.
 - 4.7.0 Add skip options to allow skipping transcodes based on various criteria.
 - 4.7.1 Bugfix for skipped files not remuxing.
+- 4.7.2 Rework Start-TranscodeMovies/Shows to apply skip analysis to customtranscode options as well.
