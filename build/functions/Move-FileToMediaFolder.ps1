@@ -104,7 +104,7 @@ function Move-FileToMEDIAFolder {
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                     $filesizeMB = $file.newsizeMB
                     # Check if file was remuxed by existence of skipcheck file
-                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false) {
+                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false -and (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) -eq $false) {
                         $newsizeMB = $file.newsizeMB
                         $oldsizeMB = $oldsizemb
                     }
