@@ -47,13 +47,13 @@ Function Skip-Analysis {
         "av1" {
             if ($env:SKIPAV1 -eq 'true') {
                 $skip = $true
-                $skipreason += "av1 codec found"
+                $skipreason += "codec-avi"
             }
         }
         "hevc" {
             if ($env:SKIPHEVC -eq 'true') {
                 $skip = $true
-                $skipreason += "hevc codec found"
+                $skipreason += "codec-hevc"
             }
         }
     }
@@ -70,7 +70,7 @@ Function Skip-Analysis {
         $minBitrate = [int]$env:SKIPKBPSBITRATEMIN
         if ($bitrate -lt $minBitrate) {
             $skip = $true
-            $skipreason += "bitrate $bitrate kbps below minimum $minBitrate kbps"
+            $skipreason += "bitrate"
         }
     }
 
@@ -79,7 +79,7 @@ Function Skip-Analysis {
     $durationminutes = [int]$duration / 60
     if ($durationminutes -lt $minDuration) {
         $skip = $true
-        $skipreason += "$durationminutes minutes below minimum of $minDuration minutes"
+        $skipreason += "duration"
     }
 
     # Skip files containing HDR or Dolby Vision metadata
@@ -88,14 +88,14 @@ Function Skip-Analysis {
     if ($null -ne $frames.side_data_list) {
         foreach ($side_data in $frames.side_data_list) {
             if ($env:SKIPHDR -eq 'true' -and ($side_data.side_data_type -like "*DHDR10*" -or $side_data.side_data_type -like "*HDR10+*" -or $side_data.side_data_type -like "*SMPTE2094-40*")) {
-                if ($skipreason -notcontains "HDR metadata found") {
-                    $skipreason += "HDR metadata found"
+                if ($skipreason -notcontains "HDR") {
+                    $skipreason += "HDR"
                 }
                 $skip = $true
             }
             if ($env:SKIPDOVI -eq 'true' -and ($side_data.side_data_type -eq "DOVI" -or $side_data.side_data_type -like "*Dolby Vision*")) {
-                if ($skipreason -notcontains "Dolby Vision metadata found") {
-                    $skipreason += "Dolby Vision metadata found"
+                if ($skipreason -notcontains "DOVI") {
+                    $skipreason += "DOVI"
                 }
                 $skip = $true
             }
