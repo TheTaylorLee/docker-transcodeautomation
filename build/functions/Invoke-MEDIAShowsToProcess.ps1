@@ -112,10 +112,10 @@ Function Invoke-MEDIAShowsToProcess {
                                         }
                                         else {
                                             $newcomment = $comment
-                                            $reason = $null
+                                            $reason = $NULL
                                         }
 
-                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
+                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby, transcodeskipreason) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby, @transcodeskipreason)"
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
                                             filename            = $filename
                                             fullname            = $fullname
