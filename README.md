@@ -22,14 +22,12 @@ An automated media transcoding solution with statistics. **By using this contain
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
 
 ### Option 1
-- All transcoded media will have the below parameters applied.
+- All transcoded media will be analyzed and parameters dynamically applied from [Build-TranscodeParams](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/build/functions/Build-TranscodeParams.ps1).
 - All video, audio, and subtitle streams are mapped into transcoded files.
 - Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
+- Additional parameters are applied to match with the source file, such as colorspace, luminance, and other x265 parameters.
 - CRF quality defaults to 21 for movies and 23 for shows.
 - You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
-```powershell
-ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -c:a copy -c:s copy -preset veryfast -stats_period 60 <output>
-```
 
 ### Option 2
 - Option 2 allows for customizing the majority of the applied ffmpeg parameters.
@@ -73,22 +71,28 @@ services:
 #### Required Variables
 ENV Variable |  Description | Example
 ---------|---------|---------
-BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | BACKUPPROCESSED=false
-BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | BACKUPRETENTION=14
-MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperated by ", " (Comma and a trailing space) and not be surrounded by quotes. | MEDIAMOVIEFOLDERS=/media/test/movies, /media/test/movies02
-MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperated by ", "  (Comma and a trailing space) and not be surrounded by quotes. | MEDIASHOWFOLDERS=/media/test/shows
+BACKUPPROCESSED | If set to true this will result in transcoded files being backed up for x days | false
+BACKUPRETENTION | Number of days to retain a backup copy of transcoded media | 14
+MEDIAMOVIEFOLDERS | Top level movie directories. Multiple directories must be seperated by ", " (Comma and a trailing space) and not be surrounded by quotes. | /media/test/movies, /media/test/movies02
+MEDIASHOWFOLDERS | Top level show directories. Multiple directories must be seperated by ", "  (Comma and a trailing space) and not be surrounded by quotes. | /media/test/shows
 
 
 #### Optional Variables
 ENV Variable | Description | Example
 ---------|---------|--------
-ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | ENDTIMEUTC=02:00
-MINAGE | Minimum age in hours of a file before it's processed | MINAGE=1.5
-MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | MOVIESCRF=21
-PROCDELAY | Time delay in hours between processing files | PROCDELAY=4
-SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | SHOWSCRF=23
-STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | STARTTIMEUTC=17:00
-UPDATEMETADATA | If true, existing media will have metadata updated only | UPDATEMETADATA=true
+ENDTIMEUTC | End of timeframe that transcoding is allowed in UTC 24 hour format | 02:00
+MINAGE | Minimum age in hours of a file before it's processed | 1.5
+MOVIESCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | 21
+PROCDELAY | Time delay in hours between processing files | 4
+SHOWSCRF | [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) for configuring trancode quality | 23
+STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour format | 17:00
+SKIPAV1 | Skip processing files that are av1 encoded | true
+SKIPHEVC | Skip processing files that are x265/hevc encoded | false
+SKIPKBPSBITRATEMIN | Skip files below a minimum bitrate in kbps | 1000
+SKIPMINUTESMIN | Skip files below a minimum legnth in minutes | 30
+SKIPDOVI | Skip files containing Dolby Vision metadata | true
+SKIPHDR | Skip files containing HDR metadata | false
+UPDATEMETADATA | If true, existing media will have metadata updated only | true
 
 #### Variable Notes
 - If setting `BACKUPPROCESSED` to true be careful. This can easily lead to filling up drive free space dependent on media processed during the `BACKUPRETENTION` period.
@@ -121,7 +125,7 @@ Tags | Description
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions i've added for retrieving useful info. They are not necessary to use.
-- Use `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
+- `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
 ```powershell
 #Media Management Functions
 Get-EmptyFolder        #Gets empty directories that can be cleaned up.

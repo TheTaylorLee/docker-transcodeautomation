@@ -49,3 +49,20 @@ if ($null -eq $result) {
 }
 
 Write-Output "info: Update-Database End"
+
+# update shows and movies to add a column for transcodeskipreason
+$Tablename = "movies"
+$Query = "PRAGMA table_info($Tablename)"
+$result = Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+if ($result.name -notcontains "transcodeskipreason") {
+    $Query = "ALTER TABLE $Tablename ADD COLUMN transcodeskipreason TYPE TEXT"
+    Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+}
+
+$Tablename = "shows"
+$Query = "PRAGMA table_info($Tablename)"
+$result = Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+if ($result.name -notcontains "transcodeskipreason") {
+    $Query = "ALTER TABLE $Tablename ADD COLUMN transcodeskipreason TYPE TEXT"
+    Invoke-SqliteQuery -Query $Query -DataSource $DataSource
+}

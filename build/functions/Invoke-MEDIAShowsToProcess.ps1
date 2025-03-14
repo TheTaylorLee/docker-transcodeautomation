@@ -1,3 +1,26 @@
+<#
+.SYNOPSIS
+Processes show files in specified folders to identify and handle untranscoded media files.
+
+.DESCRIPTION
+The Invoke-MEDIAshowsToProcess function scans specified show folders, identifies media files that may not have been transcoded, and processes them accordingly. It performs various checks, including database integrity, file existence, and free space on the transcoding drive. The function updates the database with relevant information about the media files and handles transcoding tasks as needed.
+
+.PARAMETER MEDIAshowfolders
+An array of strings specifying the show folders to be processed.
+
+.PARAMETER MEDIAmoviefolders
+An array of strings specifying the movie folders to be processed.
+
+.PARAMETER hours
+An integer specifying the minimum age of files (in hours) to be considered for processing.
+
+.PARAMETER DataSource
+A string specifying the data source for the SQLite database.
+
+.EXAMPLE
+Invoke-MEDIAshowsToProcess -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders  -hours $hours -DataSource $DataSource
+#>
+
 Function Invoke-MEDIAShowsToProcess {
 
     [CmdletBinding()]
@@ -81,6 +104,7 @@ Function Invoke-MEDIAShowsToProcess {
                                         if ($comment -eq "dta-remuxed") {
                                             # Remux an immutable index into the file.
                                             $newcomment = (Update-Lastindex -DataSource $datasource).newcomment
+                                            $reason = "previously-transcoded"
                                             [string]$oldname = $fullname + ".old"
                                             Rename-Item $fullname $oldname -Verbose
                                             ffmpeg -i $oldname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$newcomment -c copy $fullname
@@ -88,19 +112,21 @@ Function Invoke-MEDIAShowsToProcess {
                                         }
                                         else {
                                             $newcomment = $comment
+                                            $reason = $NULL
                                         }
 
-                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
+                                        $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby, transcodeskipreason) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby, @transcodeskipreason)"
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query -SqlParameters @{
-                                            filename   = $filename
-                                            fullname   = $fullname
-                                            directory  = $directory
-                                            comment    = $newcomment
-                                            Added      = Get-Date
-                                            modified   = Get-Date
-                                            filesizeMB = $filesizeMB
-                                            fileexists = "true"
-                                            updatedby  = "Invoke-MEDIAShowsToProcess"
+                                            filename            = $filename
+                                            fullname            = $fullname
+                                            directory           = $directory
+                                            comment             = $newcomment
+                                            Added               = Get-Date
+                                            modified            = Get-Date
+                                            filesizeMB          = $filesizeMB
+                                            fileexists          = "true"
+                                            updatedby           = "Invoke-MEDIAShowsToProcess"
+                                            transcodeskipreason = $reason
                                         }
                                     }
                                     # else comment tag of media file is not dta-*, copy file for processing and update database
@@ -138,7 +164,7 @@ Function Invoke-MEDIAShowsToProcess {
                                         $destination = $env:FFToolsSource + "$basename$newcomment$extension"
                                         Copy-Item -LiteralPath $fullname $destination -Verbose
                                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                                        $query = "Update $TableName SET comment = `"$newcomment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAMoviesToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
+                                        $query = "Update $TableName SET comment = `"$newcomment`", fileexists = 'true', modified = `"$modified`", updatedby = 'Invoke-MEDIAshowsToProcess', fullname= `"$fullname`", directory = `"$directory`", filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                                         invoke-processshow -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
                                     }
@@ -153,7 +179,7 @@ Function Invoke-MEDIAShowsToProcess {
                     else {
                         $fullname = $file
                         $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                        $query = "Update $TableName SET filesizeMB = NULL,  fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess' WHERE fullname = `"$fullname`" and fileexists is NOT false and filesizeMB is NOT NULL"
+                        $query = "Update $TableName SET filesizeMB = NULL,  fileexists = 'false', modified = `"$modified`", updatedby = 'Invoke-MEDIAShowsToProcess', transcodeskipreason = NULL WHERE fullname = `"$fullname`" and fileexists is NOT false and filesizeMB is NOT NULL"
                         Invoke-SqliteQuery -ErrorAction Inquire -DataSource $DataSource -Query $query
                     }
                 }

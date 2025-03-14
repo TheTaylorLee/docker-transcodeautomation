@@ -1,3 +1,28 @@
+<#
+.SYNOPSIS
+    Manages media files by processing TV shows and movies, and performing cleanup tasks.
+
+.DESCRIPTION
+    The Invoke-MediaManagement function processes media files by first ensuring no previous failures occurred.
+    It then processes TV shows and movies by copying files to processing folders.
+    Finally, it removes recovery files older than a specified retention period.
+
+.PARAMETER MEDIAshowfolders
+    An array of strings specifying the folders containing TV shows to be processed.
+
+.PARAMETER MEDIAmoviefolders
+    An array of strings specifying the folders containing movies to be processed.
+
+.PARAMETER hours
+    An integer specifying the number of hours old a file must be prior to processing.
+
+.PARAMETER DataSource
+    A string specifying the location of the sqlite database.
+
+.EXAMPLE
+    Invoke-MediaManagement -hours $env:MINAGE -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $datasource
+#>
+
 Function Invoke-MediaManagement {
 
     [CmdletBinding()]

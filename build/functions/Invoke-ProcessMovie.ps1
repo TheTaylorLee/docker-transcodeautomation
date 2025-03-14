@@ -1,3 +1,23 @@
+<#
+.SYNOPSIS
+Processes and transcodes movie files, compares the processed files to the original files, and handles file movements and metadata updates.
+
+.DESCRIPTION
+The Invoke-ProcessMovie function processes and transcodes movie files from specified source folders. It compares the processed files to the original files, handles error cases, updates metadata, and moves files to appropriate folders. The function ensures that transcoded files are correctly handled and moved back to their respective media folders.
+
+.PARAMETER MEDIAshowfolders
+An array of strings specifying the folders containing TV show media files.
+
+.PARAMETER MEDIAmoviefolders
+An array of strings specifying the folders containing movie media files.
+
+.PARAMETER DataSource
+A string specifying the data source for the media files.
+
+.EXAMPLE
+invoke-processmovie -MEDIAshowfolders $MEDIAshowfolders -MEDIAmoviefolders $MEDIAmoviefolders -DataSource $DataSource
+#>
+
 function invoke-processmovie {
 
     [CmdletBinding()]
@@ -23,14 +43,14 @@ function invoke-processmovie {
     }
 
     ##Process files
-    Start-TranscodeMovies -crf $env:MOVIESCRF -comment $comment
+    Start-TranscodeMovies -crf $env:MOVIESCRF -comment $comment -DataSource $DataSource
 
     ##Compare processed files to the original files.
     ##Source files will be moved into a recover folder in case transcode failed.
     ##If source files is smaller it's metadata will be cleaned up and the transcoded file removed.
     ##If target files has a length of 0 ffmpeg failed and processing aborts. This avoids transcode failures overwriting good files
     $sourcefiles = Get-ChildItem -LiteralPath $env:FFToolsSource -File | Select-Object fullname, Name, length
-    $targetfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File | Select-Object fullname, Name, length
+    $targetfiles = Get-ChildItem -LiteralPath $env:FFToolsTarget -File -ErrorAction SilentlyContinue | Select-Object fullname, Name, length
     $scount = ($sourcefiles | Measure-Object).count
     $tcount = ($targetfiles | Measure-Object).count
 
@@ -42,6 +62,13 @@ function invoke-processmovie {
                 # If the source file is smaller than the transcoded file
                 if ($sourcefiles[$i].Length -lt $targetfiles[$i].Length) {
                     Write-Output "info: Transcoded file was larger. Removing the transcoded file and updating metadata only on source file."
+                    New-Item /docker-transcodeautomation/data/logs/remuxcheck/$comment -ItemType file | Out-Null
+
+                    $tablename = "movies"
+                    $reason = "Transcoded File Was Larger"
+                    $query = "Update $tableName SET transcodeskipreason = `"$reason`", updatedby = 'Invoke-ProcessMovie' WHERE comment = `"$comment`""
+                    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+
                     Remove-Item -LiteralPath $targetfiles[$i].FullName -Force -Verbose
                     ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfiles[$i].FullName
                     Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
@@ -57,9 +84,18 @@ function invoke-processmovie {
                 }
             }
             else {
-                Write-Output "error: Transcoded file shows a size of 0. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
-                break
+                Write-Output "error: Transcoded file shows a size of 0 or doesn't exist. Drive space might have run out or the file might not be able to transcode with given parameters. Processing will continue to fail until this is addressed."
             }
+        }
+    }
+    # If the target file doesn't exists because it was skipped by Skip-Analysis
+    if (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) {
+        [int]$max = $scount
+        for ($i = 0; $i -lt $max; $i++) {
+            Write-Output "info: Remuxing skipped file"
+            $targetfile = $env:FFToolsTarget + $sourcefiles[$i].name
+            ffmpeg -hide_banner -loglevel error -stats -i $sourcefiles[$i].fullname -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT=$comment -c copy $targetfile
+            Remove-Item -LiteralPath $sourcefiles[$i].fullname -Force -Verbose
         }
     }
 
@@ -70,9 +106,6 @@ function invoke-processmovie {
     for ($i = 0; $i -lt $max; $i++) {
         if ($processedfiles[$i].Length -gt 0) {
             Move-Item -LiteralPath $processedfiles[$i].fullname -Destination "$env:FFToolsTarget/processed" -Verbose
-        }
-        else {
-            break
         }
     }
 

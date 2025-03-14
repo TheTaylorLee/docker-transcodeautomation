@@ -1,3 +1,29 @@
+<#
+.SYNOPSIS
+    Updates the statistics for Movies and Shows in the database.
+
+.DESCRIPTION
+    The Update-Statistics function updates the statistics for Movies and Shows in the database.
+    It updates the statistics table if it hasn't been updated in the last 24 hours or if the -force switch is used.
+    It also updates the StatisticsLive table with the latest statistics.
+
+.PARAMETER DataSource
+    The path to the SQLite database file.
+
+.PARAMETER force
+    A switch to force the update of the statistics table regardless of the last update time.
+
+.EXAMPLE
+    Update-Statistics -DataSource $datasource
+
+    This example updates the statistics for the specified database.
+
+.EXAMPLE
+    Update-Statistics -DataSource $datasource -force
+
+    This example forces the update of the statistics for the specified database.
+#>
+
 function Update-Statistics {
 
     [CmdletBinding()]

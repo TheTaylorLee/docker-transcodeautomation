@@ -85,3 +85,11 @@
 - 4.5.3 Improve Update-Metadata workflow with better protections.
 - 4.5.4 Add output listing the table entry data for files once transcoding completes.
 - 4.5.5 Fix $null conditions not reading null
+- 4.6.0 Add additional ffmpeg sidecar data to carry over by default as groundwork for hdr10+ and dovi future integration. Additional work required to cary over tone mapping and some necessary metadata.
+- 4.6.1 Add help blocks at the top of functions.
+- 4.7.0 Add skip options to allow skipping transcodes based on various criteria.
+- 4.7.1 Bugfix for skipped files not remuxing.
+- 4.7.2 Rework Start-TranscodeMovies/Shows to apply skip analysis to customtranscode options as well.
+- 4.7.3 Add additional transcode skip reason to other functions, and prevent logging old/new size for remuxed only transcodes.
+- 4.7.4 Add missed condition
+- 4.7.5 Add a skip reason based on duration

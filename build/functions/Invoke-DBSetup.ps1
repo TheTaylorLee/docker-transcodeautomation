@@ -1,3 +1,19 @@
+<#
+.SYNOPSIS
+Initializes and sets up the database schema for the transcode automation.
+
+.DESCRIPTION
+The Invoke-DBSetup function creates the necessary tables and views in the SQLite database used by the docker-transcodeautomation.
+It sets up tables for Movies, Shows, Descriptions, Statistics, StatisticsLive, UpdateProcessedLog, and ImmutableIndex.
+Additionally, it inserts initial data into the Descriptions and ImmutableIndex tables and creates several views for easier data access.
+
+.PARAMETER DataSource
+Specifies the SQLite database file to which the setup queries will be applied. This parameter is mandatory.
+
+.EXAMPLE
+Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
+#>
+
 function Invoke-DBSetup {
 
     [CmdletBinding()]
@@ -10,12 +26,12 @@ function Invoke-DBSetup {
 
     # Create Movies Table
     $Tablename = "Movies"
-    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT)"
+    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT, transcodeskipreason TEXT)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     # Create Shows Table
     $Tablename = "Shows"
-    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT)"
+    $Query = "CREATE TABLE $TableName (filename TEXT, fullname TEXT, directory TEXT, comment TEXT, added DATETIME, modified DATETIME, filesizeMB NUMERIC, oldsizeMB NUMERIC, newsizeMB NUMERIC, fileexists TEXT, updatedby TEXT, transcodeskipreason TEXT)"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 
     # Create Descriptions Table
