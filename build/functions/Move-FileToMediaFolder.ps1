@@ -42,10 +42,6 @@ function Move-FileToMEDIAFolder {
 
 
         foreach ($file in $filestomove) {
-            # Reset Variables
-            $newsizeMB = $null
-            $oldsizeMB = $null
-
             # Get comment from file
             $probefile = $file.fullname
             $Probe = ffprobe -loglevel 0 -print_format json -show_format $probefile
@@ -65,6 +61,10 @@ function Move-FileToMEDIAFolder {
                     if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false) {
                         $newsizeMB = $file.newsizeMB
                         $oldsizeMB = $oldsizemb
+                    }
+                    else {
+                        $newsizeMB = $null
+                        $oldsizeMB = $null
                     }
                     $fullname = $destination.fullname
                     $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
@@ -107,6 +107,10 @@ function Move-FileToMEDIAFolder {
                     if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false -and (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) -eq $false) {
                         $newsizeMB = $file.newsizeMB
                         $oldsizeMB = $oldsizemb
+                    }
+                    else {
+                        $newsizeMB = $null
+                        $oldsizeMB = $null
                     }
                     $fullname = $destination.fullname
                     $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""

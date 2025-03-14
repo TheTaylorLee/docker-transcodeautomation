@@ -7,6 +7,7 @@ The Skip-Analysis function examines a video file and determines whether it shoul
 - Video codec (AV1, HEVC)
 - Minimum bitrate threshold
 - Presence of HDR or Dolby Vision metadata
+- Minimum duration in minutes
 
 .PARAMETER video
 The path to the video file that needs to be analyzed.
@@ -19,13 +20,6 @@ if ($result.skip -eq $true) {
 else {
     # Transcoding options
 }
-
-.NOTES
-Environment Variables:
-- skipav1: When set to $true, files with AV1 codec will be skipped
-- skiphevc: When set to $true, files with HEVC codec will be skipped
-- skipkbpsbitratemin: Minimum bitrate threshold in kbps; files below this will be skipped
-- skiphdr: When set to $true, files containing HDR or Dolby Vision metadata will be skipped
 #>
 
 Function Skip-Analysis {
@@ -80,6 +74,14 @@ Function Skip-Analysis {
         }
     }
 
+    # Skip files under the minimum amount of mintues long
+    $minDuration = [int]$env:SKIPMINUTESMIN
+    $durationminutes = [int]$duration / 60
+    if ($durationminutes -lt $minDuration) {
+        $skip = $true
+        $skipreason += "$durationminutes minutes below minimum of $minDuration minutes"
+    }
+
     # Skip files containing HDR or Dolby Vision metadata
     $out = ffprobe -hide_banner -loglevel error -select_streams v -print_format json -show_frames -read_intervals "%+#1" -show_entries "frame=color_space,color_primaries,color_transfer,side_data_list,color_range,color_matrix,bit_depth,chroma_subsampling,stream_side_data=type,stream=codec_tag_string,profile" -i $video
     $frames = ($out | ConvertFrom-Json -ErrorAction SilentlyContinue).frames
@@ -104,6 +106,7 @@ Function Skip-Analysis {
     [pscustomobject]@{
         bitrate    = $bitrate
         codec      = $codec
+        minutes    = $durationminutes
         skip       = $skip
         skipreason = $skipreason
     }

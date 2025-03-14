@@ -92,3 +92,4 @@
 - 4.7.2 Rework Start-TranscodeMovies/Shows to apply skip analysis to customtranscode options as well.
 - 4.7.3 Add additional transcode skip reason to other functions, and prevent logging old/new size for remuxed only transcodes.
 - 4.7.4 Add missed condition
+- 4.7.5 Add a skip reason based on duration

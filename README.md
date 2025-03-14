@@ -91,8 +91,9 @@ STARTTIMEUTC | Beginning of timeframe that transcoding is allowed in UTC 24 hour
 SKIPAV1 | Skip processing files that are av1 encoded | true
 SKIPHEVC | Skip processing files that are x265/hevc encoded | false
 SKIPKBPSBITRATEMIN | Skip files below a minimum bitrate in kbps | 1000
-SKIPHDR | Skip files containing HDR metadata | false
+SKIPMINUTESMIN | Skip files below a minimum legnth in minutes | 30
 SKIPDOVI | Skip files containing Dolby Vision metadata | true
+SKIPHDR | Skip files containing HDR metadata | false
 UPDATEMETADATA | If true, existing media will have metadata updated only | true
 
 #### Variable Notes
