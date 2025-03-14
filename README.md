@@ -22,14 +22,12 @@ An automated media transcoding solution with statistics. **By using this contain
 - This process will only process and transcode media in `*.mp4 & *.mkv` containers. All other files will be excluded.
 
 ### Option 1
-- All transcoded media will have the below parameters applied.
+- All transcoded media will be analyzed and parameters dynamically applied from [Build-TranscodeParams](https://github.com/TheTaylorLee/docker-transcodeautomation/blob/main/build/functions/Build-TranscodeParams.ps1).
 - All video, audio, and subtitle streams are mapped into transcoded files.
 - Title and Description metadata is removed so that proper metadata is presented in certain 3rd party media servers.
+- Additional parameters are applied to match with the source file, such as colorspace, luminance, and other x265 parameters.
 - CRF quality defaults to 21 for movies and 23 for shows.
 - You can customize the [Constant Rate Factor](https://trac.ffmpeg.org/wiki/Encode/H.265#:~:text=is%20not%20recommended.-,Constant%20Rate%20Factor%20(CRF),-Use%20this%20mode) using the environment variables with option 1. See the environment variables section of the readme.
-```powershell
-ffmpeg -i <input> -map 0:v:0? -map 0:a? -map 0:s? -metadata title="" -metadata description="" -metadata COMMENT="transcoded" -c:v libx265 -crf <env:variable> -c:a copy -c:s copy -preset veryfast -stats_period 60 <output>
-```
 
 ### Option 2
 - Option 2 allows for customizing the majority of the applied ffmpeg parameters.
@@ -127,7 +125,7 @@ Tags | Description
 
 ## Using included media functions
 - This image comes with various optional PowerShell functions i've added for retrieving useful info. They are not necessary to use.
-- Use `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
+- `docker exec -i Docker-TranscodeAutomation /usr/bin/pwsh` to get an interactive shell
 ```powershell
 #Media Management Functions
 Get-EmptyFolder        #Gets empty directories that can be cleaned up.
