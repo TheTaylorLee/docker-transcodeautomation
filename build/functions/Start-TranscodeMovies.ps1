@@ -36,7 +36,7 @@ function Start-TranscodeMovies {
             Foreach ($video in $array.Name) {
                 Write-Output "[+] Info: Skip-Analysis Results"
                 $skipanalysis = Skip-Analysis -video $env:FFToolsSource$video
-                $skipanalysis | Select-Object bitrate, codec, skip, skipreason
+                $skipanalysis | Select-Object bitrate, codec, minutes, skip, skipreason
 
                 if ($CustomMovieOptionsApplied -eq $true -and $skipanalysis.skip -eq $false) {
                     Write-Output "info: Using Custom Movies Parameters"
