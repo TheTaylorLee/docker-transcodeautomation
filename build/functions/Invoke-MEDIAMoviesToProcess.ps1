@@ -112,7 +112,7 @@ Function Invoke-MEDIAMoviesToProcess {
                                         }
                                         else {
                                             $newcomment = $comment
-                                            $reason = $null
+                                            $reason = 'NULL'
                                         }
 
                                         $query = "INSERT INTO $TableName (filename, fullname, directory, comment, Added, modified, filesizeMB, fileexists, updatedby) Values (@filename, @fullname, @directory, @comment, @Added, @modified, @filesizeMB, @fileexists, @updatedby)"
