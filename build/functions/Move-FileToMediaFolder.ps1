@@ -51,25 +51,22 @@ function Move-FileToMEDIAFolder {
             #Move processed movie files
             $destination = $moviesdb | Where-Object { $_.comment -eq $comment }
             if ($null -ne $destination) {
-                $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
                 if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
                     # log stats and changes to database
                     $TableName = 'Movies'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                     $filesizeMB = $file.newsizeMB
-                    # Check if file was remuxed by existence of skipcheck file
-                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false) {
-                        $newsizeMB = $file.newsizeMB
-                        $oldsizeMB = $oldsizemb
+                    $fullname = $destination.fullname
+                    $newsizeMB = $file.newsizeMB
+                    $oldsizeMB = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
+                    # Check if file was remuxed and if so don't populate old and new file sizes
+                    if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false -and (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) -eq $false) {
+                        $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     }
                     else {
-                        $newsizeMB = $null
-                        $oldsizeMB = $null
+                        $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                     }
-                    $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
-
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
                 }
                 # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
@@ -97,25 +94,22 @@ function Move-FileToMEDIAFolder {
             #Move processed show files
             $destination = $showsdb | Where-Object { $_.comment -eq $comment }
             if ($null -ne $destination) {
-                $oldsizemb = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
                 if (Test-Path -LiteralPath $destination.fullname -ErrorAction SilentlyContinue) {
                     # log stats and changes to database
                     $TableName = 'Shows'
                     $modified = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                     $filesizeMB = $file.newsizeMB
-                    # Check if file was remuxed by existence of skipcheck file
+                    $fullname = $destination.fullname
+                    $newsizeMB = $file.newsizeMB
+                    $oldsizeMB = (Get-ChildItem -LiteralPath $destination.fullname | Select-Object @{ Name = "oldsizeMB"; Expression = { [math]::round(($_.length / 1mb), 2) } }).oldsizeMB
+                    # Check if file was remuxed and if so don't populate old and new file sizes
                     if ((Test-Path /docker-transcodeautomation/data/logs/remuxcheck/$comment) -eq $false -and (Test-Path /docker-transcodeautomation/data/logs/skipcheck/$comment) -eq $false) {
-                        $newsizeMB = $file.newsizeMB
-                        $oldsizeMB = $oldsizemb
+                        $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     }
                     else {
-                        $newsizeMB = $null
-                        $oldsizeMB = $null
+                        $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     }
-                    $fullname = $destination.fullname
-                    $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`", newsizeMB = `"$newsizeMB`", oldsizeMB = `"$oldsizeMB`" WHERE fullname = `"$fullname`""
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
-
                     Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
                 }
                 # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
