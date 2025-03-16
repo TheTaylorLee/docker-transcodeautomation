@@ -47,7 +47,7 @@ Function Skip-Analysis {
         "av1" {
             if ($env:SKIPAV1 -eq 'true') {
                 $skip = $true
-                $skipreason += "codec-avi"
+                $skipreason += "codec-av1"
             }
         }
         "hevc" {
