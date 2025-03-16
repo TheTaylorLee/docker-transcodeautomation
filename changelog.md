@@ -94,3 +94,4 @@
 - 4.7.4 Add missed condition
 - 4.7.5 Add a skip reason based on duration
 - 4.7.6 Grammar fix av1 not avi
+- 4.8.0 Further hdr and dovi integration for build-transcodeparams function
