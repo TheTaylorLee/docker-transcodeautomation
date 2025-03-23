@@ -48,7 +48,23 @@ if ($null -eq $result) {
     Invoke-SqliteQuery -DataSource $DataSource -Query $query
 }
 
-Write-Output "info: Update-Database End"
+$Tablename = "Descriptions"
+[string]$checkQuery = "SELECT * FROM $TableName WHERE columnname = 'transcodeskipreason' AND tablename = 'movies'"
+$result = Invoke-SqliteQuery -DataSource $DataSource -Query $checkQuery
+
+if ($null -eq $result) {
+    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('transcodeskipreason', 'reason why a file was not transcoded', 'movies')"
+    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+}
+
+$Tablename = "Descriptions"
+[string]$checkQuery = "SELECT * FROM $TableName WHERE columnname = 'transcodeskipreason' AND tablename = 'shows'"
+$result = Invoke-SqliteQuery -DataSource $DataSource -Query $checkQuery
+
+if ($null -eq $result) {
+    [string]$query = "INSERT INTO $TableName (columnname, description, tablename) Values ('transcodeskipreason', 'reason why a file was not transcoded', 'shows')"
+    Invoke-SqliteQuery -DataSource $DataSource -Query $query
+}
 
 # update shows and movies to add a column for transcodeskipreason
 $Tablename = "movies"
@@ -66,3 +82,5 @@ if ($result.name -notcontains "transcodeskipreason") {
     $Query = "ALTER TABLE $Tablename ADD COLUMN transcodeskipreason TYPE TEXT"
     Invoke-SqliteQuery -Query $Query -DataSource $DataSource
 }
+
+Write-Output "info: Update-Database End"
