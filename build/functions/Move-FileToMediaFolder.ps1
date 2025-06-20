@@ -67,7 +67,14 @@ function Move-FileToMEDIAFolder {
                         $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                     }
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
-                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                    try {
+                        Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction Stop -Verbose
+                    }
+                    catch {
+                        Write-Output "error: Move-Item failed for $($file.fullname). Retrying after 10 seconds."
+                        Start-Sleep -Seconds 10
+                        Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                    }
                 }
                 # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
                 else {
@@ -110,7 +117,14 @@ function Move-FileToMEDIAFolder {
                         $query = "Update $TableName SET comment = `"$comment`", modified = `"$modified`", updatedby = 'Move-FileTomediaFolder', filesizeMB = `"$filesizeMB`" WHERE fullname = `"$fullname`""
                     }
                     Invoke-SqliteQuery -DataSource $DataSource -Query $query
-                    Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                    try {
+                        Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction Stop -Verbose
+                    }
+                    catch {
+                        Write-Output "error: Move-Item failed for $($file.fullname). Retrying after 10 seconds."
+                        Start-Sleep -Seconds 10
+                        Move-Item -LiteralPath $file.fullname -Destination $destination.fullname -Force -Confirm:$false -ErrorAction SilentlyContinue -Verbose
+                    }
                 }
                 # If for any reason an interuption occurs, the original file might be deleted. This will prevent oldsizeMB from being nulled out.
                 else {
