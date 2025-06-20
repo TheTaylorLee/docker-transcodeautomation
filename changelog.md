@@ -95,3 +95,4 @@
 - 4.7.5 Add a skip reason based on duration
 - 4.7.6 Grammar fix av1 not avi
 - 4.8.0 update database descriptions table
+- 4.8.1 Add try/catch to move-filetomediafolder to more quickly address failed file moves.
