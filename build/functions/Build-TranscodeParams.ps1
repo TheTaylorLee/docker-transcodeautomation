@@ -75,7 +75,7 @@ function Build-TranscodeParams {
     if ($null -ne $frames -and $null -ne ($frames.color_transfer)) {
         $ffmpegArgs += "-color_trc", $frames.color_transfer
     }
-    if ($null -ne $frames -and $null -ne ($frames.color_primaries)) {
+    if ($null -ne $frames -and $null -ne ($frames.color_primaries) -and ($frames.color_primaries) -ne "reserved") {
         $ffmpegArgs += "-color_primaries", $frames.color_primaries
     }
     if ($null -ne $frames -and $null -ne ($frames.color_range)) {
