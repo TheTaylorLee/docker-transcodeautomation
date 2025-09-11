@@ -1,15 +1,21 @@
 <#
-.Description
+.DESCRIPTION
 Find Movies and Shows missing the year in their name
 
-.Example
+.EXAMPLE
 Get-MissingYear
+
+.Notes
+Additional notes go here.
+
+.Link
+https://github.com/TheTaylorLee/AdminToolbox
 #>
 
 function Get-MissingYear {
 
     [CmdletBinding()]
-    Param (
+    param (
     )
 
     [string[]]$mediashowfolders = $env:MEDIASHOWFOLDERS -split ', '
@@ -20,12 +26,10 @@ function Get-MissingYear {
         Remove-Item /docker-transcodeautomation/data/logs/missingyear.log -Force
     }
     foreach ($mediafolder in $mediafolders) {
-        Get-ChildItem -LiteralPath $mediafolder -r |
-        Sort-Object fullname |
-        Select-Object name, fullname |
-        Where-Object { $_.name -notlike "*(*)*" } |
-        #Format-Table -AutoSize |
-        Out-File /docker-transcodeautomation/data/logs/missingyear.log -Width 10000 -Append
+        $results = Get-ChildItem -LiteralPath $mediafolder -r |
+            Sort-Object fullname |
+            Select-Object name, fullname, extension |
+            Where-Object { $_.name -notlike "*(*)*" -and $_.extension -notmatch "(?i)\.(txt|url|db|ini|log|json|xml|png|jpg)$" -and $_.fullname -notmatch "(?i)youtube" }
+        $results | Select-Object name, fullname
     }
-    Write-Output "Results can be found at /docker-transcodeautomation/data/logs/missingyear.log"
 }

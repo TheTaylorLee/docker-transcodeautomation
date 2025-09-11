@@ -97,3 +97,4 @@
 - 4.8.0 update database descriptions table
 - 4.8.1 Add try/catch to move-filetomediafolder to more quickly address failed file moves.
 - 4.8.2 Add fix for color primaries returning reserved
+- 4.8.3 Update optional media functions to filter out unwanted results.
