@@ -1,5 +1,4 @@
-# Docker-TranscodeAutomation
-Is an automated media transcoding solution with statistics. The primary function of this solution is for reducing required disk space for media files, while maintaining acceptable levels of quality. **By using this container, you assume all risks, and it is recommended to maintain backups.** The source repository [can be found here](https://github.com/TheTaylorLee/docker-transcodeautomation).
+This is an automated media transcoding solution with statistics. The primary function of this solution is for reducing required disk space for media files, while maintaining acceptable levels of quality. **By using this container, you assume all risks, and it is recommended to maintain backups.** The source repository [can be found here](https://github.com/TheTaylorLee/docker-transcodeautomation).
 
 ### index
 1. [Breaking Changes](pages/0.-Breaking-Changes.md)
