@@ -2,3 +2,21 @@
 remote_theme: just-the-docs
 plugins:
   - jekyll-remote-theme # add this line to the plugins list if you already have one
+
+# Just the docs https://just-the-docs.com/docs/configuration/#navigation-sidebar
+nav_enabled: true
+search_enabled: true
+aux_links:
+  "Docker-TranscodeAutomation on GitHub":
+    - "//github.com/TheTaylorLee/docker-transcodeautomation"
+aux_links_new_tab: true
+heading_anchors: true
+color_scheme: dark
+last_edit_timestamp: true
+last_edit_time_format: "%b %e %Y at %I:%M %p"
+gh_edit_link: true
+gh_edit_link_text: "Edit this page on GitHub."
+gh_edit_repository: "https://github.com/TheTaylorLee/docker-transcodeautomation"
+gh_edit_branch: "main"
+gh_edit_source: docs
+gh_edit_view_mode: "tree"
