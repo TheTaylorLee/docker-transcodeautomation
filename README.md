@@ -9,8 +9,5 @@ Is an automated media transcoding solution with statistics. The primary function
     <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/issues?q=is%3Aopen+is%3Aissue">
       <img src ="https://img.shields.io/github/issues-raw/thetaylorlee/docker-transcodeautomation">
     </a>
-    <a href="https://github.com/TheTaylorLee/docker-transcodeautomation/blob/master/LICENSE">
-	    <img src="https://img.shields.io/github/license/thetaylorlee/docker-transcodeautomation">
-	  </a>
   </p>
 </div>
