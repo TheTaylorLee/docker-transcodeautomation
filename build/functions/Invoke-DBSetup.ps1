@@ -11,13 +11,13 @@ Additionally, it inserts initial data into the Descriptions and ImmutableIndex t
 Specifies the SQLite database file to which the setup queries will be applied. This parameter is mandatory.
 
 .EXAMPLE
-Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
+Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/media.db"
 #>
 
 function Invoke-DBSetup {
 
     [CmdletBinding()]
-    Param (
+    param (
         [Parameter(Mandatory = $true)][string[]]$DataSource
     )
 
