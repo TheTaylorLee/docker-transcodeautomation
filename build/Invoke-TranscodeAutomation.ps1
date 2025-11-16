@@ -8,7 +8,7 @@ if ($host.version.major -eq '7') {
     ##Debug log management
     Get-ChildItem -Path $PSScriptRoot/data/logs/ -File -Recurse |
         Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
-        Remove-Item
+        Remove-Item -Recurse -Force -Verbose
 
     ##Fix for environment variables not being pulled in by the service
     $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
@@ -36,9 +36,9 @@ if ($host.version.major -eq '7') {
         . $PSScriptRoot/functions/Invoke-DBSetup.ps1
         Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/media.db"
     }
-    if ($test4 -eq $true) {
+    if ($test4 -eq $True) {
         Write-Output "info: renaming sqlite database"
-        Rename-Item $olddatasource $datasource -Force
+        Rename-Item $olddatasource $datasource -Force -Verbose
     }
 
     ##Update the database for missing tables added in new versions of docker-transcodeautomation
