@@ -8,7 +8,8 @@ if ($host.version.major -eq '7') {
     ##Debug log management
     Get-ChildItem -Path $PSScriptRoot/data/logs/ -File -Recurse |
         Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
-        Remove-Item -Recurse -Force -Verbose
+        Remove-Item -Force
+
 
     ##Fix for environment variables not being pulled in by the service
     $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
