@@ -98,3 +98,7 @@
 - 4.8.1 Add try/catch to move-filetomediafolder to more quickly address failed file moves.
 - 4.8.2 Add fix for color primaries returning reserved
 - 4.8.3 Update optional media functions to filter out unwanted results.
+- 5.0.0 Update builds with a major version latest tag to allow automatic updates post major changes.
+    - Rename database to media.db
+    - Add fix for skipcheck files not being removed if multiple files exist.
+    - Add Breaking change notes to the wiki outlining updating grafana data source.

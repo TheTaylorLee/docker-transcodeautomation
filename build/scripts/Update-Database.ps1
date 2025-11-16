@@ -1,5 +1,5 @@
 # Updates the database for any missing tables
-$DataSource = "/docker-transcodeautomation/data/MediaDB.SQLite"
+$DataSource = "/docker-transcodeautomation/data/media.db"
 
 
 Write-Output "info: Update-Database Start"

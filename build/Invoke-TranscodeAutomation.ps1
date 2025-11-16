@@ -8,7 +8,8 @@ if ($host.version.major -eq '7') {
     ##Debug log management
     Get-ChildItem -Path $PSScriptRoot/data/logs/ -File -Recurse |
         Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-14) } |
-        Remove-Item
+        Remove-Item -Force
+
 
     ##Fix for environment variables not being pulled in by the service
     $env:FFToolsSource = "/docker-transcodeautomation/transcoding/"
@@ -27,12 +28,18 @@ if ($host.version.major -eq '7') {
     Import-Module /root/.local/share/powershell/Modules/PSSQLite/1.1.0/PSSQLite.psm1 -ErrorAction Stop
 
     ##Test for existence of media database
-    $datasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
+    $olddatasource = ("/docker-transcodeautomation/data/MediaDB.SQLite")
+    $datasource = ("/docker-transcodeautomation/data/media.db")
     $test3 = Test-Path $datasource
-    if ($test3 -eq $false) {
+    $test4 = Test-Path $olddatasource
+    if ($test3 -eq $false -and $test4 -eq $false) {
         Write-Output "info: Creating sqlite database"
         . $PSScriptRoot/functions/Invoke-DBSetup.ps1
-        Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/MediaDB.SQLite"
+        Invoke-DBSetup -DataSource "/docker-transcodeautomation/data/media.db"
+    }
+    if ($test4 -eq $True) {
+        Write-Output "info: renaming sqlite database"
+        Rename-Item $olddatasource $datasource -Force -Verbose
     }
 
     ##Update the database for missing tables added in new versions of docker-transcodeautomation

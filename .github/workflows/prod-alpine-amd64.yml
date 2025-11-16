@@ -45,3 +45,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64-${{ env.tag }}
+            ghcr.io/thetaylorlee/docker-transcodeautomation:alpine3.17-amd64-v5
